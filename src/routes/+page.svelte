@@ -89,9 +89,15 @@
   let zoomLevel = $state(1.0);
 
   function applyZoom(newZoom: number) {
-    const clamped = Math.round(Math.min(Math.max(newZoom, 0.6), 2.0) * 10) / 10;
+    const clamped = Math.round(Math.min(Math.max(newZoom, 0.75), 1.6) * 20) / 20;
     zoomLevel = clamped;
-    document.documentElement.style.zoom = `${clamped}`;
+    // CRITICAL: NEVER use style.zoom on documentElement or body.
+    // CSS zoom breaks WebKitGTK viewport calculations and creates an empty void around the screen (as seen in 8.png).
+    document.documentElement.style.zoom = '';
+    if (document.body) document.body.style.zoom = '';
+    // Scale root font size (16px base) so all rem-based typography, bars, paddings, inputs and icons scale seamlessly
+    // while the window/screen ALWAYS remains 100% full width and full height!
+    document.documentElement.style.fontSize = `${clamped * 16}px`;
     try {
       localStorage.setItem('tether_ui_zoom', String(clamped));
     } catch {}
@@ -102,10 +108,10 @@
     if (e.ctrlKey || e.metaKey) {
       if (e.key === '=' || e.key === '+' || e.code === 'NumpadAdd' || e.code === 'Equal') {
         e.preventDefault();
-        applyZoom(zoomLevel + 0.1);
+        applyZoom(zoomLevel + 0.05);
       } else if (e.key === '-' || e.key === '_' || e.code === 'NumpadSubtract' || e.code === 'Minus') {
         e.preventDefault();
-        applyZoom(zoomLevel - 0.1);
+        applyZoom(zoomLevel - 0.05);
       } else if (e.key === '0' || e.code === 'Numpad0' || e.code === 'Digit0') {
         e.preventDefault();
         applyZoom(1.0);
@@ -147,17 +153,27 @@
   }
 
   onMount(async () => {
-    // Restore saved zoom level if present
+    // Purge any legacy style.zoom from previous sessions that caused the viewport to shrink (as in 8.png)
+    document.documentElement.style.zoom = '';
+    if (document.body) document.body.style.zoom = '';
+
+    // Restore saved UI scaling if present
     try {
       const savedZoom = localStorage.getItem('tether_ui_zoom');
       if (savedZoom) {
         const parsed = parseFloat(savedZoom);
-        if (!isNaN(parsed) && parsed >= 0.6 && parsed <= 2.0) {
+        if (!isNaN(parsed) && parsed >= 0.75 && parsed <= 1.6) {
           zoomLevel = parsed;
-          document.documentElement.style.zoom = `${parsed}`;
+          document.documentElement.style.fontSize = `${parsed * 16}px`;
+        } else {
+          document.documentElement.style.fontSize = '16px';
         }
+      } else {
+        document.documentElement.style.fontSize = '16px';
       }
-    } catch {}
+    } catch {
+      document.documentElement.style.fontSize = '16px';
+    }
 
     window.addEventListener('keydown', handleKeydown);
     window.addEventListener('wheel', handleWheel, { passive: false });

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background Squircle Elevation Shadow -->
+    <filter id="appShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="28" stdDeviation="32" flood-color="#000000" flood-opacity="0.65" />
+    </filter>
+    
+    <!-- Loop Depth Shadows -->
+    <filter id="frontShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="-8" dy="16" stdDeviation="18" flood-color="#000000" flood-opacity="0.65" />
+    </filter>
+    <filter id="backShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="-4" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
+
+    <!-- Squircle Border Highlight -->
+    <linearGradient id="squircleBorder" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.24" />
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.09" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+
+    <!-- Platinum Metal Gradient -->
+    <linearGradient id="platinumGrade" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#d1d5db" />
+      <stop offset="100%" stop-color="#9ca3af" />
+    </linearGradient>
+
+    <!-- Coral Gradient -->
+    <linearGradient id="coralGrade" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#ff6347" />
+      <stop offset="100%" stop-color="#e03e22" />
+    </linearGradient>
+
+    <!-- Master Avocado Ring Path -->
+    <path id="tetherLoop" fill-rule="evenodd" d="
+      M 0 -225
+      C 75 -225, 115 -165, 138 -75
+      C 158 5, 182 85, 166 155
+      C 148 220, 92 242, 0 242
+      C -92 242, -148 220, -166 155
+      C -182 85, -158 5, -138 -75
+      C -115 -165, -75 -225, 0 -225
+      Z
+      M 0 -65
+      C 68 -65, 114 -18, 114 50
+      C 114 118, 68 165, 0 165
+      C -68 165, -114 118, -114 50
+      C -114 -18, -68 -65, 0 -65
+      Z
+    " />
+  </defs>
+
+  <!-- Squircle App Container -->
+  <rect x="84" y="84" width="856" height="856" rx="224" fill="#151518" filter="url(#appShadow)" />
+  <rect x="84" y="84" width="856" height="856" rx="224" fill="none" stroke="url(#squircleBorder)" stroke-width="3" />
+
+  <!-- Dual Interlocking Avocado Tether Loops -->
+  <g id="loops">
+    <!-- Back Loop: Platinum -->
+    <g transform="translate(582, 478) rotate(15) scale(1.16)" filter="url(#backShadow)">
+      <use href="#tetherLoop" fill="url(#platinumGrade)" />
+    </g>
+
+    <!-- Front Loop: Pure White -->
+    <g transform="translate(442, 526) rotate(15) scale(1.16)" filter="url(#frontShadow)">
+      <use href="#tetherLoop" fill="#ffffff" />
+    </g>
+  </g>
+</svg>
