@@ -1,0 +1,107 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="512" y1="56" x2="512" y2="968" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2a2a2a" />
+      <stop offset="45%" stop-color="#1c1c1c" />
+      <stop offset="100%" stop-color="#121212" />
+    </linearGradient>
+
+    <!-- Squircle Border -->
+    <linearGradient id="borderGrad" x1="512" y1="56" x2="512" y2="968" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#555555" />
+      <stop offset="100%" stop-color="#282828" />
+    </linearGradient>
+
+    <!-- Center Coral Radial Glow -->
+    <radialGradient id="centerGlow" cx="512" cy="512" r="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e25c48" stop-opacity="0.42" />
+      <stop offset="40%" stop-color="#e25c48" stop-opacity="0.16" />
+      <stop offset="80%" stop-color="#e25c48" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#e25c48" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Coral Wave Gradient -->
+    <linearGradient id="coralWaveGrad" x1="200" y1="200" x2="824" y2="824" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ff7f6e" />
+      <stop offset="50%" stop-color="#e25c48" />
+      <stop offset="100%" stop-color="#c93c28" />
+    </linearGradient>
+
+    <!-- Core Orb Radial Highlight -->
+    <radialGradient id="orbGlow" cx="512" cy="512" r="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="35%" stop-color="#ffebe7" />
+      <stop offset="70%" stop-color="#e25c48" />
+      <stop offset="100%" stop-color="#e25c48" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Drop Shadow Filter for Squircle -->
+    <filter id="squircleShadow" x="0" y="0" width="1024" height="1024" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="28" stdDeviation="36" flood-color="#000000" flood-opacity="0.65" />
+    </filter>
+
+    <!-- Glyph Drop Shadow -->
+    <filter id="glyphShadow" x="120" y="120" width="784" height="784" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.75" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Base Canvas -->
+  <g filter="url(#squircleShadow)">
+    <rect
+      x="56"
+      y="56"
+      width="912"
+      height="912"
+      rx="216"
+      fill="url(#bgGrad)"
+      stroke="url(#borderGrad)"
+      stroke-width="8"
+    />
+  </g>
+
+  <!-- Ambient Glow Behind Radio Emblem -->
+  <circle cx="512" cy="512" r="400" fill="url(#centerGlow)" />
+
+  <!-- Tether Radio Waves & Mesh Core -->
+  <g filter="url(#glyphShadow)">
+    <!-- Outer Telemetry Waves (Radius: 280) -->
+    <g stroke="url(#coralWaveGrad)" stroke-width="36" stroke-linecap="round" opacity="0.5">
+      <path d="M 710 314 A 280 280 0 0 1 710 710" fill="none" />
+      <path d="M 314 710 A 280 280 0 0 1 314 314" fill="none" />
+    </g>
+
+    <!-- Mid Telemetry Waves (Radius: 200) -->
+    <g stroke="url(#coralWaveGrad)" stroke-width="44" stroke-linecap="round" opacity="0.85">
+      <path d="M 653 371 A 200 200 0 0 1 653 653" fill="none" />
+      <path d="M 371 653 A 200 200 0 0 1 371 371" fill="none" />
+    </g>
+
+    <!-- Inner Telemetry Waves (Radius: 125) -->
+    <g stroke="#ffffff" stroke-width="38" stroke-linecap="round" opacity="0.95">
+      <path d="M 600 424 A 125 125 0 0 1 600 600" fill="none" />
+      <path d="M 424 600 A 125 125 0 0 1 424 424" fill="none" />
+    </g>
+
+    <!-- Horizontal Interconnect Tether Beam -->
+    <line x1="280" y1="512" x2="744" y2="512" stroke="url(#coralWaveGrad)" stroke-width="20" stroke-linecap="round" opacity="0.35" />
+
+    <!-- Center Transmitter Core (Outer Ring) -->
+    <circle cx="512" cy="512" r="64" fill="#181818" stroke="#e25c48" stroke-width="18" />
+
+    <!-- Center White Hotspot -->
+    <circle cx="512" cy="512" r="38" fill="#ffffff" />
+    <circle cx="512" cy="512" r="76" fill="url(#orbGlow)" opacity="0.85" />
+  </g>
+
+  <!-- Top Glass Highlight Specular Arc -->
+  <path
+    d="M 120 120 Q 512 76 904 120"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    stroke-linecap="round"
+    opacity="0.22"
+  />
+</svg>
