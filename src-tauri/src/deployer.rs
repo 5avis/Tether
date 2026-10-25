@@ -139,11 +139,72 @@ pub async fn trigger_parallel_deploy(
 
             // Stage 2: Deploying
             // If the service has a deploy webhook (e.g. Render Deploy Hook), trigger the real HTTP POST!
+            let mut webhook_error: Option<String> = None;
             if let Some(ref url) = service.endpoint_url {
                 if url.starts_with("http") && url.contains("deploy") {
                     let client = reqwest::Client::new();
-                    let _ = client.post(url).timeout(std::time::Duration::from_secs(5)).send().await;
+                    match client.post(url).timeout(std::time::Duration::from_secs(8)).send().await {
+                        Ok(resp) => {
+                            let status = resp.status();
+                            if !status.is_success() {
+                                let body = resp.text().await.unwrap_or_default();
+                                let clean = body.trim().replace('\n', " ");
+                                if clean.contains("service is suspended") {
+                                    webhook_error = Some("Render rejected deploy: service is suspended. Please click 'Resume' in Render dashboard first.".into());
+                                } else {
+                                    webhook_error = Some(format!("Deploy hook rejected (HTTP {}): {}", status.as_u16(), clean));
+                                }
+                            } else {
+                                let _ = app_handle.emit(
+                                    "service-log",
+                                    MultiplexedLogEvent {
+                                        id: format!("log-{}", start.elapsed().as_micros()),
+                                        service_id: sid.clone(),
+                                        service_name: sname.clone(),
+                                        provider: prov.clone(),
+                                        level: "INFO".into(),
+                                        timestamp: "Just now".into(),
+                                        message: "Deploy hook accepted by Render. Build pipeline started.".into(),
+                                    },
+                                );
+                            }
+                        }
+                        Err(e) => {
+                            webhook_error = Some(format!("Failed to reach deploy hook: {}", e));
+                        }
+                    }
                 }
+            }
+
+            if let Some(err_msg) = webhook_error {
+                let dur = start.elapsed().as_millis() as u64;
+                let _ = app_handle.emit(
+                    "deploy-progress",
+                    DeployProgressEvent {
+                        service_id: sid.clone(),
+                        service_name: sname.clone(),
+                        provider: prov.clone(),
+                        status: "failed".into(),
+                        progress_percent: 100,
+                        message: err_msg.clone(),
+                        duration_ms: dur,
+                    },
+                );
+
+                let _ = app_handle.emit(
+                    "service-log",
+                    MultiplexedLogEvent {
+                        id: format!("log-{}", start.elapsed().as_micros()),
+                        service_id: sid,
+                        service_name: sname,
+                        provider: prov,
+                        level: "ERROR".into(),
+                        timestamp: "Just now".into(),
+                        message: err_msg,
+                    },
+                );
+
+                return false;
             }
 
             let _ = app_handle.emit(
