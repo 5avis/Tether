@@ -23,6 +23,30 @@
   let apiToken = $state('');
   let verifying = $state(false);
   let verifyResult = $state<{ valid: boolean; message: string; details?: string } | null>(null);
+  let openDropdown = $state<'provider' | 'environment' | null>(null);
+
+  const providerOptions: Array<{ value: CloudProvider; label: string }> = [
+    { value: 'cloudflare', label: 'Cloudflare Tunnel' },
+    { value: 'flyio', label: 'Fly.io' },
+    { value: 'supabase', label: 'Supabase' },
+    { value: 'neon', label: 'Neon Postgres' },
+    { value: 'render', label: 'Render' },
+    { value: 'railway', label: 'Railway' },
+  ];
+
+  const environmentOptions: Array<{ value: Environment; label: string }> = [
+    { value: 'production', label: 'Production' },
+    { value: 'staging', label: 'Staging' },
+    { value: 'preview', label: 'Preview' },
+    { value: 'development', label: 'Development' },
+  ];
+
+  let currentProviderLabel = $derived(
+    providerOptions.find((p) => p.value === provider)?.label ?? 'Cloudflare Tunnel'
+  );
+  let currentEnvironmentLabel = $derived(
+    environmentOptions.find((e) => e.value === environment)?.label ?? 'Production'
+  );
 
   // Update targetType automatically when provider changes
   $effect(() => {
@@ -84,7 +108,7 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#242424] border border-border-dim rounded-xl shadow-modal overflow-hidden text-xs select-none"
+      class="w-full max-w-md bg-[#242424] border border-border-dim rounded-xl shadow-modal text-xs select-none relative"
     >
       <!-- Modal Header -->
       <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">
@@ -93,8 +117,8 @@
             <Icons name="plus" size={13} class="text-coral" strokeWidth={2.5} />
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-tx-header">Add Infrastructure Target</h3>
-            <p class="text-[10px] text-tx-meta">Configure new service binding</p>
+            <h3 class="text-sm font-semibold text-tx-header">Add Target</h3>
+            <p class="text-[10px] text-tx-meta">Configure new service</p>
           </div>
         </div>
         <button
@@ -123,38 +147,90 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-tx-meta text-[11px] uppercase font-mono tracking-wider mb-1.5" for="provider-select">
+          <!-- Custom Cloud Provider Dropdown -->
+          <div class="relative">
+            <span class="block text-tx-meta text-[11px] uppercase font-mono tracking-wider mb-1.5">
               Cloud Provider
-            </label>
-            <select
+            </span>
+            <button
               id="provider-select"
-              bind:value={provider}
-              class="w-full bg-surface-elevated text-tx-header px-3 py-2 rounded-lg border border-border-dim focus:border-coral focus:outline-none cursor-pointer"
+              type="button"
+              onclick={() => (openDropdown = openDropdown === 'provider' ? null : 'provider')}
+              class="w-full flex items-center justify-between bg-surface-elevated text-tx-header px-3 py-2 rounded-lg border border-border-dim hover:border-border-subtle focus:border-coral transition-colors cursor-pointer text-xs"
             >
-              <option value="cloudflare">Cloudflare Tunnel</option>
-              <option value="flyio">Fly.io</option>
-              <option value="supabase">Supabase</option>
-              <option value="neon">Neon Postgres</option>
-              <option value="render">Render</option>
-              <option value="railway">Railway</option>
-            </select>
+              <span class="truncate">{currentProviderLabel}</span>
+              <Icons name="chevron-down" size={11} class="text-tx-meta shrink-0 ml-1 transition-transform {openDropdown === 'provider' ? 'rotate-180' : ''}" />
+            </button>
+
+            {#if openDropdown === 'provider'}
+              <button
+                type="button"
+                class="fixed inset-0 z-40 cursor-default bg-transparent"
+                onclick={() => (openDropdown = null)}
+                aria-label="Close menu"
+              ></button>
+
+              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+                {#each providerOptions as opt}
+                  <button
+                    type="button"
+                    onclick={() => {
+                      provider = opt.value;
+                      openDropdown = null;
+                    }}
+                    class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors {provider === opt.value ? 'bg-surface-elevated text-tx-header font-medium' : 'text-tx-body hover:text-tx-header hover:bg-surface-hover'}"
+                  >
+                    <span>{opt.label}</span>
+                    {#if provider === opt.value}
+                      <Icons name="check" size={12} class="text-coral" />
+                    {/if}
+                  </button>
+                {/each}
+              </div>
+            {/if}
           </div>
 
-          <div>
-            <label class="block text-tx-meta text-[11px] uppercase font-mono tracking-wider mb-1.5" for="env-select">
+          <!-- Custom Environment Dropdown -->
+          <div class="relative">
+            <span class="block text-tx-meta text-[11px] uppercase font-mono tracking-wider mb-1.5">
               Environment
-            </label>
-            <select
+            </span>
+            <button
               id="env-select"
-              bind:value={environment}
-              class="w-full bg-surface-elevated text-tx-header px-3 py-2 rounded-lg border border-border-dim focus:border-coral focus:outline-none cursor-pointer"
+              type="button"
+              onclick={() => (openDropdown = openDropdown === 'environment' ? null : 'environment')}
+              class="w-full flex items-center justify-between bg-surface-elevated text-tx-header px-3 py-2 rounded-lg border border-border-dim hover:border-border-subtle focus:border-coral transition-colors cursor-pointer text-xs"
             >
-              <option value="production">Production</option>
-              <option value="staging">Staging</option>
-              <option value="preview">Preview</option>
-              <option value="development">Development</option>
-            </select>
+              <span class="truncate">{currentEnvironmentLabel}</span>
+              <Icons name="chevron-down" size={11} class="text-tx-meta shrink-0 ml-1 transition-transform {openDropdown === 'environment' ? 'rotate-180' : ''}" />
+            </button>
+
+            {#if openDropdown === 'environment'}
+              <button
+                type="button"
+                class="fixed inset-0 z-40 cursor-default bg-transparent"
+                onclick={() => (openDropdown = null)}
+                aria-label="Close menu"
+              ></button>
+
+              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+                {#each environmentOptions as opt}
+                  <button
+                    type="button"
+                    onclick={() => {
+                      environment = opt.value;
+                      openDropdown = null;
+                    }}
+                    class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors {environment === opt.value ? 'bg-surface-elevated text-tx-header font-medium' : 'text-tx-body hover:text-tx-header hover:bg-surface-hover'}"
+                  >
+                    <span>{opt.label}</span>
+                    {#if environment === opt.value}
+                      <Icons name="check" size={12} class="text-coral" />
+                    {/if}
+                  </button>
+                {/each}
+              </div>
+            {/if}
           </div>
         </div>
 
@@ -241,7 +317,7 @@
             type="submit"
             class="px-4 py-2 rounded-lg bg-coral hover:bg-coral-hover text-white font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98]"
           >
-            Create Binding
+            Add Target
           </button>
         </div>
       </form>

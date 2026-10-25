@@ -42,6 +42,17 @@ html, body {
 .text-\[14px\] { font-size: 0.875rem !important; }
 .text-\[15px\] { font-size: 0.9375rem !important; }
 
+/* Remove native browser number input spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 /* Custom minimal scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
