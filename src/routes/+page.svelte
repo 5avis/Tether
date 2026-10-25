@@ -63,6 +63,14 @@
     services.filter((s) => s.targetType === 'database' || s.dormancyHoursLeft !== undefined || s.quotaUsedPercent > 50).length
   );
 
+  const watchdogRemainingHours = $derived(
+    (() => {
+      const dbServices = services.filter((s) => s.dormancyHoursLeft !== undefined);
+      if (dbServices.length === 0) return null;
+      return Math.min(...dbServices.map((s) => s.dormancyHoursLeft ?? 168));
+    })()
+  );
+
   const navCounts = $derived({
     overview: services.length,
     tunnels: activeTunnels.length,
@@ -636,24 +644,37 @@
                 </div>
               </div>
               <div class="mt-3 flex items-baseline justify-between">
-                <span class="text-2xl font-bold text-tx-header font-mono">712h</span>
-                <span class="text-[11px] text-tx-meta font-mono">Pool remaining</span>
+                {#if watchdogRemainingHours !== null}
+                  <span class="text-2xl font-bold text-tx-header font-mono">{watchdogRemainingHours}h</span>
+                  <span class="text-[11px] text-tx-meta font-mono">Lowest left</span>
+                {:else}
+                  <span class="text-2xl font-bold text-tx-header font-mono">0h</span>
+                  <span class="text-[11px] text-tx-meta font-mono">No targets</span>
+                {/if}
               </div>
             </div>
 
             <div class="p-3.5 rounded-xl bg-surface/80 hover:bg-surface-elevated/80 border border-border-dim/80 hover:border-coral/40 shadow-subtle flex flex-col justify-between transition-all duration-150">
               <div class="flex items-center justify-between text-tx-meta text-xs">
                 <span class="font-medium text-tx-body">Keep-Alive Guard</span>
-                <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center text-coral">
+                <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center {watchdogCount > 0 ? 'text-coral' : 'text-tx-meta'}">
                   <Icons name="check" size={13} />
                 </div>
               </div>
               <div class="mt-3 flex items-baseline justify-between">
-                <span class="text-base font-bold text-tx-header font-mono flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full bg-coral"></span>
-                  Active
-                </span>
-                <span class="text-[11px] text-tx-meta font-mono">Automated</span>
+                {#if watchdogCount > 0}
+                  <span class="text-base font-bold text-tx-header font-mono flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-coral"></span>
+                    Active
+                  </span>
+                  <span class="text-[11px] text-tx-meta font-mono">{watchdogCount} guarded</span>
+                {:else}
+                  <span class="text-base font-bold text-tx-meta font-mono flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-border-subtle"></span>
+                    Idle
+                  </span>
+                  <span class="text-[11px] text-tx-meta font-mono">0 targets</span>
+                {/if}
               </div>
             </div>
           </div>

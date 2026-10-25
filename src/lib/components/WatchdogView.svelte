@@ -39,6 +39,21 @@
     }).length
   );
 
+  const lowestHours = $derived(
+    watchdogTargets.length === 0
+      ? null
+      : Math.min(...watchdogTargets.map((s) => s.dormancyHoursLeft ?? 168))
+  );
+
+  const avgLatency = $derived(
+    watchdogTargets.length === 0
+      ? null
+      : Math.round(
+          watchdogTargets.reduce((acc, s) => acc + (s.latencyMs || 0), 0) /
+            watchdogTargets.length
+        )
+  );
+
   async function handleSinglePing(s: ServiceTarget) {
     pingingId = s.id;
     onToast(`Dispatching keep-alive query to ${s.name}...`);
@@ -125,8 +140,8 @@
           <Icons name="shield" size={12} class="text-coral" />
         </div>
         <div class="mt-2 flex items-baseline gap-2">
-          <span class="text-xl font-bold text-tx-header font-mono">712h</span>
-          <span class="text-[11px] text-tx-meta font-mono">remaining</span>
+          <span class="text-xl font-bold text-tx-header font-mono">{lowestHours !== null ? lowestHours + 'h' : '0h'}</span>
+          <span class="text-[11px] text-tx-meta font-mono">{lowestHours !== null ? 'lowest remaining' : 'no targets'}</span>
         </div>
       </div>
 
@@ -158,8 +173,8 @@
           <Icons name="check" size={12} class="text-coral" />
         </div>
         <div class="mt-2 flex items-baseline gap-2">
-          <span class="text-xl font-bold text-tx-header font-mono">24ms</span>
-          <span class="text-[11px] text-tx-meta font-mono">Avg probe</span>
+          <span class="text-xl font-bold text-tx-header font-mono">{avgLatency !== null ? avgLatency + 'ms' : '--'}</span>
+          <span class="text-[11px] text-tx-meta font-mono">{avgLatency !== null ? 'Avg probe' : 'no probes'}</span>
         </div>
       </div>
     </div>

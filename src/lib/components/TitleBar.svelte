@@ -211,17 +211,5 @@
         </div>
       {/if}
     </div>
-
-    <!-- Quick Logout Header Icon Button (Visible when signed in) -->
-    {#if profile?.signed_in}
-      <button
-        onclick={onSignOut}
-        class="p-1.5 rounded-full bg-surface-elevated hover:bg-red-950/30 text-tx-meta hover:text-red-400 border border-border-dim hover:border-red-900/40 transition-colors shrink-0"
-        title="Log Out"
-        aria-label="Log Out"
-      >
-        <Icons name="logout" size={12} />
-      </button>
-    {/if}
   </div>
 </header>
