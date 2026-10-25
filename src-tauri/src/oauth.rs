@@ -45,7 +45,7 @@ pub struct GoogleUserInfo {
 
 pub fn is_admin_email(email: &str) -> bool {
     let lower = email.trim().to_lowercase();
-    lower.contains("sivanandham5528") || lower.contains("528cva")
+    lower.contains("sivanandham5528")
 }
 
 pub fn load_oauth_credentials() -> GoogleOAuthInstalled {
@@ -294,15 +294,19 @@ pub async fn start_google_oauth() -> Result<UserProfile, String> {
 
 #[tauri::command]
 pub fn get_user_profile() -> Result<Option<UserProfile>, String> {
-    let cfg = read_config_from_disk()?;
-    if let Some(mut profile) = cfg.profile {
-        // Enforce strictly: only sivanandham5528 can ever be admin
-        let role = if is_admin_email(&profile.email) {
+    let mut cfg = read_config_from_disk()?;
+    if let Some(mut profile) = cfg.profile.clone() {
+        let expected_role = if is_admin_email(&profile.email) {
             "admin".to_string()
         } else {
             "member".to_string()
         };
-        profile.role = Some(role);
+        if profile.role.as_deref() != Some(&expected_role) {
+            profile.role = Some(expected_role.clone());
+            cfg.profile = Some(profile.clone());
+            let _ = save_config_to_disk(&cfg);
+        }
+        profile.role = Some(expected_role);
         Ok(Some(profile))
     } else {
         Ok(None)

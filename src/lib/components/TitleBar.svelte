@@ -51,12 +51,14 @@
     <button
       onclick={onNavigateHome}
       data-tauri-drag-region
-      class="flex items-center gap-1.5 cursor-pointer hover:opacity-90 transition-opacity"
+      class="flex items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity"
       title="Go to Overview"
     >
-      <div class="w-5 h-5 rounded-md bg-coral/15 flex items-center justify-center border border-coral/30 shrink-0">
-        <Icons name="radio" size={12} class="text-coral" />
-      </div>
+      <img
+        src="/tether-icon.png"
+        alt="Tether"
+        class="w-5 h-5 rounded-md object-contain shrink-0 shadow-sm"
+      />
       <span class="text-xs font-semibold tracking-wide text-tx-header">Tether</span>
       <span class="text-[9px] px-1.5 py-0.2 rounded bg-surface-elevated text-tx-meta font-mono border border-border-dim hidden sm:inline">v0.1</span>
     </button>
