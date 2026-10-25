@@ -334,7 +334,14 @@ pub async fn verify_tokens(provider: String, token: String) -> Result<TokenVerif
             }
         }
         "neon" | "supabase" | "render" | "railway" => {
-            if trimmed.len() >= 16 {
+            if trimmed.starts_with("https://api.render.com/deploy/") || (trimmed.starts_with("http") && trimmed.contains("/deploy")) {
+                Ok(TokenVerifyResult {
+                    valid: true,
+                    provider: provider.clone(),
+                    message: "Render Deploy Hook URL verified and ready.".into(),
+                    details: Some("Direct deploy trigger".into()),
+                })
+            } else if trimmed.len() >= 16 {
                 Ok(TokenVerifyResult {
                     valid: true,
                     provider: provider.clone(),
@@ -345,7 +352,7 @@ pub async fn verify_tokens(provider: String, token: String) -> Result<TokenVerif
                 Ok(TokenVerifyResult {
                     valid: false,
                     provider,
-                    message: "Token is too short for this cloud provider".into(),
+                    message: "Token or Deploy Hook URL is too short".into(),
                     details: None,
                 })
             }

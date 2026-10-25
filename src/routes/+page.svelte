@@ -471,9 +471,11 @@
           ? `https://${newBinding.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-preview.trycloudflare.com`
           : undefined,
       endpointUrl:
-        newBinding.provider !== 'cloudflare'
-          ? `https://${newBinding.name}.cloud.internal`
-          : undefined,
+        newBinding.apiToken && newBinding.apiToken.startsWith('http')
+          ? newBinding.apiToken
+          : newBinding.provider !== 'cloudflare'
+            ? `https://${newBinding.name}.cloud.internal`
+            : undefined,
       quotaUsedPercent: 12,
       lastDeployedAt: 'Just now',
       latencyMs: Math.floor(Math.random() * 20) + 15,

@@ -259,14 +259,14 @@
         {:else}
           <div>
             <label class="block text-tx-meta text-[11px] uppercase font-mono tracking-wider mb-1.5" for="api-token">
-              Provider API Token / Secret
+              API Token or Deploy Hook URL
             </label>
             <div class="flex items-center gap-2">
               <input
                 id="api-token"
                 type="password"
                 bind:value={apiToken}
-                placeholder="Paste API token or service key..."
+                placeholder="Paste API token, secret key, or Deploy Hook URL..."
                 class="flex-1 bg-surface-elevated text-tx-header px-3 py-2 rounded-lg border border-border-dim focus:border-coral focus:outline-none placeholder:text-tx-meta font-mono"
               />
               <button

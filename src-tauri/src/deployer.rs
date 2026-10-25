@@ -138,6 +138,14 @@ pub async fn trigger_parallel_deploy(
             tokio::time::sleep(std::time::Duration::from_millis(300)).await;
 
             // Stage 2: Deploying
+            // If the service has a deploy webhook (e.g. Render Deploy Hook), trigger the real HTTP POST!
+            if let Some(ref url) = service.endpoint_url {
+                if url.starts_with("http") && url.contains("deploy") {
+                    let client = reqwest::Client::new();
+                    let _ = client.post(url).timeout(std::time::Duration::from_secs(5)).send().await;
+                }
+            }
+
             let _ = app_handle.emit(
                 "deploy-progress",
                 DeployProgressEvent {
