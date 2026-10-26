@@ -47,7 +47,7 @@
       <Icons name="sidebar" size={14} class="text-tx-meta hover:text-tx-header" />
     </button>
 
-    <!-- Tether Brand Knot Icon & Label -->
+    <!-- Tether Brand Diamond Icon & Label -->
     <button
       onclick={onNavigateHome}
       data-tauri-drag-region
@@ -55,9 +55,9 @@
       title="Go to Overview"
     >
       <img
-        src="/tether-icon.png"
+        src="/tether-icon.svg"
         alt="Tether"
-        class="w-5 h-5 rounded-md object-contain shrink-0 shadow-sm"
+        class="w-5 h-5 object-contain shrink-0"
       />
       <span class="text-xs font-semibold tracking-wide text-tx-header">Tether</span>
       <span class="text-[9px] px-1.5 py-0.2 rounded bg-surface-elevated text-tx-meta font-mono border border-border-dim hidden sm:inline">v0.1</span>

@@ -1,50 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
-  <defs>
-    <filter id="appShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="28" stdDeviation="32" flood-color="#000000" flood-opacity="0.35" />
-    </filter>
-    <filter id="frontShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="-8" dy="16" stdDeviation="18" flood-color="#000000" flood-opacity="0.35" />
-    </filter>
-    <filter id="backShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="-4" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.2" />
-    </filter>
-
-    <linearGradient id="squircleBorderLight" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
-      <stop offset="100%" stop-color="#d1d5db" stop-opacity="0.6" />
-    </linearGradient>
-
-    <path id="tetherLoop" fill-rule="evenodd" d="
-      M 0 -225
-      C 75 -225, 115 -165, 138 -75
-      C 158 5, 182 85, 166 155
-      C 148 220, 92 242, 0 242
-      C -92 242, -148 220, -166 155
-      C -182 85, -158 5, -138 -75
-      C -115 -165, -75 -225, 0 -225
-      Z
-      M 0 -65
-      C 68 -65, 114 -18, 114 50
-      C 114 118, 68 165, 0 165
-      C -68 165, -114 118, -114 50
-      C -114 -18, -68 -65, 0 -65
-      Z
-    " />
-  </defs>
-
-  <rect x="84" y="84" width="856" height="856" rx="224" fill="#f8fafc" filter="url(#appShadow)" />
-  <rect x="84" y="84" width="856" height="856" rx="224" fill="none" stroke="url(#squircleBorderLight)" stroke-width="3" />
-
-  <g id="loops">
-    <!-- Back Loop: Coral -->
-    <g transform="translate(582, 478) rotate(15) scale(1.16)" filter="url(#backShadow)">
-      <use href="#tetherLoop" fill="#e25c48" />
-    </g>
-
-    <!-- Front Loop: Deep Obsidian -->
-    <g transform="translate(442, 526) rotate(15) scale(1.16)" filter="url(#frontShadow)">
-      <use href="#tetherLoop" fill="#151518" />
-    </g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <!-- Tether Diamond Emblem (Vectorized from icon.png, pure transparent background) -->
+  <!-- Upper Diamond - Top Left Facet -->
+  <polygon points="128,18 60.5,128 128,98" fill="#7880e7" />
+  
+  <!-- Upper Diamond - Top Right Facet -->
+  <polygon points="128,18 128,98 195.5,128" fill="#5c64c7" />
+  
+  <!-- Upper Diamond - Bottom Left Facet -->
+  <polygon points="60.5,128 128,168 128,98" fill="#5c64c7" />
+  
+  <!-- Upper Diamond - Bottom Right Shadow Facet -->
+  <polygon points="128,98 128,168 195.5,128" fill="#2a3192" />
+  
+  <!-- Lower Chevron - Left Facet -->
+  <polygon points="60.5,145.5 128,238 128,178" fill="#7880e7" />
+  
+  <!-- Lower Chevron - Right Facet -->
+  <polygon points="128,178 128,238 195.5,145.5" fill="#5c64c7" />
 </svg>

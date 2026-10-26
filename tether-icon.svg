@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <!-- Tether Diamond Emblem (Vectorized from icon.png, pure transparent background) -->
+  <!-- Upper Diamond - Top Left Facet -->
+  <polygon points="128,18 60.5,128 128,98" fill="#7880e7" />
+  
+  <!-- Upper Diamond - Top Right Facet -->
+  <polygon points="128,18 128,98 195.5,128" fill="#5c64c7" />
+  
+  <!-- Upper Diamond - Bottom Left Facet -->
+  <polygon points="60.5,128 128,168 128,98" fill="#5c64c7" />
+  
+  <!-- Upper Diamond - Bottom Right Shadow Facet -->
+  <polygon points="128,98 128,168 195.5,128" fill="#2a3192" />
+  
+  <!-- Lower Chevron - Left Facet -->
+  <polygon points="60.5,145.5 128,238 128,178" fill="#7880e7" />
+  
+  <!-- Lower Chevron - Right Facet -->
+  <polygon points="128,178 128,238 195.5,145.5" fill="#5c64c7" />
+</svg>
