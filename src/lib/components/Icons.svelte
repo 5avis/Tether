@@ -36,7 +36,9 @@
     | 'trash'
     | 'google'
     | 'logout'
-    | 'crown';
+    | 'crown'
+    | 'pause'
+    | 'play';
 
   let {
     name,
@@ -179,6 +181,11 @@
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
     <polyline points="16 17 21 12 16 7" />
     <line x1="21" y1="12" x2="9" y2="12" />
+  {:else if name === 'pause'}
+    <rect x="6" y="4" width="4" height="16" rx="1" />
+    <rect x="14" y="4" width="4" height="16" rx="1" />
+  {:else if name === 'play'}
+    <polygon points="5 3 19 12 5 21 5 3" />
   {:else if name === 'crown'}
     <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14" />
   {/if}

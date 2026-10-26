@@ -28,6 +28,8 @@
     listenServiceLog,
     getUserProfile,
     signOutProfile,
+    suspendTargetService,
+    resumeTargetService,
   } from '$lib/storage';
   import {
     listenTunnelReady,
@@ -432,6 +434,40 @@
     showToast(`Target ${service.name} deployed successfully.`);
   }
 
+  async function handleSuspendService(service: ServiceTarget) {
+    if (!isAdmin) {
+      showToast('Access restricted: Administrator privileges required.');
+      return;
+    }
+    showToast(`Suspending target ${service.name}...`);
+    try {
+      const res = await suspendTargetService(service.id);
+      services = services.map((s) =>
+        s.id === service.id ? { ...s, status: 'dormant', lastDeployedAt: 'Suspended just now' } : s
+      );
+      showToast(res.message);
+    } catch (e) {
+      showToast(`Failed to suspend ${service.name}: ${e}`);
+    }
+  }
+
+  async function handleResumeService(service: ServiceTarget) {
+    if (!isAdmin) {
+      showToast('Access restricted: Administrator privileges required.');
+      return;
+    }
+    showToast(`Resuming target ${service.name}...`);
+    try {
+      const res = await resumeTargetService(service.id);
+      services = services.map((s) =>
+        s.id === service.id ? { ...s, status: 'healthy', lastDeployedAt: 'Resumed just now' } : s
+      );
+      showToast(res.message);
+    } catch (e) {
+      showToast(`Failed to resume ${service.name}: ${e}`);
+    }
+  }
+
   async function handleSecretSync(content: string) {
     if (!isAdmin) {
       showToast('Access restricted: Administrator privileges required.');
@@ -694,6 +730,8 @@
                 {service}
                 {isAdmin}
                 onDeploy={handleDeploySingle}
+                onSuspend={handleSuspendService}
+                onResume={handleResumeService}
                 onSyncEnv={() => (isSecretSyncOpen = true)}
                 onViewLogs={handleViewLogs}
                 onCopyUrl={handleCopyUrl}

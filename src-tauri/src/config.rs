@@ -193,6 +193,27 @@ pub fn delete_project(workspace_id: String) -> Result<TetherConfig, String> {
 }
 
 #[tauri::command]
+pub fn save_provider_credential(provider: String, token: String) -> Result<TetherConfig, String> {
+    let mut cfg = read_config_from_disk()?;
+    if let Some(cred) = cfg.credentials.iter_mut().find(|c| c.provider == provider) {
+        cred.token = Some(token);
+        cred.is_valid = true;
+        cred.last_verified_at = Some("Just now".into());
+    } else {
+        cfg.credentials.push(ProviderCredentials {
+            provider,
+            token: Some(token),
+            account_id: None,
+            email: None,
+            is_valid: true,
+            last_verified_at: Some("Just now".into()),
+        });
+    }
+    save_config_to_disk(&cfg)?;
+    Ok(cfg)
+}
+
+#[tauri::command]
 pub fn save_service(service: ServiceBinding) -> Result<TetherConfig, String> {
     let mut cfg = read_config_from_disk()?;
     for ws in &mut cfg.workspaces {
@@ -227,6 +248,7 @@ pub fn delete_service(service_id: String) -> Result<TetherConfig, String> {
 
 #[tauri::command]
 pub async fn verify_tokens(provider: String, token: String) -> Result<TokenVerifyResult, String> {
+    let prov_name = provider.clone();
     let trimmed = token.trim();
     if trimmed.is_empty() {
         return Ok(TokenVerifyResult {
@@ -237,7 +259,7 @@ pub async fn verify_tokens(provider: String, token: String) -> Result<TokenVerif
         });
     }
 
-    match provider.as_str() {
+    let res = match provider.as_str() {
         "cloudflare" => {
             let client = reqwest::Client::new();
             let res = client
@@ -359,11 +381,19 @@ pub async fn verify_tokens(provider: String, token: String) -> Result<TokenVerif
         }
         _ => Ok(TokenVerifyResult {
             valid: true,
-            provider,
+            provider: provider.clone(),
             message: "Provider credential staged".into(),
             details: None,
         }),
+    };
+
+    if let Ok(ref vr) = res {
+        if vr.valid && !trimmed.starts_with("http") {
+            let _ = save_provider_credential(prov_name, trimmed.to_string());
+        }
     }
+
+    res
 }
 
 #[cfg(test)]

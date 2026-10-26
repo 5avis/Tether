@@ -176,6 +176,112 @@ pub async fn keep_alive_all(workspace_id: String) -> Result<Vec<PingResult>, Str
     Ok(results)
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct LifecycleResult {
+    pub success: bool,
+    pub service_id: String,
+    pub status: String,
+    pub message: String,
+}
+
+#[tauri::command]
+pub async fn suspend_target_service(
+    service_id: String,
+    api_token: Option<String>,
+) -> Result<LifecycleResult, String> {
+    let mut cfg = read_config_from_disk()?;
+    let mut target_service = None;
+
+    for ws in &mut cfg.workspaces {
+        if let Some(s) = ws.services.iter_mut().find(|s| s.id == service_id) {
+            s.status = "dormant".into();
+            s.last_deployed_at = "Suspended just now".into();
+            target_service = Some(s.clone());
+            break;
+        }
+    }
+
+    let svc = target_service.ok_or_else(|| format!("Target service '{}' not found", service_id))?;
+
+    let token = api_token.as_deref().or_else(|| {
+        cfg.credentials
+            .iter()
+            .find(|c| c.provider == svc.provider)
+            .and_then(|c| c.token.as_deref())
+    });
+
+    let msg = match svc.provider.as_str() {
+        "render" => {
+            let render_id = render::extract_render_service_id(svc.endpoint_url.as_deref(), &svc.name);
+            match render::suspend_service(&render_id, token).await {
+                Ok(m) => m,
+                Err(e) => {
+                    format!("Target paused in Tether. (Cloud note: {})", e)
+                }
+            }
+        }
+        _ => "Service paused in Tether.".into(),
+    };
+
+    save_config_to_disk(&cfg)?;
+
+    Ok(LifecycleResult {
+        success: true,
+        service_id,
+        status: "dormant".into(),
+        message: msg,
+    })
+}
+
+#[tauri::command]
+pub async fn resume_target_service(
+    service_id: String,
+    api_token: Option<String>,
+) -> Result<LifecycleResult, String> {
+    let mut cfg = read_config_from_disk()?;
+    let mut target_service = None;
+
+    for ws in &mut cfg.workspaces {
+        if let Some(s) = ws.services.iter_mut().find(|s| s.id == service_id) {
+            s.status = "healthy".into();
+            s.last_deployed_at = "Resumed just now".into();
+            target_service = Some(s.clone());
+            break;
+        }
+    }
+
+    let svc = target_service.ok_or_else(|| format!("Target service '{}' not found", service_id))?;
+
+    let token = api_token.as_deref().or_else(|| {
+        cfg.credentials
+            .iter()
+            .find(|c| c.provider == svc.provider)
+            .and_then(|c| c.token.as_deref())
+    });
+
+    let msg = match svc.provider.as_str() {
+        "render" => {
+            let render_id = render::extract_render_service_id(svc.endpoint_url.as_deref(), &svc.name);
+            match render::resume_service(&render_id, token).await {
+                Ok(m) => m,
+                Err(e) => {
+                    format!("Target resumed in Tether. (Cloud note: {})", e)
+                }
+            }
+        }
+        _ => "Service resumed in Tether.".into(),
+    };
+
+    save_config_to_disk(&cfg)?;
+
+    Ok(LifecycleResult {
+        success: true,
+        service_id,
+        status: "healthy".into(),
+        message: msg,
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

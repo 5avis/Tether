@@ -400,6 +400,51 @@ export interface OAuthCredentialsDTO {
   redirect_mode: string;
 }
 
+export interface LifecycleResponseDTO {
+  success: boolean;
+  service_id: string;
+  status: string;
+  message: string;
+}
+
+export async function suspendTargetService(
+  serviceId: string,
+  apiToken?: string
+): Promise<LifecycleResponseDTO> {
+  if (await isTauriEnvironment()) {
+    const { invoke } = await import('@tauri-apps/api/core');
+    return await invoke<LifecycleResponseDTO>('suspend_target_service', {
+      serviceId,
+      apiToken: apiToken || null,
+    });
+  }
+  return {
+    success: true,
+    service_id: serviceId,
+    status: 'dormant',
+    message: 'Mock service suspended in local view.',
+  };
+}
+
+export async function resumeTargetService(
+  serviceId: string,
+  apiToken?: string
+): Promise<LifecycleResponseDTO> {
+  if (await isTauriEnvironment()) {
+    const { invoke } = await import('@tauri-apps/api/core');
+    return await invoke<LifecycleResponseDTO>('resume_target_service', {
+      serviceId,
+      apiToken: apiToken || null,
+    });
+  }
+  return {
+    success: true,
+    service_id: serviceId,
+    status: 'healthy',
+    message: 'Mock service resumed in local view.',
+  };
+}
+
 export async function getOAuthCredentials(): Promise<OAuthCredentialsDTO | null> {
   if (await isTauriEnvironment()) {
     try {

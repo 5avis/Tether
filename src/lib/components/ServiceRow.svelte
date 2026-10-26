@@ -6,6 +6,8 @@
     service,
     isAdmin = false,
     onDeploy = (s: ServiceTarget) => {},
+    onSuspend = (s: ServiceTarget) => {},
+    onResume = (s: ServiceTarget) => {},
     onSyncEnv = (s: ServiceTarget) => {},
     onViewLogs = (s: ServiceTarget) => {},
     onCopyUrl = (url: string) => {},
@@ -14,6 +16,8 @@
     service: ServiceTarget;
     isAdmin?: boolean;
     onDeploy?: (s: ServiceTarget) => void;
+    onSuspend?: (s: ServiceTarget) => void;
+    onResume?: (s: ServiceTarget) => void;
     onSyncEnv?: (s: ServiceTarget) => void;
     onViewLogs?: (s: ServiceTarget) => void;
     onCopyUrl?: (url: string) => void;
@@ -50,7 +54,9 @@
     <div class="relative flex items-center justify-center shrink-0 w-4 h-4">
       <span
         class="w-2 h-2 rounded-full {service.status === 'healthy'
-          ? 'bg-tx-header ring-2 ring-border-dim'
+          ? 'bg-emerald-400 ring-2 ring-emerald-950'
+          : service.status === 'dormant'
+          ? 'bg-amber-400 ring-2 ring-amber-950'
           : service.status === 'warning'
           ? 'bg-coral/70'
           : 'bg-coral'} transition-transform group-hover:scale-125"
@@ -78,6 +84,21 @@
         >
           {service.environment}
         </span>
+
+        <!-- Live / Suspended Lifecycle Pill -->
+        {#if service.status === 'dormant'}
+          <span
+            class="px-1.5 py-0.2 rounded text-[10px] uppercase font-mono tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20"
+          >
+            Suspended
+          </span>
+        {:else if service.status === 'healthy'}
+          <span
+            class="px-1.5 py-0.2 rounded text-[10px] uppercase font-mono tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+          >
+            Live
+          </span>
+        {/if}
       </div>
 
       <!-- Provider & Region info -->
@@ -139,6 +160,26 @@
         class="flex items-center gap-1 bg-surface-elevated px-1.5 py-1 rounded-lg border border-border-dim shadow-subtle"
       >
         {#if isAdmin}
+          {#if service.status === 'dormant'}
+            <button
+              onclick={() => onResume(service)}
+              class="p-1 rounded hover:bg-surface-hover text-emerald-400 hover:text-emerald-300 transition-colors"
+              title="Resume / Start service"
+              aria-label="Resume Service"
+            >
+              <Icons name="play" size={13} />
+            </button>
+          {:else}
+            <button
+              onclick={() => onSuspend(service)}
+              class="p-1 rounded hover:bg-surface-hover text-tx-body hover:text-amber-400 transition-colors"
+              title="Suspend / Stop service"
+              aria-label="Suspend Service"
+            >
+              <Icons name="pause" size={13} />
+            </button>
+          {/if}
+
           <button
             onclick={() => onDeploy(service)}
             class="p-1 rounded hover:bg-surface-hover text-tx-body hover:text-coral transition-colors"
@@ -204,6 +245,30 @@
             class="absolute right-0 top-8 bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1 z-50 w-44 animate-in fade-in zoom-in-95 duration-100 text-xs"
           >
             {#if isAdmin}
+              {#if service.status === 'dormant'}
+                <button
+                  onclick={() => {
+                    showMenu = false;
+                    onResume(service);
+                  }}
+                  class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-emerald-400 hover:text-emerald-300 hover:bg-surface-elevated text-left transition-colors"
+                >
+                  <Icons name="play" size={12} class="text-emerald-400" />
+                  <span>Resume Service</span>
+                </button>
+              {:else}
+                <button
+                  onclick={() => {
+                    showMenu = false;
+                    onSuspend(service);
+                  }}
+                  class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-amber-400 hover:text-amber-300 hover:bg-surface-elevated text-left transition-colors"
+                >
+                  <Icons name="pause" size={12} class="text-amber-400" />
+                  <span>Suspend Service</span>
+                </button>
+              {/if}
+
               <button
                 onclick={() => {
                   showMenu = false;
