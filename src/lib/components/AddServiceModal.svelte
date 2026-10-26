@@ -285,6 +285,12 @@
               </button>
             </div>
 
+            {#if provider === 'render'}
+              <p class="text-[10px] text-tx-meta mt-1">
+                Tip: Enter a Render API Key (<span class="text-coral font-mono">rnd_...</span>) for full control (Suspend, Resume, Auto-Deploy, Live Sync), or a Deploy Hook URL for deploy-only.
+              </p>
+            {/if}
+
             <!-- Inline Verification Feedback -->
             {#if verifyResult}
               <div

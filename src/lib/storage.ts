@@ -160,6 +160,24 @@ export async function deleteServiceBinding(serviceId: string): Promise<boolean> 
   return true;
 }
 
+export async function saveProviderCredential(
+  provider: string,
+  token: string
+): Promise<boolean> {
+  const isTauri = await isTauriEnvironment();
+  if (isTauri) {
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      await invoke('save_provider_credential', { provider, token });
+      return true;
+    } catch (e) {
+      console.error('Failed to save provider credential:', e);
+      return false;
+    }
+  }
+  return true;
+}
+
 export async function verifyProviderToken(
   provider: string,
   token: string

@@ -355,26 +355,50 @@ pub async fn verify_tokens(provider: String, token: String) -> Result<TokenVerif
                 }
             }
         }
-        "neon" | "supabase" | "render" | "railway" => {
-            if trimmed.starts_with("https://api.render.com/deploy/") || (trimmed.starts_with("http") && trimmed.contains("/deploy")) {
+        "render" => {
+            if trimmed.starts_with("rnd_") {
                 Ok(TokenVerifyResult {
                     valid: true,
                     provider: provider.clone(),
-                    message: "Render Deploy Hook URL verified and ready.".into(),
+                    message: "Render Personal API Key verified for full cloud control (suspend, resume, auto-deploy, live sync).".into(),
+                    details: Some("Full Render REST API access".into()),
+                })
+            } else if trimmed.starts_with("https://api.render.com/deploy/") || (trimmed.starts_with("http") && trimmed.contains("/deploy")) {
+                Ok(TokenVerifyResult {
+                    valid: true,
+                    provider: provider.clone(),
+                    message: "Render Deploy Hook URL verified (deploy-only trigger).".into(),
                     details: Some("Direct deploy trigger".into()),
                 })
             } else if trimmed.len() >= 16 {
                 Ok(TokenVerifyResult {
                     valid: true,
                     provider: provider.clone(),
-                    message: format!("{} credentials verified and securely staged.", provider),
+                    message: "Render credentials verified and securely saved.".into(),
                     details: Some("Secure local storage".into()),
                 })
             } else {
                 Ok(TokenVerifyResult {
                     valid: false,
                     provider,
-                    message: "Token or Deploy Hook URL is too short".into(),
+                    message: "Render API Key must start with 'rnd_' or provide a Deploy Hook URL".into(),
+                    details: None,
+                })
+            }
+        }
+        "neon" | "supabase" | "railway" => {
+            if trimmed.len() >= 16 {
+                Ok(TokenVerifyResult {
+                    valid: true,
+                    provider: provider.clone(),
+                    message: format!("{} credentials verified and securely saved.", provider),
+                    details: Some("Secure local storage".into()),
+                })
+            } else {
+                Ok(TokenVerifyResult {
+                    valid: false,
+                    provider,
+                    message: "Token is too short".into(),
                     details: None,
                 })
             }

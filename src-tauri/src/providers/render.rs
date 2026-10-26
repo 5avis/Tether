@@ -4,20 +4,31 @@ pub async fn check_status(
 ) -> (String, u8, Option<u32>, u32) {
     let start = std::time::Instant::now();
 
-    if let (Some(tok), Some(_url)) = (token, endpoint_url) {
+    if let Some(tok) = token {
         if tok.starts_with("rnd_") || !tok.is_empty() {
-            let client = reqwest::Client::new();
-            let res = client
-                .get("https://api.render.com/v1/services")
-                .header("Authorization", format!("Bearer {}", tok))
-                .timeout(std::time::Duration::from_millis(2500))
-                .send()
-                .await;
+            let render_id = extract_render_service_id(endpoint_url, "");
+            if !render_id.is_empty() && render_id.starts_with("srv-") {
+                let client = reqwest::Client::new();
+                let res = client
+                    .get(format!("https://api.render.com/v1/services/{}", render_id))
+                    .header("Authorization", format!("Bearer {}", tok.trim()))
+                    .header("Accept", "application/json")
+                    .timeout(std::time::Duration::from_millis(3500))
+                    .send()
+                    .await;
 
-            if let Ok(resp) = res {
-                let latency = start.elapsed().as_millis() as u32;
-                if resp.status().is_success() {
-                    return ("healthy".into(), 68, None, latency);
+                if let Ok(resp) = res {
+                    let latency = start.elapsed().as_millis() as u32;
+                    if resp.status().is_success() {
+                        if let Ok(body) = resp.json::<serde_json::Value>().await {
+                            let is_suspended = body
+                                .get("suspended")
+                                .and_then(|v| v.as_str())
+                                == Some("suspended");
+                            let st = if is_suspended { "dormant" } else { "healthy" };
+                            return (st.into(), 68, None, latency);
+                        }
+                    }
                 }
             }
         }
@@ -53,11 +64,17 @@ pub async fn suspend_service(service_id: &str, token: Option<&str>) -> Result<St
         Some(t) if !t.trim().is_empty() => t.trim(),
         _ => {
             return Err(
-                "Render API Key required. Add your Render API key (rnd_...) in Tether settings."
-                    .into(),
+                "MISSING_API_KEY: Render API Key required. Please provide a Render API key (rnd_...) from Account Settings -> API Keys.".into()
             )
         }
     };
+
+    if !service_id.starts_with("srv-") {
+        return Err(format!(
+            "Invalid Render Service ID '{}'. Expected service ID starting with 'srv-'.",
+            service_id
+        ));
+    }
 
     let client = reqwest::Client::new();
     let url = format!("https://api.render.com/v1/services/{}/suspend", service_id);
@@ -65,14 +82,14 @@ pub async fn suspend_service(service_id: &str, token: Option<&str>) -> Result<St
         .post(&url)
         .header("Authorization", format!("Bearer {}", tok))
         .header("Accept", "application/json")
-        .timeout(std::time::Duration::from_secs(8))
+        .timeout(std::time::Duration::from_secs(10))
         .send()
         .await
         .map_err(|e| format!("Failed to reach Render API: {}", e))?;
 
     let status = resp.status();
     if status.is_success() {
-        Ok(format!("Render service {} successfully suspended.", service_id))
+        Ok(format!("Render service {} successfully suspended on Render cloud.", service_id))
     } else {
         let err_body = resp.text().await.unwrap_or_default();
         let clean = err_body.trim().replace('\n', " ");
@@ -85,11 +102,17 @@ pub async fn resume_service(service_id: &str, token: Option<&str>) -> Result<Str
         Some(t) if !t.trim().is_empty() => t.trim(),
         _ => {
             return Err(
-                "Render API Key required. Add your Render API key (rnd_...) in Tether settings."
-                    .into(),
+                "MISSING_API_KEY: Render API Key required. Please provide a Render API key (rnd_...) from Account Settings -> API Keys.".into()
             )
         }
     };
+
+    if !service_id.starts_with("srv-") {
+        return Err(format!(
+            "Invalid Render Service ID '{}'. Expected service ID starting with 'srv-'.",
+            service_id
+        ));
+    }
 
     let client = reqwest::Client::new();
     let url = format!("https://api.render.com/v1/services/{}/resume", service_id);
@@ -97,17 +120,43 @@ pub async fn resume_service(service_id: &str, token: Option<&str>) -> Result<Str
         .post(&url)
         .header("Authorization", format!("Bearer {}", tok))
         .header("Accept", "application/json")
-        .timeout(std::time::Duration::from_secs(8))
+        .timeout(std::time::Duration::from_secs(10))
         .send()
         .await
         .map_err(|e| format!("Failed to reach Render API: {}", e))?;
 
     let status = resp.status();
     if status.is_success() {
-        Ok(format!("Render service {} resumed. Server instance booting.", service_id))
+        Ok(format!("Render service {} successfully resumed on Render cloud.", service_id))
     } else {
         let err_body = resp.text().await.unwrap_or_default();
         let clean = err_body.trim().replace('\n', " ");
         Err(format!("Render rejected resume (HTTP {}): {}", status.as_u16(), clean))
+    }
+}
+
+pub async fn deploy_service_api(service_id: &str, token: &str) -> Result<String, String> {
+    let client = reqwest::Client::new();
+    let url = format!("https://api.render.com/v1/services/{}/deploys", service_id);
+    let resp = client
+        .post(&url)
+        .header("Authorization", format!("Bearer {}", token.trim()))
+        .header("Accept", "application/json")
+        .header("Content-Type", "application/json")
+        .json(&serde_json::json!({ "clearCache": "do_not_clear" }))
+        .timeout(std::time::Duration::from_secs(10))
+        .send()
+        .await
+        .map_err(|e| format!("Failed to trigger deploy on Render: {}", e))?;
+
+    let status = resp.status();
+    if status.is_success() {
+        let val: serde_json::Value = resp.json().await.unwrap_or_default();
+        let dep_id = val.get("id").and_then(|v| v.as_str()).unwrap_or("started");
+        Ok(format!("Deploy triggered on Render (ID: {})", dep_id))
+    } else {
+        let err = resp.text().await.unwrap_or_default();
+        let clean = err.trim().replace('\n', " ");
+        Err(format!("Render rejected deploy (HTTP {}): {}", status.as_u16(), clean))
     }
 }

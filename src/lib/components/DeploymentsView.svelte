@@ -21,6 +21,7 @@
     onOpenSecretSync = () => {},
     onDeploySingle = (service: ServiceTarget) => {},
     onAddTarget = () => {},
+    onOpenRenderKey = (service: ServiceTarget) => {},
   }: {
     services: ServiceTarget[];
     isDeploying: boolean;
@@ -30,6 +31,7 @@
     onOpenSecretSync: () => void;
     onDeploySingle: (service: ServiceTarget) => void;
     onAddTarget?: () => void;
+    onOpenRenderKey?: (service: ServiceTarget) => void;
   } = $props();
 
   const deployableTargets = $derived(
@@ -184,7 +186,17 @@
           </div>
 
           <!-- Right: Individual Deploy Button -->
-          <div class="shrink-0 sm:pl-3 flex justify-end">
+          <div class="shrink-0 sm:pl-3 flex items-center justify-end gap-1.5">
+            {#if s.provider === 'render'}
+              <button
+                onclick={() => onOpenRenderKey(s)}
+                class="px-2.5 py-1.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-tx-body hover:text-tx-header border border-border-dim font-medium text-xs flex items-center gap-1.5 transition-all"
+                title="Configure Render Cloud API Key (rnd_...)"
+              >
+                <Icons name="key" size={12} class="text-coral" />
+                <span class="hidden sm:inline">Render Key</span>
+              </button>
+            {/if}
             <button
               onclick={() => onDeploySingle(s)}
               disabled={isDeploying || job.status === 'building' || job.status === 'deploying'}

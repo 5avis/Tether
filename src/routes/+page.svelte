@@ -14,6 +14,7 @@
   import SecretSyncModal from '$lib/components/SecretSyncModal.svelte';
   import ProfileModal from '$lib/components/ProfileModal.svelte';
   import ProfileView from '$lib/components/ProfileView.svelte';
+  import RenderKeyModal from '$lib/components/RenderKeyModal.svelte';
   import Icons from '$lib/components/Icons.svelte';
   import {
     loadTetherConfig,
@@ -149,6 +150,9 @@
 
   // UI Modals & Actions
   let isAddModalOpen = $state(false);
+  let isRenderKeyModalOpen = $state(false);
+  let renderKeyAction = $state<'suspend' | 'resume' | 'deploy' | 'settings'>('settings');
+  let selectedRenderService = $state<ServiceTarget | null>(null);
   let isSyncing = $state(false);
   let toastMessage = $state<string | null>(null);
   let toastTimer: any = null;
@@ -424,47 +428,99 @@
     }
   }
 
+  function promptRenderKey(
+    action: 'suspend' | 'resume' | 'deploy' | 'settings',
+    service: ServiceTarget | null
+  ) {
+    renderKeyAction = action;
+    selectedRenderService = service;
+    isRenderKeyModalOpen = true;
+  }
+
   async function handleDeploySingle(service: ServiceTarget) {
     if (!isAdmin) {
       showToast('Access restricted: Administrator privileges required.');
       return;
     }
     showToast(`Triggering deploy pipeline for ${service.name}...`);
-    await triggerParallelDeploy(activeWorkspaceId, [service.id]);
-    showToast(`Target ${service.name} deployed successfully.`);
+    try {
+      const summary = await triggerParallelDeploy(activeWorkspaceId, [service.id]);
+      if (summary.failed > 0) {
+        showToast(`Deploy finished with errors for ${service.name}. Check Live Logs.`);
+      } else {
+        showToast(`Target ${service.name} deployed successfully.`);
+        services = services.map((s) =>
+          s.id === service.id ? { ...s, status: 'healthy', lastDeployedAt: 'Deployed just now' } : s
+        );
+      }
+    } catch (e: any) {
+      const errStr = String(e?.message || e || '');
+      if (
+        errStr.includes('MISSING_API_KEY') ||
+        errStr.includes('Render API Key') ||
+        errStr.includes('service is suspended')
+      ) {
+        promptRenderKey('deploy', service);
+      } else {
+        showToast(`Deployment error: ${errStr}`);
+      }
+    }
   }
 
-  async function handleSuspendService(service: ServiceTarget) {
+  async function handleSuspendService(service: ServiceTarget, token?: string) {
     if (!isAdmin) {
       showToast('Access restricted: Administrator privileges required.');
       return;
     }
-    showToast(`Suspending target ${service.name}...`);
+    showToast(`Suspending target ${service.name} on Render cloud...`);
     try {
-      const res = await suspendTargetService(service.id);
+      const res = await suspendTargetService(service.id, token);
       services = services.map((s) =>
-        s.id === service.id ? { ...s, status: 'dormant', lastDeployedAt: 'Suspended just now' } : s
+        s.id === service.id ? { ...s, status: 'dormant', lastDeployedAt: 'Suspended on Cloud' } : s
       );
       showToast(res.message);
-    } catch (e) {
-      showToast(`Failed to suspend ${service.name}: ${e}`);
+    } catch (e: any) {
+      const errStr = String(e?.message || e || '');
+      if (errStr.includes('MISSING_API_KEY') || errStr.includes('Render API Key required')) {
+        promptRenderKey('suspend', service);
+      } else {
+        showToast(`Failed to suspend ${service.name}: ${errStr}`);
+      }
     }
   }
 
-  async function handleResumeService(service: ServiceTarget) {
+  async function handleResumeService(service: ServiceTarget, token?: string) {
     if (!isAdmin) {
       showToast('Access restricted: Administrator privileges required.');
       return;
     }
-    showToast(`Resuming target ${service.name}...`);
+    showToast(`Resuming target ${service.name} on Render cloud...`);
     try {
-      const res = await resumeTargetService(service.id);
+      const res = await resumeTargetService(service.id, token);
       services = services.map((s) =>
-        s.id === service.id ? { ...s, status: 'healthy', lastDeployedAt: 'Resumed just now' } : s
+        s.id === service.id ? { ...s, status: 'healthy', lastDeployedAt: 'Resumed on Cloud' } : s
       );
       showToast(res.message);
-    } catch (e) {
-      showToast(`Failed to resume ${service.name}: ${e}`);
+    } catch (e: any) {
+      const errStr = String(e?.message || e || '');
+      if (errStr.includes('MISSING_API_KEY') || errStr.includes('Render API Key required')) {
+        promptRenderKey('resume', service);
+      } else {
+        showToast(`Failed to resume ${service.name}: ${errStr}`);
+      }
+    }
+  }
+
+  async function handleRenderKeySuccess(token: string) {
+    if (selectedRenderService) {
+      if (renderKeyAction === 'suspend') {
+        await handleSuspendService(selectedRenderService, token);
+      } else if (renderKeyAction === 'resume') {
+        await handleResumeService(selectedRenderService, token);
+      } else if (renderKeyAction === 'deploy') {
+        await handleDeploySingle(selectedRenderService);
+      }
+      await handleSyncAll();
     }
   }
 
@@ -734,6 +790,7 @@
                 onViewLogs={handleViewLogs}
                 onCopyUrl={handleCopyUrl}
                 onDelete={handleDeleteService}
+                onOpenRenderKey={(s) => promptRenderKey('settings', s)}
               />
             {/each}
           {:else}
@@ -777,6 +834,7 @@
           onOpenSecretSync={() => (isSecretSyncOpen = true)}
           onDeploySingle={handleDeploySingle}
           onAddTarget={() => (isAddModalOpen = true)}
+          onOpenRenderKey={(s) => promptRenderKey('settings', s)}
         />
       {:else if activeNav === 'logs'}
         <!-- Dedicated Full Live Logs Multiplexer View -->
@@ -833,6 +891,16 @@
   profile={userProfile}
   onClose={() => (isProfileModalOpen = false)}
   onProfileUpdated={(p) => (userProfile = p)}
+  onToast={showToast}
+/>
+
+<!-- Modal: Render Cloud API Key Config & Action Prompt -->
+<RenderKeyModal
+  isOpen={isRenderKeyModalOpen}
+  service={selectedRenderService}
+  action={renderKeyAction}
+  onClose={() => (isRenderKeyModalOpen = false)}
+  onSuccess={handleRenderKeySuccess}
   onToast={showToast}
 />
 

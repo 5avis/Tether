@@ -38,28 +38,34 @@ pub async fn refresh_workspace_status(
         .ok_or_else(|| format!("Workspace '{}' not found", workspace_id))?;
 
     let mut updated_services = Vec::new();
+    let creds = cfg.credentials.clone();
 
     // Use tokio concurrent join for concurrent metric polling
     let mut futures = Vec::new();
 
     for service in &ws.services {
         let s_clone = service.clone();
+        let tok = creds
+            .iter()
+            .find(|c| c.provider == s_clone.provider)
+            .and_then(|c| c.token.clone());
+
         futures.push(tokio::spawn(async move {
             let (status, quota, dormancy, latency) = match s_clone.provider.as_str() {
                 "neon" => {
-                    neon::check_status(s_clone.endpoint_url.as_deref(), None).await
+                    neon::check_status(s_clone.endpoint_url.as_deref(), tok.as_deref()).await
                 }
                 "supabase" => {
-                    supabase::check_status(s_clone.endpoint_url.as_deref(), None).await
+                    supabase::check_status(s_clone.endpoint_url.as_deref(), tok.as_deref()).await
                 }
                 "flyio" => {
-                    flyio::check_status(s_clone.endpoint_url.as_deref(), None).await
+                    flyio::check_status(s_clone.endpoint_url.as_deref(), tok.as_deref()).await
                 }
                 "render" => {
-                    render::check_status(s_clone.endpoint_url.as_deref(), None).await
+                    render::check_status(s_clone.endpoint_url.as_deref(), tok.as_deref()).await
                 }
                 "cloudflare" => {
-                    cloudflare::check_status(s_clone.tunnel_url.as_deref(), None).await
+                    cloudflare::check_status(s_clone.tunnel_url.as_deref(), tok.as_deref()).await
                 }
                 _ => ("healthy".into(), s_clone.quota_used_percent, s_clone.dormancy_hours_left, 25),
             };
@@ -69,7 +75,6 @@ pub async fn refresh_workspace_status(
             updated.quota_used_percent = quota;
             updated.dormancy_hours_left = dormancy;
             updated.latency_ms = latency;
-            updated.last_deployed_at = "Synced just now".into();
             updated
         }));
     }
@@ -192,10 +197,8 @@ pub async fn suspend_target_service(
     let mut cfg = read_config_from_disk()?;
     let mut target_service = None;
 
-    for ws in &mut cfg.workspaces {
-        if let Some(s) = ws.services.iter_mut().find(|s| s.id == service_id) {
-            s.status = "dormant".into();
-            s.last_deployed_at = "Suspended just now".into();
+    for ws in &cfg.workspaces {
+        if let Some(s) = ws.services.iter().find(|s| s.id == service_id) {
             target_service = Some(s.clone());
             break;
         }
@@ -203,26 +206,42 @@ pub async fn suspend_target_service(
 
     let svc = target_service.ok_or_else(|| format!("Target service '{}' not found", service_id))?;
 
-    let token = api_token.as_deref().or_else(|| {
-        cfg.credentials
-            .iter()
-            .find(|c| c.provider == svc.provider)
-            .and_then(|c| c.token.as_deref())
-    });
+    // If an api_token was provided in the call, persist it to credentials!
+    if let Some(ref tok) = api_token {
+        if !tok.trim().is_empty() {
+            let _ = crate::config::save_provider_credential(svc.provider.clone(), tok.trim().to_string());
+            if let Ok(fresh_cfg) = read_config_from_disk() {
+                cfg = fresh_cfg;
+            }
+        }
+    }
+
+    let token = api_token
+        .as_deref()
+        .filter(|t| !t.trim().is_empty())
+        .or_else(|| {
+            cfg.credentials
+                .iter()
+                .find(|c| c.provider == svc.provider)
+                .and_then(|c| c.token.as_deref())
+        });
 
     let msg = match svc.provider.as_str() {
         "render" => {
             let render_id = render::extract_render_service_id(svc.endpoint_url.as_deref(), &svc.name);
-            match render::suspend_service(&render_id, token).await {
-                Ok(m) => m,
-                Err(e) => {
-                    format!("Target paused in Tether. (Cloud note: {})", e)
-                }
-            }
+            render::suspend_service(&render_id, token).await?
         }
         _ => "Service paused in Tether.".into(),
     };
 
+    // ONLY when the cloud operation succeeds, update local status!
+    for ws in &mut cfg.workspaces {
+        if let Some(s) = ws.services.iter_mut().find(|s| s.id == service_id) {
+            s.status = "dormant".into();
+            s.last_deployed_at = "Suspended on Cloud".into();
+            break;
+        }
+    }
     save_config_to_disk(&cfg)?;
 
     Ok(LifecycleResult {
@@ -241,10 +260,8 @@ pub async fn resume_target_service(
     let mut cfg = read_config_from_disk()?;
     let mut target_service = None;
 
-    for ws in &mut cfg.workspaces {
-        if let Some(s) = ws.services.iter_mut().find(|s| s.id == service_id) {
-            s.status = "healthy".into();
-            s.last_deployed_at = "Resumed just now".into();
+    for ws in &cfg.workspaces {
+        if let Some(s) = ws.services.iter().find(|s| s.id == service_id) {
             target_service = Some(s.clone());
             break;
         }
@@ -252,26 +269,42 @@ pub async fn resume_target_service(
 
     let svc = target_service.ok_or_else(|| format!("Target service '{}' not found", service_id))?;
 
-    let token = api_token.as_deref().or_else(|| {
-        cfg.credentials
-            .iter()
-            .find(|c| c.provider == svc.provider)
-            .and_then(|c| c.token.as_deref())
-    });
+    // If an api_token was provided in the call, persist it to credentials!
+    if let Some(ref tok) = api_token {
+        if !tok.trim().is_empty() {
+            let _ = crate::config::save_provider_credential(svc.provider.clone(), tok.trim().to_string());
+            if let Ok(fresh_cfg) = read_config_from_disk() {
+                cfg = fresh_cfg;
+            }
+        }
+    }
+
+    let token = api_token
+        .as_deref()
+        .filter(|t| !t.trim().is_empty())
+        .or_else(|| {
+            cfg.credentials
+                .iter()
+                .find(|c| c.provider == svc.provider)
+                .and_then(|c| c.token.as_deref())
+        });
 
     let msg = match svc.provider.as_str() {
         "render" => {
             let render_id = render::extract_render_service_id(svc.endpoint_url.as_deref(), &svc.name);
-            match render::resume_service(&render_id, token).await {
-                Ok(m) => m,
-                Err(e) => {
-                    format!("Target resumed in Tether. (Cloud note: {})", e)
-                }
-            }
+            render::resume_service(&render_id, token).await?
         }
         _ => "Service resumed in Tether.".into(),
     };
 
+    // ONLY when the cloud operation succeeds, update local status!
+    for ws in &mut cfg.workspaces {
+        if let Some(s) = ws.services.iter_mut().find(|s| s.id == service_id) {
+            s.status = "healthy".into();
+            s.last_deployed_at = "Resumed on Cloud".into();
+            break;
+        }
+    }
     save_config_to_disk(&cfg)?;
 
     Ok(LifecycleResult {

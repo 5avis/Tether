@@ -113,7 +113,8 @@ pub async fn trigger_parallel_deploy(
     let start_all = std::time::Instant::now();
     let mut tasks = Vec::new();
 
-    for service in targets {
+    for service in &targets {
+        let service = service.clone();
         let app_handle = app.clone();
         tasks.push(tokio::spawn(async move {
             let start = std::time::Instant::now();
@@ -140,7 +141,156 @@ pub async fn trigger_parallel_deploy(
             // Stage 2: Deploying
             // If the service has a deploy webhook (e.g. Render Deploy Hook), trigger the real HTTP POST!
             let mut webhook_error: Option<String> = None;
-            if let Some(ref url) = service.endpoint_url {
+            let cfg_snap = crate::config::read_config_from_disk().unwrap_or_else(|_| crate::config::default_config());
+            let render_token = cfg_snap
+                .credentials
+                .iter()
+                .find(|c| c.provider == "render")
+                .and_then(|c| c.token.as_deref());
+
+            if prov == "render" {
+                let render_id = crate::providers::render::extract_render_service_id(
+                    service.endpoint_url.as_deref(),
+                    &sname,
+                );
+
+                // Auto-resume if dormant before deploying
+                if service.status == "dormant" {
+                    if let Some(tok) = render_token {
+                        let _ = app_handle.emit(
+                            "service-log",
+                            MultiplexedLogEvent {
+                                id: format!("log-{}", start.elapsed().as_micros()),
+                                service_id: sid.clone(),
+                                service_name: sname.clone(),
+                                provider: prov.clone(),
+                                level: "INFO".into(),
+                                timestamp: "Just now".into(),
+                                message: format!(
+                                    "[Render] Service {} is currently suspended. Automatically resuming on Render cloud before deploy...",
+                                    render_id
+                                ),
+                            },
+                        );
+                        let _ = crate::providers::render::resume_service(&render_id, Some(tok)).await;
+                        tokio::time::sleep(std::time::Duration::from_millis(1500)).await;
+                    }
+                }
+
+                if let Some(ref url) = service.endpoint_url {
+                    if url.starts_with("http") && url.contains("deploy") {
+                        let client = reqwest::Client::new();
+                        let resp = client
+                            .post(url)
+                            .timeout(std::time::Duration::from_secs(10))
+                            .send()
+                            .await;
+
+                        match resp {
+                            Ok(res) => {
+                                let st = res.status();
+                                if !st.is_success() {
+                                    let body = res.text().await.unwrap_or_default();
+                                    let clean = body.trim().replace('\n', " ");
+                                    if clean.contains("service is suspended") {
+                                        if let Some(tok) = render_token {
+                                            let _ = app_handle.emit(
+                                                "service-log",
+                                                MultiplexedLogEvent {
+                                                    id: format!("log-{}", start.elapsed().as_micros()),
+                                                    service_id: sid.clone(),
+                                                    service_name: sname.clone(),
+                                                    provider: prov.clone(),
+                                                    level: "INFO".into(),
+                                                    timestamp: "Just now".into(),
+                                                    message: "[Render] Service suspended. Auto-resumed on Render cloud. Retrying deploy...".into(),
+                                                },
+                                            );
+                                            let _ = crate::providers::render::resume_service(&render_id, Some(tok)).await;
+                                            tokio::time::sleep(std::time::Duration::from_millis(1500)).await;
+
+                                            match client
+                                                .post(url)
+                                                .timeout(std::time::Duration::from_secs(10))
+                                                .send()
+                                                .await
+                                            {
+                                                Ok(retry_res) => {
+                                                    let retry_st = retry_res.status();
+                                                    if !retry_st.is_success() {
+                                                        let err_b = retry_res.text().await.unwrap_or_default();
+                                                        webhook_error = Some(format!(
+                                                            "Deploy rejected after resume (HTTP {}): {}",
+                                                            retry_st.as_u16(),
+                                                            err_b.trim()
+                                                        ));
+                                                    } else {
+                                                        let _ = app_handle.emit(
+                                                            "service-log",
+                                                            MultiplexedLogEvent {
+                                                                id: format!("log-{}", start.elapsed().as_micros()),
+                                                                service_id: sid.clone(),
+                                                                service_name: sname.clone(),
+                                                                provider: prov.clone(),
+                                                                level: "INFO".into(),
+                                                                timestamp: "Just now".into(),
+                                                                message: "Deploy hook accepted by Render after auto-resume.".into(),
+                                                            },
+                                                        );
+                                                    }
+                                                }
+                                                Err(e) => {
+                                                    webhook_error = Some(format!("Failed to reach deploy hook on retry: {}", e));
+                                                }
+                                            }
+                                        } else {
+                                            webhook_error = Some("Render rejected deploy: service is suspended. Please connect your Render API Key (rnd_...) in Tether to enable auto-resume on deploy.".into());
+                                        }
+                                    } else {
+                                        webhook_error = Some(format!("Deploy hook rejected (HTTP {}): {}", st.as_u16(), clean));
+                                    }
+                                } else {
+                                    let _ = app_handle.emit(
+                                        "service-log",
+                                        MultiplexedLogEvent {
+                                            id: format!("log-{}", start.elapsed().as_micros()),
+                                            service_id: sid.clone(),
+                                            service_name: sname.clone(),
+                                            provider: prov.clone(),
+                                            level: "INFO".into(),
+                                            timestamp: "Just now".into(),
+                                            message: "Deploy hook accepted by Render. Build pipeline started.".into(),
+                                        },
+                                    );
+                                }
+                            }
+                            Err(e) => {
+                                webhook_error = Some(format!("Failed to reach deploy hook: {}", e));
+                            }
+                        }
+                    }
+                } else if let Some(tok) = render_token {
+                    match crate::providers::render::deploy_service_api(&render_id, tok).await {
+                        Ok(msg) => {
+                            let _ = app_handle.emit(
+                                "service-log",
+                                MultiplexedLogEvent {
+                                    id: format!("log-{}", start.elapsed().as_micros()),
+                                    service_id: sid.clone(),
+                                    service_name: sname.clone(),
+                                    provider: prov.clone(),
+                                    level: "INFO".into(),
+                                    timestamp: "Just now".into(),
+                                    message: msg,
+                                },
+                            );
+                        }
+                        Err(e) => {
+                            webhook_error = Some(e);
+                        }
+                    }
+                }
+            } else if let Some(ref url) = service.endpoint_url {
                 if url.starts_with("http") && url.contains("deploy") {
                     let client = reqwest::Client::new();
                     match client.post(url).timeout(std::time::Duration::from_secs(8)).send().await {
@@ -148,25 +298,7 @@ pub async fn trigger_parallel_deploy(
                             let status = resp.status();
                             if !status.is_success() {
                                 let body = resp.text().await.unwrap_or_default();
-                                let clean = body.trim().replace('\n', " ");
-                                if clean.contains("service is suspended") {
-                                    webhook_error = Some("Render rejected deploy: service is suspended. Please click 'Resume' in Render dashboard first.".into());
-                                } else {
-                                    webhook_error = Some(format!("Deploy hook rejected (HTTP {}): {}", status.as_u16(), clean));
-                                }
-                            } else {
-                                let _ = app_handle.emit(
-                                    "service-log",
-                                    MultiplexedLogEvent {
-                                        id: format!("log-{}", start.elapsed().as_micros()),
-                                        service_id: sid.clone(),
-                                        service_name: sname.clone(),
-                                        provider: prov.clone(),
-                                        level: "INFO".into(),
-                                        timestamp: "Just now".into(),
-                                        message: "Deploy hook accepted by Render. Build pipeline started.".into(),
-                                    },
-                                );
+                                webhook_error = Some(format!("Deploy hook rejected (HTTP {}): {}", status.as_u16(), body.trim()));
                             }
                         }
                         Err(e) => {
@@ -262,6 +394,20 @@ pub async fn trigger_parallel_deploy(
         match t.await {
             Ok(true) => succeeded += 1,
             _ => failed += 1,
+        }
+    }
+
+    if succeeded > 0 {
+        if let Ok(mut cfg) = crate::config::read_config_from_disk() {
+            if let Some(ws) = cfg.workspaces.iter_mut().find(|w| w.id == workspace_id) {
+                for target in &targets {
+                    if let Some(s) = ws.services.iter_mut().find(|s| s.id == target.id) {
+                        s.status = "healthy".into();
+                        s.last_deployed_at = "Deployed just now".into();
+                    }
+                }
+            }
+            let _ = crate::config::save_config_to_disk(&cfg);
         }
     }
 

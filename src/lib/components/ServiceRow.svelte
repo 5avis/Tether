@@ -12,6 +12,7 @@
     onViewLogs = (s: ServiceTarget) => {},
     onCopyUrl = (url: string) => {},
     onDelete = (id: string) => {},
+    onOpenRenderKey = (s: ServiceTarget) => {},
   }: {
     service: ServiceTarget;
     isAdmin?: boolean;
@@ -22,6 +23,7 @@
     onViewLogs?: (s: ServiceTarget) => void;
     onCopyUrl?: (url: string) => void;
     onDelete?: (id: string) => void;
+    onOpenRenderKey?: (s: ServiceTarget) => void;
   } = $props();
 
   let copied = $state(false);
@@ -183,11 +185,22 @@
           <button
             onclick={() => onDeploy(service)}
             class="p-1 rounded hover:bg-surface-hover text-tx-body hover:text-coral transition-colors"
-            title="Trigger instant deployment"
+            title="Trigger instant deployment (auto-resumes if suspended)"
             aria-label="Deploy"
           >
             <Icons name="rocket" size={13} />
           </button>
+
+          {#if service.provider === 'render'}
+            <button
+              onclick={() => onOpenRenderKey(service)}
+              class="p-1 rounded hover:bg-surface-hover text-tx-body hover:text-coral transition-colors"
+              title="Render Cloud API Key (rnd_...) - Configure live access"
+              aria-label="Render API Key"
+            >
+              <Icons name="key" size={13} />
+            </button>
+          {/if}
 
           <button
             onclick={() => onSyncEnv(service)}
