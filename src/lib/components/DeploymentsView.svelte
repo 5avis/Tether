@@ -61,7 +61,7 @@
         <div class="flex items-center gap-2 flex-wrap">
           <h1 class="text-base font-semibold text-tx-header tracking-tight">Deployments</h1>
           {#if isDeploying}
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-[#2a1d1b] text-coral border border-coral/40 flex items-center gap-1.5 animate-pulse">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-coral/15 text-coral border border-coral/40 flex items-center gap-1.5 animate-pulse">
               <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
               Deploying
             </span>

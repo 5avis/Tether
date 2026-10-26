@@ -98,7 +98,7 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#242424] border border-border-dim rounded-xl shadow-modal text-xs select-none relative"
+      class="w-full max-w-md bg-[#18181f] border border-border-dim rounded-xl shadow-modal text-xs select-none relative"
     >
       <!-- Modal Header -->
       <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">
@@ -163,7 +163,7 @@
         </div>
 
         {#if errorMsg}
-          <div class="p-2.5 rounded-lg bg-[#291b1b] border border-coral/40 text-coral text-[11px] flex items-center gap-2">
+          <div class="p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] flex items-center gap-2">
             <Icons name="shield" size={13} class="shrink-0" />
             <span>{errorMsg}</span>
           </div>

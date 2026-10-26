@@ -15,6 +15,7 @@
   import ProfileModal from '$lib/components/ProfileModal.svelte';
   import ProfileView from '$lib/components/ProfileView.svelte';
   import RenderKeyModal from '$lib/components/RenderKeyModal.svelte';
+  import ProjectModal from '$lib/components/ProjectModal.svelte';
   import Icons from '$lib/components/Icons.svelte';
   import {
     loadTetherConfig,
@@ -31,6 +32,9 @@
     signOutProfile,
     suspendTargetService,
     resumeTargetService,
+    saveWorkspace,
+    deleteWorkspace,
+    setActiveWorkspaceOnDisk,
   } from '$lib/storage';
   import {
     listenTunnelReady,
@@ -58,24 +62,28 @@
 
   const isAdmin = $derived(isAdminUser(userProfile));
 
+  const currentProjectServices = $derived(
+    services.filter((s) => s.workspaceId === activeWorkspaceId)
+  );
+
   const deployableCount = $derived(
-    services.filter((s) => s.targetType === 'api' || s.targetType === 'frontend' || s.targetType === 'worker').length
+    currentProjectServices.filter((s) => s.targetType === 'api' || s.targetType === 'frontend' || s.targetType === 'worker').length
   );
 
   const watchdogCount = $derived(
-    services.filter((s) => s.targetType === 'database' || s.dormancyHoursLeft !== undefined || s.quotaUsedPercent > 50).length
+    currentProjectServices.filter((s) => s.targetType === 'database' || s.dormancyHoursLeft !== undefined || s.quotaUsedPercent > 50).length
   );
 
   const watchdogRemainingHours = $derived(
     (() => {
-      const dbServices = services.filter((s) => s.dormancyHoursLeft !== undefined);
+      const dbServices = currentProjectServices.filter((s) => s.dormancyHoursLeft !== undefined);
       if (dbServices.length === 0) return null;
       return Math.min(...dbServices.map((s) => s.dormancyHoursLeft ?? 168));
     })()
   );
 
   const navCounts = $derived({
-    overview: services.length,
+    overview: currentProjectServices.length,
     tunnels: activeTunnels.length,
     deployments: deployableCount,
     watchdog: watchdogCount,
@@ -150,6 +158,8 @@
 
   // UI Modals & Actions
   let isAddModalOpen = $state(false);
+  let isProjectModalOpen = $state(false);
+  let editingProject = $state<Workspace | null>(null);
   let isRenderKeyModalOpen = $state(false);
   let renderKeyAction = $state<'suspend' | 'resume' | 'deploy' | 'settings'>('settings');
   let selectedRenderService = $state<ServiceTarget | null>(null);
@@ -335,12 +345,9 @@
     filterSearch = '';
   }
 
-  // Filtered Services Computation
+  // Filtered Services Computation strictly scoped to the active project
   const filteredServices = $derived(
-    services.filter((s) => {
-      if (filterWorkspace !== 'all' && s.workspaceId !== filterWorkspace) {
-        return false;
-      }
+    currentProjectServices.filter((s) => {
       if (filterProvider !== 'all' && s.provider !== filterProvider) {
         return false;
       }
@@ -524,6 +531,65 @@
     }
   }
 
+  function handleNewProject() {
+    editingProject = null;
+    isProjectModalOpen = true;
+  }
+
+  function handleEditProject(ws: Workspace) {
+    editingProject = ws;
+    isProjectModalOpen = true;
+  }
+
+  async function handleSaveProject(data: { id: string; name: string; color: string }) {
+    const existingIdx = workspaces.findIndex((w) => w.id === data.id);
+    if (existingIdx >= 0) {
+      workspaces[existingIdx].name = data.name;
+      workspaces[existingIdx].color = data.color;
+      workspaces = [...workspaces];
+    } else {
+      workspaces = [
+        ...workspaces,
+        {
+          id: data.id,
+          name: data.name,
+          color: data.color,
+          servicesCount: 0,
+        },
+      ];
+    }
+
+    activeWorkspaceId = data.id;
+    await saveWorkspace({
+      id: data.id,
+      name: data.name,
+      color: data.color,
+      servicesCount: existingIdx >= 0 ? workspaces[existingIdx].servicesCount : 0,
+    });
+    await setActiveWorkspaceOnDisk(data.id);
+    showToast(`Project "${data.name}" ready.`);
+  }
+
+  async function handleDeleteProject(id: string) {
+    if (workspaces.length <= 1) {
+      showToast('Cannot delete the only remaining project.');
+      return;
+    }
+    await deleteWorkspace(id);
+    services = services.filter((s) => s.workspaceId !== id);
+    workspaces = workspaces.filter((w) => w.id !== id);
+    activeWorkspaceId = workspaces[0].id;
+    await setActiveWorkspaceOnDisk(activeWorkspaceId);
+    showToast('Project removed.');
+  }
+
+  async function handleSelectWorkspace(id: string) {
+    activeWorkspaceId = id;
+    await setActiveWorkspaceOnDisk(id);
+    const targetWs = workspaces.find((w) => w.id === id);
+    showToast(`Switched to project "${targetWs?.name ?? id}".`);
+  }
+
   async function handleSecretSync(content: string) {
     if (!isAdmin) {
       showToast('Access restricted: Administrator privileges required.');
@@ -647,10 +713,12 @@
     counts={navCounts}
     isCollapsed={isSidebarCollapsed}
     onSelectNav={(nav) => (activeNav = nav)}
-    onSelectWorkspace={(id) => (activeWorkspaceId = id)}
+    onSelectWorkspace={handleSelectWorkspace}
     onAddService={() => (isAddModalOpen = true)}
     onOpenProfile={() => (activeNav = 'profile')}
     onSignOut={handleSignOut}
+    onNewProject={handleNewProject}
+    onEditProject={handleEditProject}
   />
 
   <!-- Main Deck Dynamic Content Area -->
@@ -816,7 +884,7 @@
       {:else if activeNav === 'watchdog'}
         <!-- Dedicated Watchdog and Database Dormancy Keep-Alive View -->
         <WatchdogView
-          {services}
+          services={currentProjectServices}
           workspaceId={activeWorkspaceId}
           {isAdmin}
           onKeepAlive={handleSingleKeepAlive}
@@ -826,7 +894,7 @@
       {:else if activeNav === 'deployments'}
         <!-- Dedicated Parallel Deployments View -->
         <DeploymentsView
-          {services}
+          services={currentProjectServices}
           {isDeploying}
           {deployJobs}
           {isAdmin}
@@ -902,6 +970,16 @@
   onClose={() => (isRenderKeyModalOpen = false)}
   onSuccess={handleRenderKeySuccess}
   onToast={showToast}
+/>
+
+<!-- Modal: Project / Workspace Creation and Editing -->
+<ProjectModal
+  isOpen={isProjectModalOpen}
+  project={editingProject}
+  totalProjects={workspaces.length}
+  onClose={() => (isProjectModalOpen = false)}
+  onSave={handleSaveProject}
+  onDelete={handleDeleteProject}
 />
 
 <!-- Toast Notification Popup -->

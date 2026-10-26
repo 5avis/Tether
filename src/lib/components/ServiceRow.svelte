@@ -43,6 +43,7 @@
     supabase: 'Supabase DB',
     neon: 'Neon Serverless',
     render: 'Render Web',
+    vercel: 'Vercel App',
     railway: 'Railway Service',
   };
 </script>
@@ -255,7 +256,7 @@
 
           <!-- Context Menu Dropdown -->
           <div
-            class="absolute right-0 top-8 bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1 z-50 w-44 animate-in fade-in zoom-in-95 duration-100 text-xs"
+            class="absolute right-0 top-8 bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1 z-50 w-44 animate-in fade-in zoom-in-95 duration-100 text-xs"
           >
             {#if isAdmin}
               {#if service.status === 'dormant'}

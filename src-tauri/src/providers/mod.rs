@@ -3,6 +3,7 @@ pub mod flyio;
 pub mod neon;
 pub mod render;
 pub mod supabase;
+pub mod vercel;
 
 use crate::config::{read_config_from_disk, save_config_to_disk, ServiceBinding};
 use serde::{Deserialize, Serialize};
@@ -66,6 +67,9 @@ pub async fn refresh_workspace_status(
                 }
                 "cloudflare" => {
                     cloudflare::check_status(s_clone.tunnel_url.as_deref(), tok.as_deref()).await
+                }
+                "vercel" => {
+                    vercel::check_status(s_clone.endpoint_url.as_deref(), tok.as_deref()).await
                 }
                 _ => ("healthy".into(), s_clone.quota_used_percent, s_clone.dormancy_hours_left, 25),
             };

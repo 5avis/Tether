@@ -51,7 +51,7 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#242424] border border-border-dim rounded-2xl shadow-modal overflow-hidden text-xs select-none"
+      class="w-full max-w-md bg-[#18181f] border border-border-dim rounded-2xl shadow-modal overflow-hidden text-xs select-none"
     >
       <!-- Header -->
       <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">

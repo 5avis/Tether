@@ -178,6 +178,64 @@ export async function saveProviderCredential(
   return true;
 }
 
+export async function saveWorkspace(workspace: {
+  id: string;
+  name: string;
+  color: string;
+  servicesCount: number;
+}): Promise<boolean> {
+  const isTauri = await isTauriEnvironment();
+  if (isTauri) {
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      await invoke('save_project', {
+        workspace: {
+          id: workspace.id,
+          name: workspace.name,
+          color: workspace.color,
+          services_count: workspace.servicesCount,
+          services: [],
+        },
+      });
+      return true;
+    } catch (e) {
+      console.error('Failed to save project/workspace:', e);
+      return false;
+    }
+  }
+  return true;
+}
+
+export async function deleteWorkspace(workspaceId: string): Promise<boolean> {
+  const isTauri = await isTauriEnvironment();
+  if (isTauri) {
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      await invoke('delete_project', { workspaceId });
+      return true;
+    } catch (e) {
+      console.error('Failed to delete project/workspace:', e);
+      return false;
+    }
+  }
+  return true;
+}
+
+export async function setActiveWorkspaceOnDisk(workspaceId: string): Promise<boolean> {
+  const isTauri = await isTauriEnvironment();
+  if (isTauri) {
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      await invoke('set_active_workspace', { workspaceId });
+      return true;
+    } catch (e) {
+      console.error('Failed to set active workspace on disk:', e);
+      return false;
+    }
+  }
+  return true;
+}
+
 export async function verifyProviderToken(
   provider: string,
   token: string

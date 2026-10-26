@@ -20,6 +20,8 @@
     onAddService = () => {},
     onOpenProfile = () => {},
     onSignOut = () => {},
+    onNewProject = () => {},
+    onEditProject = (ws: Workspace) => {},
   }: {
     activeNav: NavItem;
     activeWorkspaceId: string;
@@ -32,6 +34,8 @@
     onAddService: () => void;
     onOpenProfile?: () => void;
     onSignOut?: () => void;
+    onNewProject?: () => void;
+    onEditProject?: (ws: Workspace) => void;
   } = $props();
 
   let isProjectsCollapsed = $state(false);
@@ -53,35 +57,54 @@
 </script>
 
 <aside
-  class="{isCollapsed ? 'w-14' : 'w-[240px]'} shrink-0 h-full bg-surface border-r border-border-dim flex flex-col justify-between select-none font-sans z-40 text-xs transition-all duration-200"
+  class="{isCollapsed ? 'w-14' : 'w-[245px]'} shrink-0 h-full bg-surface border-r border-border-dim flex flex-col justify-between select-none font-sans z-40 text-xs transition-all duration-200"
 >
   <!-- Top Section: Standard Profile Header & Primary Action Button -->
   <div class="p-2.5 pb-2 flex flex-col gap-2.5">
     {#if !isCollapsed}
-      <!-- Workspace Selector Header (Clean, dedicated workspace switch without avatar or signin/logout buttons) -->
+      <!-- Workspace / Project Selector Header -->
       <div class="relative">
-        <button
-          onclick={() => (showWorkspaceMenu = !showWorkspaceMenu)}
-          class="w-full flex items-center justify-between p-2 px-3 rounded-xl bg-surface-elevated/70 hover:bg-surface-elevated border border-border-dim/80 hover:border-border-subtle transition-all text-left shadow-subtle group"
-          title="Switch Workspace"
-        >
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="w-2 h-2 rounded-full bg-coral shrink-0"></span>
-            <div class="min-w-0 flex flex-col">
-              <span class="text-xs font-semibold text-tx-header truncate">
-                {currentWorkspace?.name ?? 'Main Workspace'}
-              </span>
-              <span class="text-[10px] text-tx-meta font-mono truncate">
-                {currentWorkspace?.servicesCount ?? 0} active targets
-              </span>
+        <div class="flex items-center gap-1.5 w-full">
+          <button
+            onclick={() => (showWorkspaceMenu = !showWorkspaceMenu)}
+            class="flex-1 flex items-center justify-between p-2 px-3 rounded-xl bg-surface-elevated/70 hover:bg-surface-elevated border border-border-dim/80 hover:border-border-subtle transition-all text-left shadow-subtle group"
+            title="Switch Project"
+          >
+            <div class="flex items-center gap-2 min-w-0">
+              <span
+                class="w-2.5 h-2.5 rounded-full shrink-0 ring-1 ring-white/10"
+                style="background-color: {currentWorkspace?.color || '#8b5cf6'};"
+              ></span>
+              <div class="min-w-0 flex flex-col">
+                <span class="text-xs font-semibold text-tx-header truncate">
+                  {currentWorkspace?.name ?? 'Main Project'}
+                </span>
+                <span class="text-[10px] text-tx-meta font-mono truncate">
+                  {currentWorkspace?.servicesCount ?? 0} active targets
+                </span>
+              </div>
             </div>
-          </div>
-          <Icons name="chevron-down" size={11} class="text-tx-meta group-hover:text-tx-body transition-transform duration-150 {showWorkspaceMenu ? 'rotate-180' : ''}" />
-        </button>
+            <Icons
+              name="chevron-down"
+              size={11}
+              class="text-tx-meta group-hover:text-tx-body transition-transform duration-150 {showWorkspaceMenu ? 'rotate-180' : ''}"
+            />
+          </button>
+
+          {#if currentWorkspace}
+            <button
+              onclick={() => onEditProject(currentWorkspace)}
+              class="p-2 rounded-xl bg-surface-elevated/70 hover:bg-surface-elevated border border-border-dim/80 hover:border-border-subtle text-tx-meta hover:text-tx-header transition-all shadow-subtle shrink-0"
+              title="Edit project name & color"
+              aria-label="Edit Project"
+            >
+              <Icons name="settings" size={13} />
+            </button>
+          {/if}
+        </div>
 
         <!-- Dropdown for Switching Workspaces with Backdrop -->
         {#if showWorkspaceMenu}
-          <!-- Backdrop to close dropdown on click outside -->
           <button
             type="button"
             class="fixed inset-0 z-40 cursor-default bg-transparent"
@@ -90,32 +113,60 @@
           ></button>
 
           <div
-            class="absolute top-12 left-0 right-0 bg-[#222222] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100"
+            class="absolute top-12 left-0 right-0 bg-[#1c1c24] border border-border-dim rounded-2xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100"
           >
-            <div class="px-2 py-1 text-[10px] uppercase font-mono text-tx-meta tracking-wider">Select Workspace</div>
-            {#each workspaces as ws}
+            <div class="px-2.5 py-1.5 text-[10px] uppercase font-mono text-tx-meta tracking-wider flex items-center justify-between">
+              <span>All Projects</span>
+              <span class="text-[9px] text-coral font-mono">{workspaces.length} total</span>
+            </div>
+
+            <div class="space-y-0.5 max-h-48 overflow-y-auto">
+              {#each workspaces as ws}
+                {@const isWsActive = activeWorkspaceId === ws.id}
+                <button
+                  onclick={() => {
+                    onSelectWorkspace(ws.id);
+                    showWorkspaceMenu = false;
+                  }}
+                  class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-surface-hover text-left transition-colors {isWsActive
+                    ? 'bg-surface-elevated text-tx-header font-medium border border-border-dim'
+                    : 'text-tx-body hover:text-tx-header'}"
+                >
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span
+                      class="w-2 h-2 rounded-full shrink-0 ring-1 ring-white/10"
+                      style="background-color: {ws.color || '#8b5cf6'};"
+                    ></span>
+                    <span class="truncate">{ws.name}</span>
+                  </div>
+                  <span class="text-[10px] text-tx-meta font-mono px-1.5 py-0.2 rounded bg-surface border border-border-dim shrink-0">
+                    {ws.servicesCount}
+                  </span>
+                </button>
+              {/each}
+            </div>
+
+            <div class="pt-1.5 mt-1 border-t border-border-dim/80">
               <button
+                type="button"
                 onclick={() => {
-                  onSelectWorkspace(ws.id);
                   showWorkspaceMenu = false;
+                  onNewProject();
                 }}
-                class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-surface-hover text-left transition-colors {activeWorkspaceId === ws.id ? 'bg-surface-elevated text-tx-header font-medium' : 'text-tx-body'}"
+                class="w-full flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-coral/15 hover:bg-coral/25 text-coral font-medium text-xs border border-coral/30 transition-all"
               >
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full {activeWorkspaceId === ws.id ? 'bg-coral' : 'bg-border-subtle'}"></span>
-                  <span class="truncate">{ws.name}</span>
-                </div>
-                <span class="text-[10px] text-tx-meta font-mono">{ws.servicesCount}</span>
+                <Icons name="plus" size={12} strokeWidth={2.5} />
+                <span>Create New Project</span>
               </button>
-            {/each}
+            </div>
           </div>
         {/if}
       </div>
 
-      <!-- Primary Action: Pill-shaped coral button -->
+      <!-- Primary Action: Pill-shaped purple button -->
       <button
         onclick={onAddService}
-        class="w-full py-1.5 px-3 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] border border-coral/60 hover:shadow-[0_0_12px_rgba(226,92,72,0.3)]"
+        class="w-full py-1.5 px-3 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] border border-coral/60 hover:shadow-[0_0_14px_rgba(139,92,246,0.35)]"
       >
         <Icons name="plus" size={13} strokeWidth={2.5} />
         <span>Add Target</span>
@@ -171,7 +222,7 @@
       {/each}
     </nav>
 
-    <!-- Section: Workspaces (Hidden when collapsed) -->
+    <!-- Section: Workspaces / Projects (Hidden when collapsed) -->
     {#if !isCollapsed}
       <div class="pt-2 border-t border-border-dim/60">
         <div class="flex items-center justify-between px-2.5 py-1 text-tx-meta">
@@ -184,7 +235,16 @@
               size={11}
               class="transition-transform duration-200 {isProjectsCollapsed ? '-rotate-90' : ''}"
             />
-            <span>Workspaces</span>
+            <span>Projects</span>
+          </button>
+
+          <button
+            onclick={onNewProject}
+            class="p-1 rounded-md text-tx-meta hover:text-coral hover:bg-surface-elevated transition-colors"
+            title="Create New Project"
+            aria-label="New Project"
+          >
+            <Icons name="plus" size={11} strokeWidth={2.5} />
           </button>
         </div>
 
@@ -192,18 +252,32 @@
           <div class="mt-1 space-y-0.5">
             {#each workspaces as ws}
               {@const isWsActive = activeWorkspaceId === ws.id}
-              <button
-                onclick={() => onSelectWorkspace(ws.id)}
-                class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors {isWsActive
-                  ? 'bg-surface-elevated text-tx-header font-medium border border-border-dim/70'
-                  : 'text-tx-body hover:text-tx-header hover:bg-surface-hover border border-transparent'}"
-              >
-                <div class="flex items-center gap-2 min-w-0">
-                  <span class="w-1.5 h-1.5 rounded-full shrink-0 {isWsActive ? 'bg-coral' : 'bg-border-subtle'}"></span>
-                  <span class="truncate">{ws.name}</span>
-                </div>
-                <span class="text-[10px] text-tx-meta font-mono">{ws.servicesCount}</span>
-              </button>
+              <div class="group flex items-center gap-1">
+                <button
+                  onclick={() => onSelectWorkspace(ws.id)}
+                  class="flex-1 flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-colors {isWsActive
+                    ? 'bg-surface-elevated text-tx-header font-medium border border-border-dim/80 shadow-subtle'
+                    : 'text-tx-body hover:text-tx-header hover:bg-surface-hover border border-transparent'}"
+                >
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span
+                      class="w-2 h-2 rounded-full shrink-0 ring-1 ring-white/10"
+                      style="background-color: {ws.color || '#8b5cf6'};"
+                    ></span>
+                    <span class="truncate">{ws.name}</span>
+                  </div>
+                  <span class="text-[10px] text-tx-meta font-mono">{ws.servicesCount}</span>
+                </button>
+
+                <button
+                  onclick={() => onEditProject(ws)}
+                  class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-tx-meta hover:text-tx-header hover:bg-surface-elevated transition-all shrink-0"
+                  title="Project settings"
+                  aria-label="Project Settings"
+                >
+                  <Icons name="settings" size={11} />
+                </button>
+              </div>
             {/each}
           </div>
         {/if}

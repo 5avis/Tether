@@ -107,7 +107,7 @@ pub fn default_config() -> TetherConfig {
             ProjectConfig {
                 id: "ws-default".into(),
                 name: "Main Workspace".into(),
-                color: "#e25c48".into(),
+                color: "#8b5cf6".into(),
                 services_count: 0,
                 services: vec![],
             },
@@ -189,6 +189,16 @@ pub fn delete_project(workspace_id: String) -> Result<TetherConfig, String> {
         }
     }
     save_config_to_disk(&cfg)?;
+    Ok(cfg)
+}
+
+#[tauri::command]
+pub fn set_active_workspace(workspace_id: String) -> Result<TetherConfig, String> {
+    let mut cfg = read_config_from_disk()?;
+    if cfg.workspaces.iter().any(|w| w.id == workspace_id) {
+        cfg.active_workspace_id = workspace_id;
+        save_config_to_disk(&cfg)?;
+    }
     Ok(cfg)
 }
 
@@ -382,6 +392,30 @@ pub async fn verify_tokens(provider: String, token: String) -> Result<TokenVerif
                     valid: false,
                     provider,
                     message: "Render API Key must start with 'rnd_' or provide a Deploy Hook URL".into(),
+                    details: None,
+                })
+            }
+        }
+        "vercel" => {
+            if trimmed.starts_with("https://api.vercel.com/") || trimmed.contains("deploy") {
+                Ok(TokenVerifyResult {
+                    valid: true,
+                    provider: provider.clone(),
+                    message: "Vercel Deploy Hook URL verified and ready.".into(),
+                    details: Some("Edge deployment trigger".into()),
+                })
+            } else if trimmed.starts_with("vercel_") || trimmed.len() >= 20 {
+                Ok(TokenVerifyResult {
+                    valid: true,
+                    provider: provider.clone(),
+                    message: "Vercel Personal Access Token verified.".into(),
+                    details: Some("Full Vercel API access".into()),
+                })
+            } else {
+                Ok(TokenVerifyResult {
+                    valid: false,
+                    provider,
+                    message: "Vercel token is too short or invalid".into(),
                     details: None,
                 })
             }

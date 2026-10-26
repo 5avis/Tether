@@ -31,6 +31,7 @@
     { value: 'supabase', label: 'Supabase' },
     { value: 'neon', label: 'Neon Postgres' },
     { value: 'render', label: 'Render' },
+    { value: 'vercel', label: 'Vercel' },
     { value: 'railway', label: 'Railway' },
   ];
 
@@ -52,7 +53,7 @@
   $effect(() => {
     if (provider === 'neon' || provider === 'supabase') {
       targetType = 'database';
-    } else if (provider === 'cloudflare') {
+    } else if (provider === 'cloudflare' || provider === 'vercel') {
       targetType = 'frontend';
     } else {
       targetType = 'api';
@@ -108,7 +109,7 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#242424] border border-border-dim rounded-xl shadow-modal text-xs select-none relative"
+      class="w-full max-w-md bg-[#18181f] border border-border-dim rounded-xl shadow-modal text-xs select-none relative"
     >
       <!-- Modal Header -->
       <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">
@@ -170,7 +171,7 @@
                 aria-label="Close menu"
               ></button>
 
-              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
                 {#each providerOptions as opt}
                   <button
                     type="button"
@@ -213,7 +214,7 @@
                 aria-label="Close menu"
               ></button>
 
-              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
                 {#each environmentOptions as opt}
                   <button
                     type="button"
@@ -289,6 +290,10 @@
               <p class="text-[10px] text-tx-meta mt-1">
                 Tip: Enter a Render API Key (<span class="text-coral font-mono">rnd_...</span>) for full control (Suspend, Resume, Auto-Deploy, Live Sync), or a Deploy Hook URL for deploy-only.
               </p>
+            {:else if provider === 'vercel'}
+              <p class="text-[10px] text-tx-meta mt-1">
+                Tip: Enter a Vercel Deploy Hook URL or Personal Access Token (<span class="text-coral font-mono">vercel_...</span>) to link your edge project.
+              </p>
             {/if}
 
             <!-- Inline Verification Feedback -->
@@ -296,7 +301,7 @@
               <div
                 class="mt-2 p-2.5 rounded-lg border text-[11px] flex items-center justify-between {verifyResult.valid
                   ? 'bg-surface-elevated text-tx-header border-border-dim'
-                  : 'bg-[#291b1b] text-coral border-coral/40'}"
+                  : 'bg-red-500/10 text-red-400 border-red-500/30'}"
               >
                 <div class="flex items-center gap-2">
                   <span class="w-1.5 h-1.5 rounded-full {verifyResult.valid ? 'bg-coral' : 'bg-coral animate-ping'}"></span>

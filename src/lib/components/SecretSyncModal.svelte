@@ -49,7 +49,7 @@ DEBUG=false
     aria-modal="true"
   >
     <div
-      class="w-full max-w-lg bg-[#242424] border border-border-dim rounded-xl shadow-modal overflow-hidden text-xs select-none"
+      class="w-full max-w-lg bg-[#18181f] border border-border-dim rounded-xl shadow-modal overflow-hidden text-xs select-none"
     >
       <!-- Modal Header -->
       <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">

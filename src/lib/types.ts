@@ -2,7 +2,7 @@ export type NavItem = 'overview' | 'tunnels' | 'deployments' | 'watchdog' | 'log
 
 export type HealthStatus = 'healthy' | 'warning' | 'critical' | 'dormant';
 
-export type CloudProvider = 'cloudflare' | 'flyio' | 'supabase' | 'neon' | 'render' | 'railway';
+export type CloudProvider = 'cloudflare' | 'flyio' | 'supabase' | 'neon' | 'render' | 'railway' | 'vercel';
 
 export type Environment = 'production' | 'staging' | 'preview' | 'development';
 

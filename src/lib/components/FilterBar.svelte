@@ -73,6 +73,7 @@
     { value: 'supabase', label: 'Supabase DB' },
     { value: 'neon', label: 'Neon Postgres' },
     { value: 'render', label: 'Render Web' },
+    { value: 'vercel', label: 'Vercel App' },
     { value: 'railway', label: 'Railway Service' },
   ];
 
@@ -127,7 +128,7 @@
         ></button>
 
         <!-- Custom Dropdown Menu Box -->
-        <div class="absolute top-10 left-0 min-w-[200px] bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+        <div class="absolute top-10 left-0 min-w-[200px] bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
           <div class="px-2.5 py-1 text-[10px] uppercase font-mono text-tx-meta tracking-wider">Workspaces</div>
           <button
             onclick={() => {
@@ -182,7 +183,7 @@
           aria-label="Close menu"
         ></button>
 
-        <div class="absolute top-10 left-0 min-w-[210px] bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+        <div class="absolute top-10 left-0 min-w-[210px] bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
           <div class="px-2.5 py-1 text-[10px] uppercase font-mono text-tx-meta tracking-wider">Cloud Providers</div>
           {#each providerOptions as opt}
             <button
@@ -224,7 +225,7 @@
           aria-label="Close menu"
         ></button>
 
-        <div class="absolute top-10 left-0 min-w-[180px] bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+        <div class="absolute top-10 left-0 min-w-[180px] bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
           <div class="px-2.5 py-1 text-[10px] uppercase font-mono text-tx-meta tracking-wider">Environments</div>
           {#each environmentOptions as opt}
             <button

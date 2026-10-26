@@ -80,7 +80,7 @@
             aria-label="Close menu"
           ></button>
 
-          <div class="absolute top-9 left-0 min-w-[200px] bg-[#242424] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-100">
+          <div class="absolute top-9 left-0 min-w-[200px] bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-100">
             {#each providerFilterOptions as opt}
               <button
                 onclick={() => {

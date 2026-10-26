@@ -50,6 +50,7 @@ pub fn run() {
             config::get_config,
             config::save_project,
             config::delete_project,
+            config::set_active_workspace,
             config::save_service,
             config::delete_service,
             config::save_provider_credential,
