@@ -96,38 +96,34 @@
         </p>
       </div>
 
-      <!-- Quick Launch Box (Admin Only) -->
-      {#if isAdmin}
-        <div class="flex items-center gap-2 p-1.5 rounded-xl bg-surface border border-border-dim shadow-subtle flex-wrap sm:flex-nowrap">
-          <div class="flex items-center bg-surface-elevated rounded-lg border border-border-dim/80 focus-within:border-coral px-3 py-1.5">
-            <span class="text-tx-meta font-mono text-xs">localhost:</span>
-            <input
-              type="number"
-              bind:value={newPort}
-              min="1024"
-              max="65535"
-              placeholder="3000"
-              class="w-16 bg-transparent text-tx-header font-mono px-1.5 focus:outline-none text-xs"
-            />
-          </div>
-
-          <button
-            onclick={handleStart}
-            disabled={isLaunching}
-            class="px-4 py-1.5 rounded-lg bg-coral hover:bg-coral-hover text-white font-medium text-xs shadow-sm transition-all border border-coral/60 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98] shrink-0"
-          >
-            {#if isLaunching}
-              <Icons name="refresh" size={13} class="animate-spin" />
-              <span>Establishing...</span>
-            {:else}
-              <Icons name="plus" size={13} strokeWidth={2.5} />
-              <span>Launch Tunnel</span>
-            {/if}
-          </button>
+      <!-- Quick Launch Box -->
+      <div class="flex items-center gap-2 p-1.5 rounded-xl bg-surface border border-border-dim shadow-subtle flex-wrap sm:flex-nowrap">
+        <div class="flex items-center bg-surface-elevated rounded-lg border border-border-dim/80 focus-within:border-coral px-3 py-1.5">
+          <span class="text-tx-meta font-mono text-xs">localhost:</span>
+          <input
+            type="number"
+            bind:value={newPort}
+            min="1024"
+            max="65535"
+            placeholder="3000"
+            class="w-16 bg-transparent text-tx-header font-mono px-1.5 focus:outline-none text-xs"
+          />
         </div>
-      {:else}
-        <span class="px-3 py-1.5 rounded-xl bg-surface-elevated text-tx-meta border border-border-dim text-xs">Read-Only View</span>
-      {/if}
+
+        <button
+          onclick={handleStart}
+          disabled={isLaunching}
+          class="px-4 py-1.5 rounded-lg bg-coral hover:bg-coral-hover text-white font-medium text-xs shadow-sm transition-all border border-coral/60 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98] shrink-0"
+        >
+          {#if isLaunching}
+            <Icons name="refresh" size={13} class="animate-spin" />
+            <span>Establishing...</span>
+          {:else}
+            <Icons name="plus" size={13} strokeWidth={2.5} />
+            <span>Launch Tunnel</span>
+          {/if}
+        </button>
+      </div>
     </div>
   </div>
 
@@ -220,17 +216,15 @@
               </div>
             {/if}
 
-            <!-- Stop Process Button (Admin Only) -->
-            {#if isAdmin}
-              <button
-                onclick={() => handleStop(tun.id)}
-                class="ml-1 px-2.5 py-1 rounded-lg bg-surface-elevated hover:bg-[#351b1b] text-tx-body hover:text-coral border border-border-dim hover:border-coral/50 transition-all font-mono text-[11px] flex items-center gap-1 active:scale-[0.98]"
-                title="Stop process"
-              >
-                <Icons name="power" size={11} class="text-coral" />
-                <span>Stop</span>
-              </button>
-            {/if}
+            <!-- Stop Process Button -->
+            <button
+              onclick={() => handleStop(tun.id)}
+              class="ml-1 px-2.5 py-1 rounded-lg bg-surface-elevated hover:bg-[#351b1b] text-tx-body hover:text-coral border border-border-dim hover:border-coral/50 transition-all font-mono text-[11px] flex items-center gap-1 active:scale-[0.98]"
+              title="Stop process"
+            >
+              <Icons name="power" size={11} class="text-coral" />
+              <span>Stop</span>
+            </button>
           </div>
         </div>
       {/each}
@@ -244,18 +238,16 @@
         <p class="text-xs text-tx-meta max-w-sm mb-4 leading-relaxed">
           Create an instant public <code class="text-coral">trycloudflare.com</code> URL for local servers.
         </p>
-        {#if isAdmin}
-          <button
-            onclick={() => {
-              newPort = 3000;
-              handleStart();
-            }}
-            class="px-4 py-2 rounded-xl bg-coral hover:bg-coral-hover text-white text-xs font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98] flex items-center gap-1.5"
-          >
-            <Icons name="plus" size={13} strokeWidth={2.5} />
-            <span>Launch Tunnel on :3000</span>
-          </button>
-        {/if}
+        <button
+          onclick={() => {
+            newPort = 3000;
+            handleStart();
+          }}
+          class="px-4 py-2 rounded-xl bg-coral hover:bg-coral-hover text-white text-xs font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98] flex items-center gap-1.5"
+        >
+          <Icons name="plus" size={13} strokeWidth={2.5} />
+          <span>Launch Tunnel on :3000</span>
+        </button>
       </div>
     {/if}
   </div>

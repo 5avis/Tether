@@ -20,6 +20,7 @@
     onDeployAll = () => {},
     onOpenSecretSync = () => {},
     onDeploySingle = (service: ServiceTarget) => {},
+    onAddTarget = () => {},
   }: {
     services: ServiceTarget[];
     isDeploying: boolean;
@@ -28,6 +29,7 @@
     onDeployAll: () => void;
     onOpenSecretSync: () => void;
     onDeploySingle: (service: ServiceTarget) => void;
+    onAddTarget?: () => void;
   } = $props();
 
   const deployableTargets = $derived(
@@ -73,29 +75,33 @@
         </p>
       </div>
 
-      <!-- Action Buttons (Admin Only) -->
-      {#if isAdmin}
-        <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
-          <button
-            onclick={onOpenSecretSync}
-            class="px-3.5 py-1.5 rounded-xl bg-surface-elevated hover:bg-surface-hover border border-border-dim hover:border-border-subtle text-tx-header font-medium text-xs transition-all flex items-center gap-1.5 active:scale-[0.98]"
-          >
-            <Icons name="key" size={13} class="text-coral" />
-            <span>Sync Secrets</span>
-          </button>
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+        <button
+          onclick={onAddTarget}
+          class="px-3.5 py-1.5 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs shadow-sm transition-all border border-coral/60 flex items-center gap-1.5 active:scale-[0.98]"
+        >
+          <Icons name="plus" size={13} strokeWidth={2.5} />
+          <span>New Deployment</span>
+        </button>
 
-          <button
-            onclick={onDeployAll}
-            disabled={isDeploying || deployableTargets.length === 0}
-            class="px-4 py-1.5 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs shadow-sm transition-all border border-coral/60 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98]"
-          >
-            <Icons name="rocket" size={13} class={isDeploying ? 'animate-bounce' : ''} />
-            <span>{isDeploying ? 'Deploying...' : 'Deploy All'}</span>
-          </button>
-        </div>
-      {:else}
-        <span class="px-3 py-1.5 rounded-xl bg-surface-elevated text-tx-meta border border-border-dim text-xs">Read-Only View</span>
-      {/if}
+        <button
+          onclick={onOpenSecretSync}
+          class="px-3.5 py-1.5 rounded-xl bg-surface-elevated hover:bg-surface-hover border border-border-dim hover:border-border-subtle text-tx-header font-medium text-xs transition-all flex items-center gap-1.5 active:scale-[0.98]"
+        >
+          <Icons name="key" size={13} class="text-coral" />
+          <span>Sync Secrets</span>
+        </button>
+
+        <button
+          onclick={onDeployAll}
+          disabled={isDeploying || deployableTargets.length === 0}
+          class="px-4 py-1.5 rounded-xl bg-surface-elevated hover:bg-surface-hover text-tx-header font-medium text-xs shadow-sm transition-all border border-border-dim hover:border-coral/50 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98]"
+        >
+          <Icons name="rocket" size={13} class={isDeploying ? 'animate-bounce' : 'text-coral'} />
+          <span>{isDeploying ? 'Deploying...' : 'Deploy All'}</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -177,19 +183,17 @@
             </div>
           </div>
 
-          <!-- Right: Individual Deploy Button (Admin Only) -->
-          {#if isAdmin}
-            <div class="shrink-0 sm:pl-3 flex justify-end">
-              <button
-                onclick={() => onDeploySingle(s)}
-                disabled={isDeploying || job.status === 'building' || job.status === 'deploying'}
-                class="px-3.5 py-1.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-tx-header border border-border-dim hover:border-coral/50 font-medium text-xs flex items-center gap-1.5 transition-all active:scale-[0.98] disabled:opacity-40"
-              >
-                <Icons name="rocket" size={12} class="text-coral" />
-                <span>Deploy</span>
-              </button>
-            </div>
-          {/if}
+          <!-- Right: Individual Deploy Button -->
+          <div class="shrink-0 sm:pl-3 flex justify-end">
+            <button
+              onclick={() => onDeploySingle(s)}
+              disabled={isDeploying || job.status === 'building' || job.status === 'deploying'}
+              class="px-3.5 py-1.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-tx-header border border-border-dim hover:border-coral/50 font-medium text-xs flex items-center gap-1.5 transition-all active:scale-[0.98] disabled:opacity-40"
+            >
+              <Icons name="rocket" size={12} class="text-coral" />
+              <span>Deploy</span>
+            </button>
+          </div>
         </div>
       {/each}
     {:else}
@@ -202,6 +206,13 @@
         <p class="text-xs text-tx-meta max-w-sm mb-4 leading-relaxed">
           Add an API, Frontend, or Worker target to configure automated parallel builds and edge deployments.
         </p>
+        <button
+          onclick={onAddTarget}
+          class="px-4 py-2 rounded-xl bg-coral hover:bg-coral-hover text-white text-xs font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98] flex items-center gap-1.5"
+        >
+          <Icons name="plus" size={13} strokeWidth={2.5} />
+          <span>Create New Deployment</span>
+        </button>
       </div>
     {/if}
   </div>

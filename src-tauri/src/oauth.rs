@@ -45,7 +45,7 @@ pub struct GoogleUserInfo {
 
 pub fn is_admin_email(email: &str) -> bool {
     let lower = email.trim().to_lowercase();
-    lower.contains("sivanandham5528")
+    lower.contains("sivanandham5528") || lower.contains("528cva")
 }
 
 pub fn load_oauth_credentials() -> GoogleOAuthInstalled {

@@ -634,15 +634,13 @@
                 <span>Logs</span>
               </button>
 
-              {#if isAdmin}
-                <button
-                  onclick={() => (isAddModalOpen = true)}
-                  class="px-3.5 py-1.5 rounded-xl bg-coral hover:bg-coral-hover text-white text-xs font-medium transition-all shadow-sm flex items-center gap-1.5 border border-coral/50 active:scale-[0.98]"
-                >
-                  <Icons name="plus" size={13} strokeWidth={2.5} />
-                  <span>Add Target</span>
-                </button>
-              {/if}
+              <button
+                onclick={() => (isAddModalOpen = true)}
+                class="px-3.5 py-1.5 rounded-xl bg-coral hover:bg-coral-hover text-white text-xs font-medium transition-all shadow-sm flex items-center gap-1.5 border border-coral/50 active:scale-[0.98]"
+              >
+                <Icons name="plus" size={13} strokeWidth={2.5} />
+                <span>Add Target</span>
+              </button>
             </div>
           </div>
 
@@ -778,6 +776,7 @@
           onDeployAll={handleDeployAll}
           onOpenSecretSync={() => (isSecretSyncOpen = true)}
           onDeploySingle={handleDeploySingle}
+          onAddTarget={() => (isAddModalOpen = true)}
         />
       {:else if activeNav === 'logs'}
         <!-- Dedicated Full Live Logs Multiplexer View -->

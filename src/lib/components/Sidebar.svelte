@@ -112,29 +112,25 @@
         {/if}
       </div>
 
-      {#if isAdmin}
-        <!-- Primary Action: Pill-shaped coral button (Admin Only) -->
+      <!-- Primary Action: Pill-shaped coral button -->
+      <button
+        onclick={onAddService}
+        class="w-full py-1.5 px-3 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] border border-coral/60 hover:shadow-[0_0_12px_rgba(226,92,72,0.3)]"
+      >
+        <Icons name="plus" size={13} strokeWidth={2.5} />
+        <span>Add Target</span>
+      </button>
+    {:else}
+      <!-- Collapsed Icon Rail Header (Add Target) -->
+      <div class="flex flex-col items-center gap-2">
         <button
           onclick={onAddService}
-          class="w-full py-1.5 px-3 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] border border-coral/60 hover:shadow-[0_0_12px_rgba(226,92,72,0.3)]"
+          class="w-8 h-8 rounded-lg bg-coral hover:bg-coral-hover text-white flex items-center justify-center shadow-sm transition-all border border-coral/60 active:scale-[0.95]"
+          title="Add Target"
         >
-          <Icons name="plus" size={13} strokeWidth={2.5} />
-          <span>Add Target</span>
+          <Icons name="plus" size={14} strokeWidth={2.5} />
         </button>
-      {/if}
-    {:else}
-      {#if isAdmin}
-        <!-- Collapsed Icon Rail Header (Add Target only) -->
-        <div class="flex flex-col items-center gap-2">
-          <button
-            onclick={onAddService}
-            class="w-8 h-8 rounded-lg bg-coral hover:bg-coral-hover text-white flex items-center justify-center shadow-sm transition-all border border-coral/60 active:scale-[0.95]"
-            title="Add Target"
-          >
-            <Icons name="plus" size={14} strokeWidth={2.5} />
-          </button>
-        </div>
-      {/if}
+      </div>
     {/if}
   </div>
 
