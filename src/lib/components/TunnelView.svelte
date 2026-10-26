@@ -113,7 +113,7 @@
         <button
           onclick={handleStart}
           disabled={isLaunching}
-          class="px-4 py-1.5 rounded-lg bg-coral hover:bg-coral-hover text-white font-medium text-xs shadow-sm transition-all border border-coral/60 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98] shrink-0"
+          class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium text-xs shadow-sm transition-all border border-[#c084fc]/30 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98] shrink-0 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
         >
           {#if isLaunching}
             <Icons name="refresh" size={13} class="animate-spin" />
@@ -137,7 +137,7 @@
 
       {#each tunnels as tun (tun.id)}
         <div
-          class="group mx-1 my-2 p-3.5 rounded-xl bg-surface/40 hover:bg-surface-elevated/70 border border-border-dim/70 hover:border-border-dim transition-all shadow-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+          class="group mx-1 my-2 p-3.5 rounded-2xl bg-surface/60 hover:bg-surface-elevated/70 border border-border-dim hover:border-border-subtle transition-all shadow-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3"
         >
           <!-- Left: Circular status indicator & Port info -->
           <div class="flex items-center gap-3.5 min-w-0">
@@ -219,10 +219,10 @@
             <!-- Stop Process Button -->
             <button
               onclick={() => handleStop(tun.id)}
-              class="ml-1 px-2.5 py-1 rounded-lg bg-surface-elevated hover:bg-[#351b1b] text-tx-body hover:text-coral border border-border-dim hover:border-coral/50 transition-all font-mono text-[11px] flex items-center gap-1 active:scale-[0.98]"
+              class="ml-1 px-2.5 py-1 rounded-lg bg-surface-elevated hover:bg-rose-950/40 text-tx-body hover:text-rose-400 border border-border-dim hover:border-rose-500/40 transition-all font-mono text-[11px] flex items-center gap-1 active:scale-[0.98]"
               title="Stop process"
             >
-              <Icons name="power" size={11} class="text-coral" />
+              <Icons name="power" size={11} class="text-rose-400" />
               <span>Stop</span>
             </button>
           </div>
@@ -243,7 +243,7 @@
             newPort = 3000;
             handleStart();
           }}
-          class="px-4 py-2 rounded-xl bg-coral hover:bg-coral-hover text-white text-xs font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98] flex items-center gap-1.5"
+          class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white text-xs font-medium shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.98] flex items-center gap-1.5 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>Launch Tunnel on :3000</span>

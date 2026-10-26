@@ -51,7 +51,7 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#18181f] border border-border-dim rounded-2xl shadow-modal overflow-hidden text-xs select-none"
+      class="w-full max-w-md bg-[#161326] border border-border-dim rounded-2xl shadow-modal overflow-hidden text-xs select-none"
     >
       <!-- Header -->
       <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">
@@ -168,7 +168,7 @@
               type="button"
               onclick={handleGoogleSignIn}
               disabled={isAuthenticating}
-              class="w-full py-2.5 px-4 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs shadow-sm transition-all border border-coral/60 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50"
+              class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium text-xs shadow-sm transition-all border border-[#c084fc]/30 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
             >
               {#if isAuthenticating}
                 <Icons name="refresh" size={13} class="animate-spin" />

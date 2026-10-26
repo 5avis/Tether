@@ -109,7 +109,7 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#18181f] border border-border-dim rounded-xl shadow-modal text-xs select-none relative"
+      class="w-full max-w-md bg-[#161326] border border-border-dim rounded-2xl shadow-modal text-xs select-none relative overflow-hidden"
     >
       <!-- Modal Header -->
       <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">
@@ -171,7 +171,7 @@
                 aria-label="Close menu"
               ></button>
 
-              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#161326] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
                 {#each providerOptions as opt}
                   <button
                     type="button"
@@ -214,7 +214,7 @@
                 aria-label="Close menu"
               ></button>
 
-              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#161326] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
                 {#each environmentOptions as opt}
                   <button
                     type="button"
@@ -320,13 +320,13 @@
           <button
             type="button"
             onclick={onClose}
-            class="px-4 py-2 rounded-lg text-tx-body hover:text-tx-header hover:bg-surface-elevated transition-colors"
+            class="px-4 py-2 rounded-xl text-tx-body hover:text-tx-header hover:bg-surface-elevated transition-colors text-xs font-medium"
           >
             Cancel
           </button>
           <button
             type="submit"
-            class="px-4 py-2 rounded-lg bg-coral hover:bg-coral-hover text-white font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98]"
+            class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.98] text-xs shadow-[0_0_12px_rgba(168,85,247,0.25)]"
           >
             Add Target
           </button>

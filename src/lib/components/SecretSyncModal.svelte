@@ -49,7 +49,7 @@ DEBUG=false
     aria-modal="true"
   >
     <div
-      class="w-full max-w-lg bg-[#18181f] border border-border-dim rounded-xl shadow-modal overflow-hidden text-xs select-none"
+      class="w-full max-w-lg bg-[#161326] border border-border-dim rounded-2xl shadow-modal overflow-hidden text-xs select-none"
     >
       <!-- Modal Header -->
       <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">
@@ -87,7 +87,7 @@ DEBUG=false
             id="env-editor"
             bind:value={envText}
             rows={7}
-            class="w-full bg-[#1c1c1c] text-tx-header font-mono text-[11px] p-3 rounded-lg border border-border-dim focus:border-coral focus:outline-none resize-none leading-relaxed select-text"
+            class="w-full bg-[#141126] text-tx-header font-mono text-[11px] p-3 rounded-xl border border-border-dim focus:border-coral focus:outline-none resize-none leading-relaxed select-text"
             placeholder="KEY=VALUE"
           ></textarea>
         </div>
@@ -98,22 +98,22 @@ DEBUG=false
             Target Destinations (Concurrent Broadcast)
           </span>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div class="flex items-center gap-2 p-2 rounded-lg bg-surface-elevated border border-border-dim">
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-elevated border border-border-dim">
               <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
               <span class="text-tx-header font-medium">Fly.io Secrets</span>
               <span class="text-[10px] text-tx-meta font-mono ml-auto">API</span>
             </div>
-            <div class="flex items-center gap-2 p-2 rounded-lg bg-surface-elevated border border-border-dim">
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-elevated border border-border-dim">
               <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
               <span class="text-tx-header font-medium">Cloudflare Workers</span>
               <span class="text-[10px] text-tx-meta font-mono ml-auto">Edge</span>
             </div>
-            <div class="flex items-center gap-2 p-2 rounded-lg bg-surface-elevated border border-border-dim">
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-elevated border border-border-dim">
               <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
               <span class="text-tx-header font-medium">Render Web Services</span>
               <span class="text-[10px] text-tx-meta font-mono ml-auto">Container</span>
             </div>
-            <div class="flex items-center gap-2 p-2 rounded-lg bg-surface-elevated border border-border-dim">
+            <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-elevated border border-border-dim">
               <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
               <span class="text-tx-header font-medium">Supabase / Neon Env</span>
               <span class="text-[10px] text-tx-meta font-mono ml-auto">DB Pool</span>
@@ -128,7 +128,7 @@ DEBUG=false
             <button
               type="button"
               onclick={onClose}
-              class="px-3.5 py-1.5 rounded-lg text-tx-body hover:text-tx-header hover:bg-surface-elevated transition-colors"
+              class="px-3.5 py-1.5 rounded-xl text-tx-body hover:text-tx-header hover:bg-surface-elevated transition-colors text-xs font-medium"
             >
               Cancel
             </button>
@@ -136,7 +136,7 @@ DEBUG=false
               type="button"
               onclick={handleConfirm}
               disabled={isSyncing || parsedKeys.length === 0}
-              class="px-4 py-1.5 rounded-lg bg-coral hover:bg-coral-hover text-white font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98] disabled:opacity-40 flex items-center gap-1.5"
+              class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.98] disabled:opacity-40 flex items-center gap-1.5 text-xs shadow-[0_0_12px_rgba(168,85,247,0.25)]"
             >
               {#if isSyncing}
                 <Icons name="refresh" size={12} class="animate-spin" />

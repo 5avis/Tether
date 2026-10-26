@@ -121,7 +121,7 @@
           <button
             onclick={handleAll}
             disabled={isPingingAll}
-            class="px-3.5 py-1.5 rounded-full bg-coral hover:bg-coral-hover text-white font-medium text-xs shadow-sm transition-all border border-coral/60 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98]"
+            class="px-4 py-1.5 rounded-full bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium text-xs shadow-sm transition-all border border-[#c084fc]/30 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98] shadow-[0_0_12px_rgba(168,85,247,0.25)]"
           >
             <Icons name="power" size={13} class={isPingingAll ? 'animate-spin' : ''} />
             <span>Keep-Alive All</span>
@@ -134,7 +134,7 @@
 
     <!-- Metrics Cards -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <div class="p-3.5 rounded-xl bg-surface/80 border border-border-dim shadow-subtle flex flex-col justify-between">
+      <div class="p-3.5 rounded-2xl bg-surface/80 border border-border-dim shadow-subtle flex flex-col justify-between">
         <div class="flex items-center justify-between text-tx-meta text-xs">
           <span>Compute Pool</span>
           <Icons name="shield" size={12} class="text-coral" />
@@ -145,7 +145,7 @@
         </div>
       </div>
 
-      <div class="p-3.5 rounded-xl bg-surface/80 border border-border-dim shadow-subtle flex flex-col justify-between">
+      <div class="p-3.5 rounded-2xl bg-surface/80 border border-border-dim shadow-subtle flex flex-col justify-between">
         <div class="flex items-center justify-between text-tx-meta text-xs">
           <span>Inactivity Threshold</span>
           <Icons name="activity" size={12} class="text-coral" />
@@ -156,7 +156,7 @@
         </div>
       </div>
 
-      <div class="p-3.5 rounded-xl bg-surface/80 border border-border-dim shadow-subtle flex flex-col justify-between">
+      <div class="p-3.5 rounded-2xl bg-surface/80 border border-border-dim shadow-subtle flex flex-col justify-between">
         <div class="flex items-center justify-between text-tx-meta text-xs">
           <span>Databases</span>
           <Icons name="database" size={12} class="text-coral" />
@@ -167,7 +167,7 @@
         </div>
       </div>
 
-      <div class="p-3.5 rounded-xl bg-surface/80 border border-border-dim shadow-subtle flex flex-col justify-between">
+      <div class="p-3.5 rounded-2xl bg-surface/80 border border-border-dim shadow-subtle flex flex-col justify-between">
         <div class="flex items-center justify-between text-tx-meta text-xs">
           <span>Latency</span>
           <Icons name="check" size={12} class="text-coral" />

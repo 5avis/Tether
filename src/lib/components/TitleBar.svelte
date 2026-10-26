@@ -134,7 +134,7 @@
         ></button>
 
         <div
-          class="absolute right-0 top-11 w-64 bg-[#222222] border border-border-dim rounded-2xl shadow-modal p-3 z-50 text-xs animate-in fade-in zoom-in-95 duration-100 space-y-3"
+          class="absolute right-0 top-11 w-64 bg-[#161326] border border-border-dim rounded-2xl shadow-modal p-3 z-50 text-xs animate-in fade-in zoom-in-95 duration-100 space-y-3"
         >
           <!-- User Info Header -->
           <div class="flex items-center gap-2.5 pb-2.5 border-b border-border-dim/60">
@@ -201,7 +201,7 @@
                   showProfileMenu = false;
                   onOpenProfile();
                 }}
-                class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-coral hover:bg-coral-hover text-white transition-all font-medium"
+                class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white transition-all font-medium shadow-[0_0_12px_rgba(168,85,247,0.25)]"
               >
                 <Icons name="google" size={13} />
                 <span>Sign in with Google</span>

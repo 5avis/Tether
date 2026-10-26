@@ -95,7 +95,7 @@
             <button
               onclick={() => onEditProject(currentWorkspace)}
               class="p-2 rounded-xl bg-surface-elevated/70 hover:bg-surface-elevated border border-border-dim/80 hover:border-border-subtle text-tx-meta hover:text-tx-header transition-all shadow-subtle shrink-0"
-              title="Edit project name & color"
+              title="Edit project name"
               aria-label="Edit Project"
             >
               <Icons name="settings" size={13} />
@@ -113,7 +113,7 @@
           ></button>
 
           <div
-            class="absolute top-12 left-0 right-0 bg-[#1c1c24] border border-border-dim rounded-2xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100"
+            class="absolute top-12 left-0 right-0 bg-[#161326] border border-border-dim rounded-2xl shadow-modal p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100"
           >
             <div class="px-2.5 py-1.5 text-[10px] uppercase font-mono text-tx-meta tracking-wider flex items-center justify-between">
               <span>All Projects</span>
@@ -166,7 +166,7 @@
       <!-- Primary Action: Pill-shaped purple button -->
       <button
         onclick={onAddService}
-        class="w-full py-1.5 px-3 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] border border-coral/60 hover:shadow-[0_0_14px_rgba(139,92,246,0.35)]"
+        class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] border border-[#c084fc]/30 shadow-[0_0_14px_rgba(168,85,247,0.25)]"
       >
         <Icons name="plus" size={13} strokeWidth={2.5} />
         <span>Add Target</span>
@@ -176,7 +176,7 @@
       <div class="flex flex-col items-center gap-2">
         <button
           onclick={onAddService}
-          class="w-8 h-8 rounded-lg bg-coral hover:bg-coral-hover text-white flex items-center justify-center shadow-sm transition-all border border-coral/60 active:scale-[0.95]"
+          class="w-8 h-8 rounded-lg bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white flex items-center justify-center shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.95] shadow-[0_0_12px_rgba(168,85,247,0.25)]"
           title="Add Target"
         >
           <Icons name="plus" size={14} strokeWidth={2.5} />
@@ -194,8 +194,8 @@
         <button
           onclick={() => onSelectNav(item.id)}
           class="w-full flex items-center {isCollapsed ? 'justify-center p-2' : 'justify-between px-2.5 py-1.5'} rounded-xl text-xs transition-all {isActive
-            ? 'bg-coral-light text-coral font-medium border border-coral/30 shadow-subtle'
-            : 'text-tx-body hover:text-tx-header hover:bg-surface-hover border border-transparent'}"
+            ? 'bg-[#1c1833] text-white font-medium border border-coral/40 shadow-[0_0_12px_rgba(168,85,247,0.15)]'
+            : 'text-tx-meta hover:text-tx-header hover:bg-surface-elevated/60 border border-transparent'}"
           title={isCollapsed ? item.label : undefined}
         >
           <div class="flex items-center gap-2.5">

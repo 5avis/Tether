@@ -760,7 +760,7 @@
 
               <button
                 onclick={() => (isAddModalOpen = true)}
-                class="px-3.5 py-1.5 rounded-xl bg-coral hover:bg-coral-hover text-white text-xs font-medium transition-all shadow-sm flex items-center gap-1.5 border border-coral/50 active:scale-[0.98]"
+                class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white text-xs font-medium transition-all shadow-sm flex items-center gap-1.5 border border-[#c084fc]/30 active:scale-[0.98] shadow-[0_0_12px_rgba(168,85,247,0.25)]"
               >
                 <Icons name="plus" size={13} strokeWidth={2.5} />
                 <span>Add Target</span>
@@ -770,7 +770,7 @@
 
           <!-- Quick Metric Highlights Cards -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-            <div class="p-3.5 rounded-xl bg-surface/80 hover:bg-surface-elevated/80 border border-border-dim/80 hover:border-coral/40 shadow-subtle flex flex-col justify-between transition-all duration-150">
+            <div class="p-3.5 rounded-2xl bg-surface hover:bg-surface-elevated/80 border border-border-dim hover:border-border-subtle shadow-subtle flex flex-col justify-between transition-all duration-150">
               <div class="flex items-center justify-between text-tx-meta text-xs">
                 <span class="font-medium text-tx-body">Active Tunnels</span>
                 <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center text-coral">
@@ -783,7 +783,7 @@
               </div>
             </div>
 
-            <div class="p-3.5 rounded-xl bg-surface/80 hover:bg-surface-elevated/80 border border-border-dim/80 hover:border-coral/40 shadow-subtle flex flex-col justify-between transition-all duration-150">
+            <div class="p-3.5 rounded-2xl bg-surface hover:bg-surface-elevated/80 border border-border-dim hover:border-border-subtle shadow-subtle flex flex-col justify-between transition-all duration-150">
               <div class="flex items-center justify-between text-tx-meta text-xs">
                 <span class="font-medium text-tx-body">Bound Services</span>
                 <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center text-coral">
@@ -796,7 +796,7 @@
               </div>
             </div>
 
-            <div class="p-3.5 rounded-xl bg-surface/80 hover:bg-surface-elevated/80 border border-border-dim/80 hover:border-coral/40 shadow-subtle flex flex-col justify-between transition-all duration-150">
+            <div class="p-3.5 rounded-2xl bg-surface hover:bg-surface-elevated/80 border border-border-dim hover:border-border-subtle shadow-subtle flex flex-col justify-between transition-all duration-150">
               <div class="flex items-center justify-between text-tx-meta text-xs">
                 <span class="font-medium text-tx-body">Watchdog Quota</span>
                 <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center text-coral">
@@ -814,7 +814,7 @@
               </div>
             </div>
 
-            <div class="p-3.5 rounded-xl bg-surface/80 hover:bg-surface-elevated/80 border border-border-dim/80 hover:border-coral/40 shadow-subtle flex flex-col justify-between transition-all duration-150">
+            <div class="p-3.5 rounded-2xl bg-surface hover:bg-surface-elevated/80 border border-border-dim hover:border-border-subtle shadow-subtle flex flex-col justify-between transition-all duration-150">
               <div class="flex items-center justify-between text-tx-meta text-xs">
                 <span class="font-medium text-tx-body">Keep-Alive Guard</span>
                 <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center {watchdogCount > 0 ? 'text-coral' : 'text-tx-meta'}">

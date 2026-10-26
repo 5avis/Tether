@@ -50,7 +50,7 @@
   );
 </script>
 
-<div class="flex-1 flex flex-col min-h-0 bg-[#161616] font-mono text-xs select-none">
+<div class="flex-1 flex flex-col min-h-0 bg-[#0c0a17] font-mono text-xs select-none">
   <!-- Top Log Toolbar -->
   <div class="min-h-[44px] py-2 px-4 border-b border-border-dim bg-surface/50 flex flex-wrap items-center justify-between gap-2.5 text-xs">
     <div class="flex items-center gap-3 flex-wrap">
@@ -80,7 +80,7 @@
             aria-label="Close menu"
           ></button>
 
-          <div class="absolute top-9 left-0 min-w-[200px] bg-[#18181f] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-100">
+          <div class="absolute top-9 left-0 min-w-[200px] bg-[#161326] border border-border-dim rounded-xl shadow-modal p-1.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-100">
             {#each providerFilterOptions as opt}
               <button
                 onclick={() => {
@@ -142,7 +142,7 @@
   </div>
 
   <!-- Terminal Stream Canvas Box -->
-  <div class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-1 select-text bg-[#121212]">
+  <div class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-1 select-text bg-[#0c0a17]">
     {#if filteredLogs.length > 0}
       {#each filteredLogs as log (log.id)}
         <div class="flex items-start gap-2.5 hover:bg-surface-elevated/40 px-2.5 py-1 rounded-lg leading-relaxed text-[11px] group transition-colors">

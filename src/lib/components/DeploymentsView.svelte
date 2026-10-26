@@ -81,7 +81,7 @@
       <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
         <button
           onclick={onAddTarget}
-          class="px-3.5 py-1.5 rounded-xl bg-coral hover:bg-coral-hover text-white font-medium text-xs shadow-sm transition-all border border-coral/60 flex items-center gap-1.5 active:scale-[0.98]"
+          class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium text-xs shadow-sm transition-all border border-[#c084fc]/30 flex items-center gap-1.5 active:scale-[0.98] shadow-[0_0_12px_rgba(168,85,247,0.25)]"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>New Deployment</span>
@@ -117,7 +117,7 @@
 
       {#each deployableTargets as s (s.id)}
         {@const job = getJob(s.id)}
-        <div class="group mx-1 my-2 p-3.5 rounded-xl bg-surface/40 hover:bg-surface-elevated/70 border border-border-dim/70 hover:border-border-dim transition-all shadow-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="group mx-1 my-2 p-3.5 rounded-2xl bg-surface/60 hover:bg-surface-elevated/70 border border-border-dim hover:border-border-subtle transition-all shadow-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <!-- Left: Service identity & provider badge -->
           <div class="flex items-center gap-3.5 min-w-0 sm:w-64 shrink-0">
             <!-- Status icon dot -->
@@ -220,7 +220,7 @@
         </p>
         <button
           onclick={onAddTarget}
-          class="px-4 py-2 rounded-xl bg-coral hover:bg-coral-hover text-white text-xs font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98] flex items-center gap-1.5"
+          class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white text-xs font-medium shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.98] flex items-center gap-1.5 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>Create New Deployment</span>

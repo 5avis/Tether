@@ -17,7 +17,7 @@
 
 {#if isOpen}
   <div
-    class="border-t border-border-dim bg-[#181818] text-xs font-mono select-none flex flex-col h-56 transition-all duration-200 z-30 shadow-modal"
+    class="border-t border-border-dim bg-[#141126] text-xs font-mono select-none flex flex-col h-56 transition-all duration-200 z-30 shadow-modal"
   >
     <!-- Drawer Header -->
     <div class="h-8 px-4 bg-surface flex items-center justify-between border-b border-border-dim select-none">

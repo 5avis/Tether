@@ -25,7 +25,7 @@
 
   <button
     onclick={onAction}
-    class="px-4 py-2 rounded-full bg-coral hover:bg-coral-hover text-white text-xs font-medium shadow-sm transition-all border border-coral/50 active:scale-[0.98]"
+    class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white text-xs font-medium shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.98] shadow-[0_0_12px_rgba(168,85,247,0.25)]"
   >
     {buttonText}
   </button>
