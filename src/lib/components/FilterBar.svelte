@@ -102,7 +102,7 @@
   );
 </script>
 
-<div class="min-h-[50px] py-2 px-4 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-2.5 bg-[#0b0d19]/60 backdrop-blur-md text-xs select-none relative z-30">
+<div class="min-h-[50px] py-2 px-4 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-2.5 bg-[#0e111a] text-xs select-none relative z-30">
   <!-- Left: Filter custom chips (Fully Pill-Shaped Glass Chips) -->
   <div class="flex items-center gap-2 flex-wrap">
     <!-- Custom Workspace Dropdown Chip -->
@@ -110,8 +110,8 @@
       <button
         type="button"
         onclick={() => (openDropdown = openDropdown === 'workspace' ? null : 'workspace')}
-        class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs transition-all shadow-subtle {selectedWorkspace !== 'all'
-          ? 'bg-[#8b5cf6]/20 border-[#8b5cf6]/60 text-[#00f2fe] font-medium shadow-[0_0_12px_rgba(0,242,254,0.2)]'
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs transition-all shadow-sm {selectedWorkspace !== 'all'
+          ? 'bg-[#7c3aed]/20 border-[#7c3aed]/60 text-white font-medium'
           : 'bg-white/[0.04] hover:bg-white/[0.08] text-tx-header border-white/[0.08] hover:border-white/20'}"
       >
         <span>{currentWorkspaceLabel}</span>
@@ -127,8 +127,13 @@
           aria-label="Close menu"
         ></button>
 
-        <!-- Custom Dropdown Menu Box -->
-        <div class="absolute top-11 left-0 min-w-[210px] bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] p-2 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+        <!-- Custom Dropdown Menu Box (auto-dismiss on pointer exit) -->
+        <div
+          role="menu"
+          tabindex="-1"
+          onmouseleave={() => (openDropdown = null)}
+          class="absolute top-11 left-0 min-w-[210px] bg-[#151926] border border-white/[0.12] rounded-xl shadow-2xl shadow-black/80 p-1.5 z-50 animate-in fade-in duration-100 text-xs"
+        >
           <div class="px-3 py-1.5 text-[10px] uppercase font-mono text-tx-meta tracking-wider">Workspaces</div>
           <button
             onclick={() => {
@@ -136,7 +141,7 @@
               openDropdown = null;
               triggerUpdate();
             }}
-            class="w-full flex items-center justify-between px-3 py-1.5 rounded-full text-left transition-colors {selectedWorkspace === 'all' ? 'bg-[#8b5cf6]/20 text-white font-medium border border-[#8b5cf6]/40' : 'text-tx-body hover:text-white hover:bg-white/[0.06]'}"
+            class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left transition-colors {selectedWorkspace === 'all' ? 'bg-[#7c3aed]/20 text-white font-medium border border-[#7c3aed]/40' : 'text-tx-body hover:text-white hover:bg-white/[0.06]'}"
           >
             <span>All Workspaces</span>
             {#if selectedWorkspace === 'all'}
@@ -150,7 +155,7 @@
                 openDropdown = null;
                 triggerUpdate();
               }}
-              class="w-full flex items-center justify-between px-3 py-1.5 rounded-full text-left transition-colors {selectedWorkspace === ws.id ? 'bg-[#8b5cf6]/20 text-white font-medium border border-[#8b5cf6]/40' : 'text-tx-body hover:text-white hover:bg-white/[0.06]'}"
+              class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left transition-colors {selectedWorkspace === ws.id ? 'bg-[#7c3aed]/20 text-white font-medium border border-[#7c3aed]/40' : 'text-tx-body hover:text-white hover:bg-white/[0.06]'}"
             >
               <span>{ws.name}</span>
               {#if selectedWorkspace === ws.id}
@@ -167,8 +172,8 @@
       <button
         type="button"
         onclick={() => (openDropdown = openDropdown === 'provider' ? null : 'provider')}
-        class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs transition-all shadow-subtle {selectedProvider !== 'all'
-          ? 'bg-[#8b5cf6]/20 border-[#8b5cf6]/60 text-[#00f2fe] font-medium shadow-[0_0_12px_rgba(0,242,254,0.2)]'
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs transition-all shadow-sm {selectedProvider !== 'all'
+          ? 'bg-[#7c3aed]/20 border-[#7c3aed]/60 text-white font-medium'
           : 'bg-white/[0.04] hover:bg-white/[0.08] text-tx-header border-white/[0.08] hover:border-white/20'}"
       >
         <span>{currentProviderLabel}</span>
@@ -183,7 +188,12 @@
           aria-label="Close menu"
         ></button>
 
-        <div class="absolute top-11 left-0 min-w-[220px] bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] p-2 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+        <div
+          role="menu"
+          tabindex="-1"
+          onmouseleave={() => (openDropdown = null)}
+          class="absolute top-11 left-0 min-w-[220px] bg-[#151926] border border-white/[0.12] rounded-xl shadow-2xl shadow-black/80 p-1.5 z-50 animate-in fade-in duration-100 text-xs"
+        >
           <div class="px-3 py-1.5 text-[10px] uppercase font-mono text-tx-meta tracking-wider">Cloud Providers</div>
           {#each providerOptions as opt}
             <button
@@ -192,7 +202,7 @@
                 openDropdown = null;
                 triggerUpdate();
               }}
-              class="w-full flex items-center justify-between px-3 py-1.5 rounded-full text-left transition-colors {selectedProvider === opt.value ? 'bg-[#8b5cf6]/20 text-white font-medium border border-[#8b5cf6]/40' : 'text-tx-body hover:text-white hover:bg-white/[0.06]'}"
+              class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left transition-colors {selectedProvider === opt.value ? 'bg-[#7c3aed]/20 text-white font-medium border border-[#7c3aed]/40' : 'text-tx-body hover:text-white hover:bg-white/[0.06]'}"
             >
               <span>{opt.label}</span>
               {#if selectedProvider === opt.value}
@@ -209,8 +219,8 @@
       <button
         type="button"
         onclick={() => (openDropdown = openDropdown === 'environment' ? null : 'environment')}
-        class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs transition-all shadow-subtle {selectedEnvironment !== 'all'
-          ? 'bg-[#8b5cf6]/20 border-[#8b5cf6]/60 text-[#00f2fe] font-medium shadow-[0_0_12px_rgba(0,242,254,0.2)]'
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs transition-all shadow-sm {selectedEnvironment !== 'all'
+          ? 'bg-[#7c3aed]/20 border-[#7c3aed]/60 text-white font-medium'
           : 'bg-white/[0.04] hover:bg-white/[0.08] text-tx-header border-white/[0.08] hover:border-white/20'}"
       >
         <span>{currentEnvironmentLabel}</span>
@@ -225,7 +235,12 @@
           aria-label="Close menu"
         ></button>
 
-        <div class="absolute top-11 left-0 min-w-[190px] bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] p-2 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+        <div
+          role="menu"
+          tabindex="-1"
+          onmouseleave={() => (openDropdown = null)}
+          class="absolute top-11 left-0 min-w-[190px] bg-[#151926] border border-white/[0.12] rounded-xl shadow-2xl shadow-black/80 p-1.5 z-50 animate-in fade-in duration-100 text-xs"
+        >
           <div class="px-3 py-1.5 text-[10px] uppercase font-mono text-tx-meta tracking-wider">Environments</div>
           {#each environmentOptions as opt}
             <button
@@ -234,7 +249,7 @@
                 openDropdown = null;
                 triggerUpdate();
               }}
-              class="w-full flex items-center justify-between px-3 py-1.5 rounded-full text-left transition-colors {selectedEnvironment === opt.value ? 'bg-[#8b5cf6]/20 text-white font-medium border border-[#8b5cf6]/40' : 'text-tx-body hover:text-white hover:bg-white/[0.06]'}"
+              class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left transition-colors {selectedEnvironment === opt.value ? 'bg-[#7c3aed]/20 text-white font-medium border border-[#7c3aed]/40' : 'text-tx-body hover:text-white hover:bg-white/[0.06]'}"
             >
               <span>{opt.label}</span>
               {#if selectedEnvironment === opt.value}
@@ -249,13 +264,13 @@
     <!-- Active Only Toggle Chip -->
     <button
       onclick={toggleActiveOnly}
-      class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-xs transition-all {activeOnly
-        ? 'bg-[#8b5cf6]/20 text-[#00f2fe] border-[#8b5cf6]/60 font-medium shadow-[0_0_12px_rgba(0,242,254,0.2)]'
+      class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-xs transition-all shadow-sm {activeOnly
+        ? 'bg-[#7c3aed]/20 text-white border-[#7c3aed]/60 font-medium'
         : 'bg-white/[0.04] hover:bg-white/[0.08] text-tx-body border-white/[0.08] hover:border-white/20'}"
     >
       <span>Active Only</span>
       {#if activeOnly}
-        <Icons name="x" size={12} class="text-[#00f2fe]" />
+        <Icons name="x" size={12} class="text-white" />
       {:else}
         <span class="w-1.5 h-1.5 rounded-full bg-white/30"></span>
       {/if}
@@ -265,7 +280,7 @@
     {#if isFiltered}
       <button
         onclick={resetAll}
-        class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-tx-meta hover:text-[#00f2fe] border border-white/[0.08] hover:border-white/20 transition-colors text-[11px]"
+        class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-tx-meta hover:text-white border border-white/[0.08] hover:border-white/20 transition-colors text-[11px]"
         title="Reset all active filters"
       >
         <Icons name="refresh" size={11} />
@@ -284,7 +299,7 @@
       placeholder="Filter targets, ports, or URLs..."
       value={searchQuery}
       oninput={handleSearchInput}
-      class="w-full bg-white/[0.04] hover:bg-white/[0.07] focus:bg-[#121629] text-tx-header text-xs rounded-full pl-9 pr-8 py-2 border border-white/[0.08] focus:border-[#00f2fe] focus:shadow-[0_0_15px_rgba(0,242,254,0.2)] focus:outline-none transition-all placeholder:text-tx-meta"
+      class="w-full bg-white/[0.04] hover:bg-white/[0.07] focus:bg-[#151926] text-tx-header text-xs rounded-full pl-9 pr-8 py-2 border border-white/[0.08] focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed]/50 focus:outline-none transition-all placeholder:text-tx-meta"
     />
     {#if searchQuery}
       <button

@@ -49,18 +49,18 @@
 </script>
 
 <div
-  class="group relative mx-3.5 my-2 p-3 px-4 rounded-3xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-[#8b5cf6]/40 transition-all text-xs select-none shadow-subtle hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] backdrop-blur-md flex flex-col md:flex-row md:items-center justify-between gap-3"
+  class="group relative mx-3.5 my-2 p-3 px-4 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.07] hover:border-white/[0.15] transition-all text-xs select-none shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3"
 >
   <!-- Left Side: Status Dot, Service Identity, Target & Provider -->
   <div class="flex items-center gap-3 min-w-0 flex-1">
-    <!-- Clean Standard Status Dot (Circular with neon glow) -->
+    <!-- Clean Standard Status Dot (Circular) -->
     <div class="relative flex items-center justify-center shrink-0 w-4 h-4">
       <span
         class="w-2.5 h-2.5 rounded-full {service.status === 'healthy'
-          ? 'bg-[#10b981] shadow-[0_0_8px_#10b981]'
+          ? 'bg-[#10b981]'
           : service.status === 'dormant'
-          ? 'bg-[#f59e0b] shadow-[0_0_8px_#f59e0b]'
-          : 'bg-[#8b5cf6] shadow-[0_0_8px_#8b5cf6]'} transition-transform group-hover:scale-125"
+          ? 'bg-[#f59e0b]'
+          : 'bg-[#8b5cf6]'} transition-transform group-hover:scale-110"
       ></span>
       {#if service.tunnelUrl}
         <span class="absolute w-4 h-4 rounded-full bg-[#00f2fe]/30 animate-ping"></span>
@@ -70,18 +70,18 @@
     <!-- Service Title & Standard Metadata -->
     <div class="min-w-0 flex flex-col gap-0.5">
       <div class="flex items-center gap-2 flex-wrap">
-        <span class="text-tx-header font-semibold tracking-tight text-xs truncate max-w-[200px] sm:max-w-[260px]">{service.name}</span>
+        <span class="text-white font-semibold tracking-tight text-xs truncate max-w-[200px] sm:max-w-[260px]">{service.name}</span>
 
         <!-- Target Type Pill (Fully Pill-Shaped) -->
         <span
-          class="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-mono tracking-wider bg-white/[0.04] text-tx-meta border border-white/[0.08] shrink-0"
+          class="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-mono tracking-wider bg-white/[0.04] text-[#94a3b8] border border-white/[0.08] shrink-0"
         >
           {service.targetType}
         </span>
 
         <!-- Environment Pill (Fully Pill-Shaped) -->
         <span
-          class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-white/[0.04] text-tx-meta border border-white/[0.08] shrink-0"
+          class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-white/[0.04] text-[#94a3b8] border border-white/[0.08] shrink-0"
         >
           {service.environment}
         </span>
@@ -89,13 +89,13 @@
         <!-- Live / Suspended Lifecycle Pill (Fully Pill-Shaped) -->
         {#if service.status === 'dormant'}
           <span
-            class="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-mono tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 font-medium shadow-[0_0_8px_rgba(245,158,11,0.2)]"
+            class="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-mono tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0 font-medium"
           >
             Suspended
           </span>
         {:else if service.status === 'healthy'}
           <span
-            class="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-mono tracking-wider bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shrink-0 font-medium shadow-[0_0_8px_rgba(16,185,129,0.2)]"
+            class="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-mono tracking-wider bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shrink-0 font-medium"
           >
             Live
           </span>
@@ -103,8 +103,8 @@
       </div>
 
       <!-- Provider & Region info -->
-      <div class="flex items-center gap-2 text-[11px] text-tx-meta flex-wrap">
-        <span class="text-tx-body font-medium">{providerNames[service.provider] ?? service.provider}</span>
+      <div class="flex items-center gap-2 text-[11px] text-[#94a3b8] flex-wrap">
+        <span class="text-slate-200 font-medium">{providerNames[service.provider] ?? service.provider}</span>
         <span class="text-white/20">•</span>
         <span class="font-mono text-[10px]">{service.region}</span>
         <span class="text-white/20">•</span>
@@ -114,17 +114,17 @@
   </div>
 
   <!-- Center & Right: URL, Metrics, Actions -->
-  <div class="flex items-center gap-3 text-tx-meta shrink-0 justify-between md:justify-end flex-wrap sm:flex-nowrap">
-    <!-- Tunnel / Endpoint Preview (Pill-Shaped with Neon Cyan Glow) -->
+  <div class="flex items-center gap-3 text-[#94a3b8] shrink-0 justify-between md:justify-end flex-wrap sm:flex-nowrap">
+    <!-- Tunnel / Endpoint Preview -->
     {#if service.tunnelUrl}
       <button
         onclick={() => handleCopy(service.tunnelUrl!)}
-        class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] hover:border-[#00f2fe]/60 text-tx-header transition-all font-mono text-[11px] max-w-[200px] truncate shadow-[0_0_12px_rgba(0,242,254,0.15)]"
+        class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] hover:border-white/20 text-white transition-all font-mono text-[11px] max-w-[200px] truncate shadow-sm"
         title="Click to copy preview tunnel URL"
       >
         <Icons name="radio" size={12} class="shrink-0 text-[#00f2fe]" />
         <span class="truncate">{service.tunnelUrl.replace('https://', '')}</span>
-        <Icons name={copied ? 'check' : 'copy'} size={11} class="shrink-0 ml-1 text-tx-meta" />
+        <Icons name={copied ? 'check' : 'copy'} size={11} class="shrink-0 ml-1 text-[#94a3b8]" />
       </button>
     {:else if service.endpointUrl}
       <span class="font-mono text-[11px] text-tx-meta max-w-[180px] truncate" title={service.endpointUrl}>
@@ -239,7 +239,10 @@
           ></button>
 
           <div
-            class="absolute right-0 top-9 bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] p-2 z-50 w-48 animate-in fade-in zoom-in-95 duration-100 text-xs space-y-0.5"
+            role="menu"
+            tabindex="-1"
+            onmouseleave={() => (showMenu = false)}
+            class="absolute right-0 top-9 bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 p-1.5 z-50 w-48 animate-in fade-in zoom-in-95 duration-100 text-xs space-y-0.5"
           >
             {#if service.tunnelUrl}
               <button

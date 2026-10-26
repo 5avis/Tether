@@ -49,12 +49,12 @@ DEBUG=false
     aria-modal="true"
   >
     <div
-      class="w-full max-w-lg bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] overflow-hidden text-xs select-none"
+      class="w-full max-w-lg bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 overflow-hidden text-xs select-none"
     >
       <!-- Modal Header -->
       <div class="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#8b5cf6] shadow-[0_0_12px_rgba(139,92,246,0.3)]">
+          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#8b5cf6]">
             <Icons name="key" size={14} />
           </div>
           <div>
@@ -99,22 +99,22 @@ DEBUG=false
           </span>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div class="flex items-center gap-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
-              <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
               <span class="text-white font-medium">Fly.io Secrets</span>
               <span class="text-[10px] text-[#94a3b8] font-mono ml-auto">API</span>
             </div>
             <div class="flex items-center gap-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
-              <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
               <span class="text-white font-medium">Cloudflare Workers</span>
               <span class="text-[10px] text-[#94a3b8] font-mono ml-auto">Edge</span>
             </div>
             <div class="flex items-center gap-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
-              <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
               <span class="text-white font-medium">Render Web Services</span>
               <span class="text-[10px] text-[#94a3b8] font-mono ml-auto">Container</span>
             </div>
             <div class="flex items-center gap-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
-              <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
               <span class="text-white font-medium">Supabase / Neon Env</span>
               <span class="text-[10px] text-[#94a3b8] font-mono ml-auto">DB Pool</span>
             </div>
@@ -136,7 +136,7 @@ DEBUG=false
               type="button"
               onclick={handleConfirm}
               disabled={isSyncing || parsedKeys.length === 0}
-              class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent active:scale-[0.98] disabled:opacity-40 flex items-center gap-2 text-xs"
+              class="px-5 py-2.5 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold shadow-sm transition-all border border-white/10 active:scale-[0.98] disabled:opacity-40 flex items-center gap-2 text-xs"
             >
               {#if isSyncing}
                 <Icons name="refresh" size={12} class="animate-spin" />

@@ -109,12 +109,12 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] text-xs select-none relative overflow-hidden"
+      class="w-full max-w-md bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 text-xs select-none relative overflow-hidden"
     >
       <!-- Modal Header -->
       <div class="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shadow-[0_0_12px_rgba(139,92,246,0.3)]">
+          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
             <Icons name="plus" size={14} class="text-[#8b5cf6]" strokeWidth={2.5} />
           </div>
           <div>
@@ -171,7 +171,12 @@
                 aria-label="Close menu"
               ></button>
 
-              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-2xl shadow-[0_0_30px_rgba(139,92,246,0.25)] p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+              <div
+                role="menu"
+                tabindex="-1"
+                onmouseleave={() => (openDropdown = null)}
+                class="absolute top-full left-0 right-0 mt-1.5 bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs"
+              >
                 {#each providerOptions as opt}
                   <button
                     type="button"
@@ -214,7 +219,12 @@
                 aria-label="Close menu"
               ></button>
 
-              <div class="absolute top-full left-0 right-0 mt-1.5 bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-2xl shadow-[0_0_30px_rgba(139,92,246,0.25)] p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs">
+              <div
+                role="menu"
+                tabindex="-1"
+                onmouseleave={() => (openDropdown = null)}
+                class="absolute top-full left-0 right-0 mt-1.5 bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-xs"
+              >
                 {#each environmentOptions as opt}
                   <button
                     type="button"
@@ -304,7 +314,7 @@
                   : 'bg-rose-500/10 text-rose-400 border-rose-500/30'}"
               >
                 <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full {verifyResult.valid ? 'bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]' : 'bg-rose-400 animate-ping'}"></span>
+                  <span class="w-2 h-2 rounded-full {verifyResult.valid ? 'bg-[#10b981]' : 'bg-rose-400 animate-ping'}"></span>
                   <span class="font-medium">{verifyResult.message}</span>
                 </div>
                 {#if verifyResult.details}
@@ -326,7 +336,7 @@
           </button>
           <button
             type="submit"
-            class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent active:scale-[0.98] text-xs"
+            class="px-5 py-2.5 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold shadow-sm transition-all border border-white/10 active:scale-[0.98] text-xs"
           >
             Add Target
           </button>

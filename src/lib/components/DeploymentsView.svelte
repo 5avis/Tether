@@ -61,13 +61,13 @@
         <div class="flex items-center gap-2 flex-wrap">
           <h1 class="text-base font-semibold text-white tracking-tight">Deployments</h1>
           {#if isDeploying}
-            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-[#ec4899]/15 text-[#ec4899] border border-[#ec4899]/40 flex items-center gap-1.5 shadow-[0_0_12px_rgba(236,72,153,0.3)] animate-pulse">
+            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-[#ec4899]/15 text-[#ec4899] border border-[#ec4899]/40 flex items-center gap-1.5 animate-pulse">
               <span class="w-1.5 h-1.5 rounded-full bg-[#ec4899]"></span>
               Deploying
             </span>
           {:else}
             <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-white/[0.05] text-[#94a3b8] border border-white/[0.08] flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
               Ready
             </span>
           {/if}
@@ -81,7 +81,7 @@
       <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
         <button
           onclick={onAddTarget}
-          class="px-4 py-2 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-medium text-xs shadow-[0_0_20px_rgba(139,92,246,0.35)] flex items-center gap-2 active:scale-[0.98] transition-all"
+          class="px-4 py-2 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium text-xs shadow-sm flex items-center gap-2 active:scale-[0.98] transition-all border border-white/10"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>New Deployment</span>
@@ -98,7 +98,7 @@
         <button
           onclick={onDeployAll}
           disabled={isDeploying || deployableTargets.length === 0}
-          class="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-white font-medium text-xs shadow-sm transition-all border border-white/[0.08] hover:border-[#8b5cf6]/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.2)] flex items-center gap-2 disabled:opacity-40 active:scale-[0.98]"
+          class="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-white font-medium text-xs shadow-sm transition-all border border-white/[0.08] hover:border-white/20 flex items-center gap-2 disabled:opacity-40 active:scale-[0.98]"
         >
           <Icons name="rocket" size={13} class={isDeploying ? 'animate-bounce text-[#ec4899]' : 'text-[#8b5cf6]'} />
           <span>{isDeploying ? 'Deploying...' : 'Deploy All'}</span>
@@ -117,17 +117,17 @@
 
       {#each deployableTargets as s (s.id)}
         {@const job = getJob(s.id)}
-        <div class="group mx-1 my-2.5 p-4 rounded-3xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+        <div class="group mx-1 my-2.5 p-4 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.07] hover:border-white/[0.15] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 shadow-sm">
           <!-- Left: Service identity & provider badge -->
           <div class="flex items-center gap-3.5 min-w-0 sm:w-64 shrink-0">
             <!-- Status icon dot -->
             <div class="relative flex items-center justify-center shrink-0 w-4 h-4">
               {#if job.status === 'live'}
-                <span class="w-2.5 h-2.5 rounded-full bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
               {:else if job.status === 'deploying'}
-                <span class="w-2.5 h-2.5 rounded-full bg-[#ec4899] shadow-[0_0_8px_#ec4899] animate-ping"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#ec4899] animate-ping"></span>
               {:else if job.status === 'building'}
-                <span class="w-2.5 h-2.5 rounded-full bg-[#ff5e62] shadow-[0_0_8px_#ff5e62] animate-pulse"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#ff5e62] animate-pulse"></span>
               {:else}
                 <span class="w-2 rounded-full bg-white/20"></span>
               {/if}
@@ -200,7 +200,7 @@
             <button
               onclick={() => onDeploySingle(s)}
               disabled={isDeploying || job.status === 'building' || job.status === 'deploying'}
-              class="px-4 py-1.5 rounded-full bg-white/[0.04] hover:bg-gradient-to-r hover:from-[#8b5cf6] hover:to-[#ec4899] text-white border border-white/[0.08] hover:border-transparent font-medium text-xs flex items-center gap-1.5 transition-all active:scale-[0.98] disabled:opacity-40 shadow-[0_0_12px_rgba(139,92,246,0.15)]"
+              class="px-4 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/[0.08] hover:border-white/20 font-medium text-xs flex items-center gap-1.5 transition-all active:scale-[0.98] disabled:opacity-40 shadow-sm"
             >
               <Icons name="rocket" size={12} class="text-[#8b5cf6]" />
               <span>Deploy</span>
@@ -211,7 +211,7 @@
     {:else}
       <!-- Empty State -->
       <div class="h-64 flex flex-col items-center justify-center p-8 text-center select-none animate-in fade-in duration-200">
-        <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-3 text-[#ec4899] shadow-[0_0_20px_rgba(236,72,153,0.25)]">
+        <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-3 text-[#ec4899]">
           <Icons name="rocket" size={24} />
         </div>
         <h3 class="text-sm font-semibold text-white mb-1 tracking-tight">No deployable targets</h3>
@@ -220,7 +220,7 @@
         </p>
         <button
           onclick={onAddTarget}
-          class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white text-xs font-semibold shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent active:scale-[0.98] flex items-center gap-2"
+          class="px-5 py-2.5 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-xs font-semibold shadow-sm transition-all border border-white/10 active:scale-[0.98] flex items-center gap-2"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>Create New Deployment</span>

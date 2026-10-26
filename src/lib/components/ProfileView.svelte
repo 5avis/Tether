@@ -93,7 +93,7 @@
         <div class="flex items-center gap-2.5 flex-wrap">
           <h1 class="text-base font-semibold text-white tracking-tight">Profile</h1>
           <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-white/[0.05] text-[#94a3b8] border border-white/[0.08] flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full {profile?.signed_in ? 'bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]' : 'bg-white/20'}"></span>
+            <span class="w-1.5 h-1.5 rounded-full {profile?.signed_in ? 'bg-[#00f2fe]' : 'bg-white/20'}"></span>
             {profile?.signed_in ? (isAdmin ? 'Admin' : 'Member') : 'Guest'}
           </span>
         </div>
@@ -113,18 +113,18 @@
   <!-- Content Deck -->
   <div class="p-4 sm:p-6 max-w-4xl mx-auto w-full space-y-4">
     <!-- Hero Identity Card -->
-    <div class="p-5 sm:p-6 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] shadow-[0_0_20px_rgba(139,92,246,0.15)] flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+    <div class="p-5 sm:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.08] shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-5">
       <div class="flex items-center gap-4 min-w-0">
         <!-- Avatar -->
         {#if profile?.picture}
           <img
             src={profile.picture}
             alt={profile.name}
-            class="w-14 h-14 rounded-full object-cover border-2 {isAdmin ? 'border-[#8b5cf6] shadow-[0_0_15px_rgba(139,92,246,0.4)]' : 'border-white/[0.1]'} shadow-sm shrink-0"
+            class="w-14 h-14 rounded-full object-cover border-2 {isAdmin ? 'border-[#8b5cf6]' : 'border-white/[0.1]'} shadow-sm shrink-0"
           />
         {:else}
           <div
-            class="w-14 h-14 rounded-full bg-white/[0.05] border-2 {isAdmin ? 'border-[#8b5cf6] text-[#8b5cf6] shadow-[0_0_15px_rgba(139,92,246,0.25)]' : 'border-white/[0.1] text-white'} flex items-center justify-center font-bold text-lg shadow-sm shrink-0"
+            class="w-14 h-14 rounded-full bg-white/[0.05] border-2 {isAdmin ? 'border-[#8b5cf6] text-[#8b5cf6]' : 'border-white/[0.1] text-white'} flex items-center justify-center font-bold text-lg shadow-sm shrink-0"
           >
             {profile?.name ? profile.name.charAt(0).toUpperCase() : 'S'}
           </div>
@@ -138,7 +138,7 @@
 
             {#if profile?.signed_in}
               {#if isAdmin}
-                <span class="px-3 py-0.5 rounded-full text-[10px] font-mono bg-[#8b5cf6]/15 text-[#8b5cf6] border border-[#8b5cf6]/30 flex items-center gap-1.5 font-semibold shadow-[0_0_8px_rgba(139,92,246,0.25)]">
+                <span class="px-3 py-0.5 rounded-full text-[10px] font-mono bg-[#8b5cf6]/15 text-[#8b5cf6] border border-[#8b5cf6]/30 flex items-center gap-1.5 font-semibold">
                   <Icons name="crown" size={11} class="text-[#8b5cf6]" />
                   Admin
                 </span>
@@ -185,7 +185,7 @@
           <button
             onclick={handleGoogleSignIn}
             disabled={isAuthenticating}
-            class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold text-xs shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent flex items-center gap-2 active:scale-[0.98] disabled:opacity-50"
+            class="px-6 py-2.5 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold text-xs shadow-sm transition-all border border-transparent flex items-center gap-2 active:scale-[0.98] disabled:opacity-50"
           >
             {#if isAuthenticating}
               <Icons name="refresh" size={13} class="animate-spin" />
@@ -346,7 +346,7 @@
 
       <button
         onclick={handleExportBackup}
-        class="px-5 py-2 rounded-full bg-white/[0.04] hover:bg-gradient-to-r hover:from-[#8b5cf6] hover:to-[#ec4899] text-white border border-white/[0.08] hover:border-transparent font-medium text-xs transition-all active:scale-[0.98] flex items-center gap-2 shrink-0 shadow-[0_0_12px_rgba(139,92,246,0.15)]"
+        class="px-5 py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/[0.08] hover:border-white/[0.15] font-medium text-xs transition-all active:scale-[0.98] flex items-center gap-2 shrink-0 shadow-sm"
       >
         <Icons name="copy" size={13} class="text-[#00f2fe]" />
         <span>Export Config</span>

@@ -57,7 +57,7 @@
 </script>
 
 <aside
-  class="{isCollapsed ? 'w-14' : 'w-[245px]'} shrink-0 h-full bg-[#0b0d19]/80 backdrop-blur-xl border-r border-white/[0.08] flex flex-col justify-between select-none font-sans z-40 text-xs transition-all duration-200"
+  class="{isCollapsed ? 'w-14' : 'w-[245px]'} shrink-0 h-full bg-[#0e111a] border-r border-white/[0.08] flex flex-col justify-between select-none font-sans z-40 text-xs transition-all duration-200"
 >
   <!-- Top Section: Standard Profile Header & Primary Action Button -->
   <div class="p-2.5 pb-2 flex flex-col gap-2.5">
@@ -67,19 +67,19 @@
         <div class="flex items-center gap-1.5 w-full">
           <button
             onclick={() => (showWorkspaceMenu = !showWorkspaceMenu)}
-            class="flex-1 flex items-center justify-between p-2 px-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/20 transition-all text-left shadow-subtle group backdrop-blur-md"
+            class="flex-1 flex items-center justify-between p-2 px-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/20 transition-all text-left shadow-sm group"
             title="Switch Project"
           >
             <div class="flex items-center gap-2 min-w-0">
               <span
-                class="w-2.5 h-2.5 rounded-full shrink-0 ring-2 ring-white/10 shadow-[0_0_8px_#8b5cf6]"
+                class="w-2.5 h-2.5 rounded-full shrink-0 ring-1 ring-white/20"
                 style="background-color: {currentWorkspace?.color || '#8b5cf6'};"
               ></span>
               <div class="min-w-0 flex flex-col">
-                <span class="text-xs font-semibold text-tx-header truncate">
+                <span class="text-xs font-semibold text-white truncate">
                   {currentWorkspace?.name ?? 'Main Project'}
                 </span>
-                <span class="text-[10px] text-tx-meta font-mono truncate">
+                <span class="text-[10px] text-[#94a3b8] font-mono truncate">
                   {currentWorkspace?.servicesCount ?? 0} active targets
                 </span>
               </div>
@@ -87,14 +87,14 @@
             <Icons
               name="chevron-down"
               size={11}
-              class="text-tx-meta group-hover:text-tx-body transition-transform duration-150 {showWorkspaceMenu ? 'rotate-180' : ''}"
+              class="text-[#94a3b8] group-hover:text-white transition-transform duration-150 {showWorkspaceMenu ? 'rotate-180' : ''}"
             />
           </button>
 
           {#if currentWorkspace}
             <button
               onclick={() => onEditProject(currentWorkspace)}
-              class="w-8 h-8 rounded-full bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/20 text-tx-meta hover:text-tx-header transition-all shadow-subtle shrink-0 flex items-center justify-center"
+              class="w-8 h-8 rounded-full bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/20 text-[#94a3b8] hover:text-white transition-all shadow-sm shrink-0 flex items-center justify-center"
               title="Edit project settings"
               aria-label="Edit Project"
             >
@@ -103,7 +103,7 @@
           {/if}
         </div>
 
-        <!-- Dropdown for Switching Workspaces with Backdrop -->
+        <!-- Dropdown for Switching Workspaces with Auto-Dismiss on Mouse Leave -->
         {#if showWorkspaceMenu}
           <button
             type="button"
@@ -113,9 +113,12 @@
           ></button>
 
           <div
-            class="absolute top-12 left-0 right-0 bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] p-2 z-50 animate-in fade-in zoom-in-95 duration-100"
+            role="menu"
+            tabindex="-1"
+            onmouseleave={() => (showWorkspaceMenu = false)}
+            class="absolute top-12 left-0 right-0 bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 p-2 z-50 animate-in fade-in zoom-in-95 duration-100"
           >
-            <div class="px-3 py-1.5 text-[10px] uppercase font-mono text-tx-meta tracking-wider flex items-center justify-between">
+            <div class="px-3 py-1.5 text-[10px] uppercase font-mono text-[#94a3b8] tracking-wider flex items-center justify-between">
               <span>All Projects</span>
               <span class="text-[9px] text-[#00f2fe] font-mono font-semibold">{workspaces.length} total</span>
             </div>
@@ -129,8 +132,8 @@
                     showWorkspaceMenu = false;
                   }}
                   class="w-full flex items-center justify-between px-3 py-1.5 rounded-full hover:bg-white/[0.06] text-left transition-colors {isWsActive
-                    ? 'bg-[#8b5cf6]/20 text-white font-medium border border-[#8b5cf6]/50 shadow-[0_0_12px_rgba(139,92,246,0.2)]'
-                    : 'text-tx-body hover:text-tx-header border border-transparent'}"
+                    ? 'bg-white/[0.1] text-white font-medium border border-white/20'
+                    : 'text-[#94a3b8] hover:text-white border border-transparent'}"
                 >
                   <div class="flex items-center gap-2 min-w-0">
                     <span
@@ -139,7 +142,7 @@
                     ></span>
                     <span class="truncate">{ws.name}</span>
                   </div>
-                  <span class="text-[10px] text-tx-meta font-mono px-2 py-0.2 rounded-full bg-white/[0.04] border border-white/[0.08] shrink-0">
+                  <span class="text-[10px] text-[#94a3b8] font-mono px-2 py-0.2 rounded-full bg-white/[0.04] border border-white/[0.08] shrink-0">
                     {ws.servicesCount}
                   </span>
                 </button>
@@ -153,7 +156,7 @@
                   showWorkspaceMenu = false;
                   onNewProject();
                 }}
-                class="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-[#8b5cf6]/20 hover:bg-[#8b5cf6]/30 text-[#00f2fe] font-medium text-xs border border-[#8b5cf6]/40 transition-all shadow-[0_0_15px_rgba(0,242,254,0.15)]"
+                class="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white font-medium text-xs border border-white/10 transition-all shadow-sm"
               >
                 <Icons name="plus" size={12} strokeWidth={2.5} />
                 <span>Create New Project</span>
@@ -163,10 +166,10 @@
         {/if}
       </div>
 
-      <!-- Primary Action: Pill-shaped neon gradient button -->
+      <!-- Primary Action: Clean Desktop Button -->
       <button
         onclick={onAddService}
-        class="w-full py-2 px-3 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-medium text-xs flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all active:scale-[0.98] border border-white/20"
+        class="w-full py-2 px-3 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] border border-white/10"
       >
         <Icons name="plus" size={13} strokeWidth={2.5} />
         <span>Add Target</span>
@@ -176,7 +179,7 @@
       <div class="flex flex-col items-center gap-2">
         <button
           onclick={onAddService}
-          class="w-9 h-9 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] text-white flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.35)] transition-all border border-white/20 active:scale-[0.95]"
+          class="w-9 h-9 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white flex items-center justify-center shadow-sm transition-all border border-white/10 active:scale-[0.95]"
           title="Add Target"
         >
           <Icons name="plus" size={14} strokeWidth={2.5} />
@@ -194,15 +197,15 @@
         <button
           onclick={() => onSelectNav(item.id)}
           class="w-full flex items-center {isCollapsed ? 'justify-center p-2 rounded-full' : 'justify-between px-3 py-2 rounded-full'} text-xs transition-all {isActive
-            ? 'bg-gradient-to-r from-[#8b5cf6]/25 to-[#00f2fe]/10 text-white font-medium border border-[#8b5cf6]/50 shadow-[0_0_18px_rgba(139,92,246,0.25)]'
-            : 'text-tx-meta hover:text-tx-header hover:bg-white/[0.04] border border-transparent'}"
+            ? 'bg-white/[0.08] text-white font-medium border border-white/[0.12] shadow-sm'
+            : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.04] border border-transparent'}"
           title={isCollapsed ? item.label : undefined}
         >
           <div class="flex items-center gap-2.5">
             <Icons
               name={item.icon}
               size={15}
-              class={isActive ? 'text-[#00f2fe]' : 'text-tx-meta group-hover:text-tx-body'}
+              class={isActive ? 'text-[#00f2fe]' : 'text-[#94a3b8] group-hover:text-white'}
             />
             {#if !isCollapsed}
               <span>{item.label}</span>
@@ -212,8 +215,8 @@
           {#if !isCollapsed && item.count !== undefined}
             <span
               class="px-2 py-0.5 rounded-full text-[10px] font-mono {isActive
-                ? 'bg-[#8b5cf6]/30 text-[#00f2fe] font-semibold border border-[#8b5cf6]/40'
-                : 'bg-white/[0.04] text-tx-meta border border-white/[0.08]'}"
+                ? 'bg-white/[0.1] text-white font-semibold border border-white/20'
+                : 'bg-white/[0.04] text-[#94a3b8] border border-white/[0.08]'}"
             >
               {item.count}
             </span>
@@ -225,10 +228,10 @@
     <!-- Section: Workspaces / Projects (Hidden when collapsed) -->
     {#if !isCollapsed}
       <div class="pt-2.5 border-t border-white/[0.08]">
-        <div class="flex items-center justify-between px-3 py-1 text-tx-meta">
+        <div class="flex items-center justify-between px-3 py-1 text-[#94a3b8]">
           <button
             onclick={() => (isProjectsCollapsed = !isProjectsCollapsed)}
-            class="flex items-center gap-1.5 text-[10px] font-medium tracking-wider uppercase font-mono hover:text-tx-body transition-colors"
+            class="flex items-center gap-1.5 text-[10px] font-medium tracking-wider uppercase font-mono hover:text-white transition-colors"
           >
             <Icons
               name="chevron-down"
@@ -240,7 +243,7 @@
 
           <button
             onclick={onNewProject}
-            class="w-6 h-6 rounded-full flex items-center justify-center text-tx-meta hover:text-[#00f2fe] hover:bg-white/[0.06] transition-colors"
+            class="w-6 h-6 rounded-full flex items-center justify-center text-[#94a3b8] hover:text-[#00f2fe] hover:bg-white/[0.06] transition-colors"
             title="Create New Project"
             aria-label="New Project"
           >
@@ -256,8 +259,8 @@
                 <button
                   onclick={() => onSelectWorkspace(ws.id)}
                   class="flex-1 flex items-center justify-between px-3 py-1.5 rounded-full text-xs transition-colors {isWsActive
-                    ? 'bg-white/[0.06] text-tx-header font-medium border border-white/[0.12] shadow-subtle'
-                    : 'text-tx-body hover:text-tx-header hover:bg-white/[0.03] border border-transparent'}"
+                    ? 'bg-white/[0.06] text-white font-medium border border-white/[0.12] shadow-sm'
+                    : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.03] border border-transparent'}"
                 >
                   <div class="flex items-center gap-2 min-w-0">
                     <span
@@ -266,12 +269,12 @@
                     ></span>
                     <span class="truncate">{ws.name}</span>
                   </div>
-                  <span class="text-[10px] text-tx-meta font-mono">{ws.servicesCount}</span>
+                  <span class="text-[10px] text-[#94a3b8] font-mono">{ws.servicesCount}</span>
                 </button>
 
                 <button
                   onclick={() => onEditProject(ws)}
-                  class="opacity-0 group-hover:opacity-100 w-6 h-6 rounded-full flex items-center justify-center text-tx-meta hover:text-tx-header hover:bg-white/[0.06] transition-all shrink-0"
+                  class="opacity-0 group-hover:opacity-100 w-6 h-6 rounded-full flex items-center justify-center text-[#94a3b8] hover:text-white hover:bg-white/[0.06] transition-all shrink-0"
                   title="Project settings"
                   aria-label="Project Settings"
                 >
@@ -287,15 +290,15 @@
 
   <!-- Bottom Footer -->
   <div class="border-t border-white/[0.08]">
-    <div class="p-3 flex items-center {isCollapsed ? 'justify-center' : 'justify-between'} text-[11px] text-tx-meta">
+    <div class="p-3 flex items-center {isCollapsed ? 'justify-center' : 'justify-between'} text-[11px] text-[#94a3b8]">
       {#if !isCollapsed}
         <span class="font-mono text-[10px]">Tether v0.1</span>
-        <span class="text-[#00f2fe] font-mono text-[10px] flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+        <span class="text-slate-300 font-mono text-[10px] flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
           Local-First
         </span>
       {:else}
-        <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]" title="Tether Local-First"></span>
+        <span class="w-2 h-2 rounded-full bg-[#10b981]" title="Tether Local-First"></span>
       {/if}
     </div>
   </div>

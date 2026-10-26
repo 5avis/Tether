@@ -98,12 +98,12 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] text-xs select-none relative overflow-hidden"
+      class="w-full max-w-md bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 text-xs select-none relative overflow-hidden"
     >
       <!-- Modal Header -->
       <div class="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#8b5cf6] shadow-[0_0_12px_rgba(139,92,246,0.3)]">
+          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#8b5cf6]">
             <Icons name="key" size={14} />
           </div>
           <div>
@@ -181,7 +181,7 @@
           <button
             type="submit"
             disabled={isSaving || !apiKey}
-            class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent active:scale-[0.98] disabled:opacity-40 flex items-center gap-1.5 text-xs"
+            class="px-5 py-2.5 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold shadow-sm transition-all border border-white/10 active:scale-[0.98] disabled:opacity-40 flex items-center gap-1.5 text-xs"
           >
             {#if isSaving}
               <Icons name="refresh" size={12} class="animate-spin" />

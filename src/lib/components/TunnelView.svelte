@@ -82,7 +82,7 @@
           <h1 class="text-base font-semibold text-white tracking-tight">Tunnels</h1>
           {#if cloudflared.installed}
             <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-white/[0.05] text-[#94a3b8] border border-white/[0.08] flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
               cloudflared
             </span>
           {:else}
@@ -97,8 +97,8 @@
       </div>
 
       <!-- Quick Launch Box -->
-      <div class="flex items-center gap-2 p-1.5 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/[0.08] shadow-subtle flex-wrap sm:flex-nowrap">
-        <div class="flex items-center bg-white/[0.04] rounded-full border border-white/[0.08] focus-within:border-[#00f2fe]/60 px-3.5 py-1.5 transition-colors">
+      <div class="flex items-center gap-2 p-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-sm flex-wrap sm:flex-nowrap">
+        <div class="flex items-center bg-white/[0.04] rounded-full border border-white/[0.08] focus-within:border-white/20 px-3.5 py-1.5 transition-colors">
           <span class="text-[#94a3b8] font-mono text-xs">localhost:</span>
           <input
             type="number"
@@ -113,7 +113,7 @@
         <button
           onclick={handleStart}
           disabled={isLaunching}
-          class="px-5 py-2 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold text-xs shadow-[0_0_20px_rgba(139,92,246,0.35)] flex items-center gap-2 disabled:opacity-50 active:scale-[0.98] shrink-0 transition-all"
+          class="px-5 py-2 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold text-xs shadow-sm flex items-center gap-2 disabled:opacity-50 active:scale-[0.98] shrink-0 transition-all border border-white/10"
         >
           {#if isLaunching}
             <Icons name="refresh" size={13} class="animate-spin" />
@@ -137,7 +137,7 @@
 
       {#each tunnels as tun (tun.id)}
         <div
-          class="group mx-1 my-2.5 p-4 rounded-3xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3.5"
+          class="group mx-1 my-2.5 p-4 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.07] hover:border-white/[0.15] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 shadow-sm"
         >
           <!-- Left: Circular status indicator & Port info -->
           <div class="flex items-center gap-3.5 min-w-0">
@@ -145,7 +145,7 @@
             <div class="relative flex items-center justify-center shrink-0 w-4 h-4">
               <span
                 class="w-2.5 h-2.5 rounded-full {tun.status === 'running'
-                  ? 'bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]'
+                  ? 'bg-[#10b981]'
                   : 'bg-[#ff5e62]'} transition-transform group-hover:scale-110"
               ></span>
               {#if tun.status === 'running'}
@@ -231,7 +231,7 @@
     {:else}
       <!-- Empty State -->
       <div class="h-64 flex flex-col items-center justify-center p-8 text-center select-none animate-in fade-in duration-200">
-        <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-3 text-[#00f2fe] shadow-[0_0_20px_rgba(0,242,254,0.25)]">
+        <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-3 text-[#00f2fe]">
           <Icons name="radio" size={24} />
         </div>
         <h3 class="text-sm font-semibold text-white mb-1 tracking-tight">No active preview tunnels</h3>
@@ -243,7 +243,7 @@
             newPort = 3000;
             handleStart();
           }}
-          class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white text-xs font-semibold shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent active:scale-[0.98] flex items-center gap-2"
+          class="px-5 py-2.5 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-xs font-semibold shadow-sm transition-all border border-white/10 active:scale-[0.98] flex items-center gap-2"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>Launch Tunnel on :3000</span>

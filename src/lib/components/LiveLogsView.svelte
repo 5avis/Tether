@@ -52,10 +52,10 @@
 
 <div class="flex-1 flex flex-col min-h-0 bg-[#0b0d19] font-mono text-xs select-none">
   <!-- Top Log Toolbar -->
-  <div class="min-h-[48px] py-2 px-4 border-b border-white/[0.08] bg-[#0b0d19]/80 backdrop-blur-xl flex flex-wrap items-center justify-between gap-2.5 text-xs">
+  <div class="min-h-[48px] py-2 px-4 border-b border-white/[0.08] bg-[#0e111a] flex flex-wrap items-center justify-between gap-2.5 text-xs">
     <div class="flex items-center gap-3 flex-wrap">
       <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_8px_#00f2fe] animate-ping"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
         <span class="font-sans font-semibold text-white text-xs">Logs</span>
       </div>
 
@@ -80,7 +80,12 @@
             aria-label="Close menu"
           ></button>
 
-          <div class="absolute top-9 left-0 min-w-[200px] bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-2xl shadow-[0_0_30px_rgba(139,92,246,0.25)] p-1.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-100">
+          <div
+            role="menu"
+            tabindex="-1"
+            onmouseleave={() => (isFilterOpen = false)}
+            class="absolute top-9 left-0 min-w-[200px] bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 p-1.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-100"
+          >
             {#each providerFilterOptions as opt}
               <button
                 onclick={() => {

@@ -83,7 +83,7 @@
         <div class="flex items-center gap-2 flex-wrap">
           <h1 class="text-base font-semibold text-white tracking-tight">Watchdog</h1>
           {#if criticalCount > 0}
-            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-[#ec4899]/15 text-[#ec4899] border border-[#ec4899]/40 flex items-center gap-1.5 shadow-[0_0_12px_rgba(236,72,153,0.3)] animate-pulse">
+            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-[#ec4899]/15 text-[#ec4899] border border-[#ec4899]/40 flex items-center gap-1.5 animate-pulse">
               <span class="w-1.5 h-1.5 rounded-full bg-[#ec4899]"></span>
               {criticalCount} pause impending
             </span>
@@ -93,8 +93,8 @@
               {warningCount} approaching dormancy
             </span>
           {:else}
-            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-[#00f2fe]/10 text-[#00f2fe] border border-[#00f2fe]/30 flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-white/[0.05] text-[#94a3b8] border border-white/[0.08] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
               All databases active & safe
             </span>
           {/if}
@@ -114,14 +114,14 @@
             }}
             class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-xs transition-colors"
           >
-            <span class="w-2 h-2 rounded-full {autoGuardEnabled ? 'bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]' : 'bg-white/20'}"></span>
+            <span class="w-2 h-2 rounded-full {autoGuardEnabled ? 'bg-[#10b981]' : 'bg-white/20'}"></span>
             <span class="text-slate-200">Auto-Guard: {autoGuardEnabled ? 'ON' : 'OFF'}</span>
           </button>
 
           <button
             onclick={handleAll}
             disabled={isPingingAll}
-            class="px-5 py-2 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold text-xs shadow-[0_0_20px_rgba(139,92,246,0.35)] flex items-center gap-2 disabled:opacity-50 active:scale-[0.98] transition-all"
+            class="px-5 py-2 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold text-xs shadow-sm flex items-center gap-2 disabled:opacity-50 active:scale-[0.98] transition-all border border-white/10"
           >
             <Icons name="power" size={13} class={isPingingAll ? 'animate-spin' : ''} />
             <span>Keep-Alive All</span>
@@ -134,7 +134,7 @@
 
     <!-- Metrics Cards -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <div class="p-3.5 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col justify-between">
+      <div class="p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.07] hover:border-white/[0.15] transition-all flex flex-col justify-between shadow-sm">
         <div class="flex items-center justify-between text-[#94a3b8] text-xs">
           <span class="font-medium text-slate-200">Compute Pool</span>
           <div class="w-6 h-6 rounded-full bg-white/[0.04] flex items-center justify-center text-[#ff5e62]">
@@ -147,7 +147,7 @@
         </div>
       </div>
 
-      <div class="p-3.5 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col justify-between">
+      <div class="p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.07] hover:border-white/[0.15] transition-all flex flex-col justify-between shadow-sm">
         <div class="flex items-center justify-between text-[#94a3b8] text-xs">
           <span class="font-medium text-slate-200">Inactivity Threshold</span>
           <div class="w-6 h-6 rounded-full bg-white/[0.04] flex items-center justify-center text-[#00f2fe]">
@@ -160,7 +160,7 @@
         </div>
       </div>
 
-      <div class="p-3.5 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col justify-between">
+      <div class="p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.07] hover:border-white/[0.15] transition-all flex flex-col justify-between shadow-sm">
         <div class="flex items-center justify-between text-[#94a3b8] text-xs">
           <span class="font-medium text-slate-200">Databases</span>
           <div class="w-6 h-6 rounded-full bg-white/[0.04] flex items-center justify-center text-[#8b5cf6]">
@@ -173,10 +173,10 @@
         </div>
       </div>
 
-      <div class="p-3.5 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col justify-between">
+      <div class="p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.07] hover:border-white/[0.15] transition-all flex flex-col justify-between shadow-sm">
         <div class="flex items-center justify-between text-[#94a3b8] text-xs">
           <span class="font-medium text-slate-200">Latency</span>
-          <div class="w-6 h-6 rounded-full bg-white/[0.04] flex items-center justify-center text-[#00f2fe]">
+          <div class="w-6 h-6 rounded-full bg-white/[0.04] flex items-center justify-center text-[#10b981]">
             <Icons name="check" size={12} />
           </div>
         </div>
@@ -200,7 +200,7 @@
       {@const isCrit = hours <= 24}
       {@const isWarn = hours > 24 && hours <= 72}
       <div
-        class="group mx-1 my-2.5 p-4 rounded-3xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3.5"
+        class="group mx-1 my-2.5 p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.16] shadow-sm transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3.5"
       >
         <!-- Left: Task-style status dot & Service Metadata -->
         <div class="flex items-center gap-3.5 min-w-0">
@@ -208,10 +208,10 @@
           <div class="relative flex items-center justify-center shrink-0 w-4 h-4">
             <span
               class="w-2.5 h-2.5 rounded-full {isCrit
-                ? 'bg-[#ec4899] shadow-[0_0_8px_#ec4899]'
+                ? 'bg-[#ec4899]'
                 : isWarn
-                ? 'bg-[#ff5e62] shadow-[0_0_8px_#ff5e62]'
-                : 'bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]'} transition-transform group-hover:scale-110"
+                ? 'bg-[#ff5e62]'
+                : 'bg-[#00f2fe]'} transition-transform group-hover:scale-110"
             ></span>
             {#if isCrit}
               <span class="absolute w-4 h-4 rounded-full bg-[#ec4899]/30 animate-ping"></span>
@@ -240,7 +240,7 @@
           <!-- Inactivity Countdown Badge -->
           <div class="flex items-center gap-2">
             {#if isCrit}
-              <span class="px-3 py-1 rounded-full font-mono text-xs bg-[#ec4899]/15 text-[#ec4899] border border-[#ec4899]/30 font-semibold flex items-center gap-1.5 shadow-[0_0_10px_rgba(236,72,153,0.25)]">
+              <span class="px-3 py-1 rounded-full font-mono text-xs bg-[#ec4899]/15 text-[#ec4899] border border-[#ec4899]/30 font-semibold flex items-center gap-1.5">
                 <Icons name="power" size={11} class="text-[#ec4899]" />
                 <span>Pause in {hours}h!</span>
               </span>
@@ -276,7 +276,7 @@
             <button
               onclick={() => handleSinglePing(s)}
               disabled={pingingId === s.id}
-              class="px-4 py-1.5 rounded-full bg-white/[0.04] hover:bg-gradient-to-r hover:from-[#8b5cf6] hover:to-[#ec4899] text-white border border-white/[0.08] hover:border-transparent font-medium text-xs flex items-center gap-1.5 transition-all active:scale-[0.98] disabled:opacity-40 shrink-0 shadow-[0_0_12px_rgba(139,92,246,0.15)]"
+              class="px-4 py-1.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/[0.1] font-medium text-xs flex items-center gap-1.5 transition-all active:scale-[0.98] disabled:opacity-40 shrink-0"
               title="Execute query to reset inactivity pause countdown"
             >
               {#if pingingId === s.id}
@@ -292,8 +292,8 @@
       </div>
     {:else}
       <div class="h-64 flex flex-col items-center justify-center p-8 text-center select-none animate-in fade-in duration-200">
-        <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-3 text-[#ff5e62] shadow-[0_0_20px_rgba(255,94,98,0.25)]">
-          <Icons name="shield" size={24} />
+        <div class="w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-3 text-[#ff5e62]">
+          <Icons name="shield" size={22} />
         </div>
         <h3 class="text-sm font-semibold text-white mb-1 tracking-tight">No database targets found</h3>
         <p class="text-xs text-[#94a3b8] max-w-sm mb-4 leading-relaxed">

@@ -17,12 +17,12 @@
 
 {#if isOpen}
   <div
-    class="border-t border-white/[0.08] bg-[#0b0d19]/95 backdrop-blur-2xl text-xs font-mono select-none flex flex-col h-56 transition-all duration-200 z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.6)]"
+    class="border-t border-white/[0.08] bg-[#0e111a] text-xs font-mono select-none flex flex-col h-56 transition-all duration-200 z-30 shadow-2xl"
   >
     <!-- Drawer Header -->
-    <div class="h-9 px-4 bg-white/[0.03] backdrop-blur-md flex items-center justify-between border-b border-white/[0.08] select-none">
+    <div class="h-9 px-4 bg-white/[0.03] flex items-center justify-between border-b border-white/[0.08] select-none">
       <div class="flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe] animate-ping"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe]"></span>
         <span class="font-sans font-semibold text-white text-[11px]">Interleaved Log Drawer</span>
         <span class="text-[10px] text-[#94a3b8] font-mono">({logs.length} events)</span>
       </div>

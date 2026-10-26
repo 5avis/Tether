@@ -51,12 +51,12 @@
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] overflow-hidden text-xs select-none"
+      class="w-full max-w-md bg-[#151926] border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/80 overflow-hidden text-xs select-none"
     >
       <!-- Header -->
       <div class="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#8b5cf6] shadow-[0_0_12px_rgba(139,92,246,0.3)]">
+          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#8b5cf6]">
             <Icons name="google" size={14} />
           </div>
           <div>
@@ -86,7 +86,7 @@
               />
             {:else}
               <div
-                class="w-12 h-12 rounded-full bg-white/[0.05] border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] font-bold text-base shadow-[0_0_10px_rgba(139,92,246,0.2)]"
+                class="w-12 h-12 rounded-full bg-white/[0.05] border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] font-bold text-base"
               >
                 {profile.name.charAt(0).toUpperCase()}
               </div>
@@ -153,7 +153,7 @@
         {:else}
           <!-- Sign In State -->
           <div class="text-center py-2">
-            <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] mx-auto flex items-center justify-center text-[#8b5cf6] shadow-[0_0_20px_rgba(139,92,246,0.25)] mb-3">
+            <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] mx-auto flex items-center justify-center text-[#8b5cf6] mb-3">
               <Icons name="google" size={22} />
             </div>
             <h4 class="text-sm font-semibold text-white">Sign in to Tether with Google</h4>
@@ -168,7 +168,7 @@
               type="button"
               onclick={handleGoogleSignIn}
               disabled={isAuthenticating}
-              class="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold text-xs shadow-[0_0_20px_rgba(139,92,246,0.35)] flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 transition-all"
+              class="w-full py-2.5 px-4 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-semibold text-xs shadow-sm flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 transition-all"
             >
               {#if isAuthenticating}
                 <Icons name="refresh" size={13} class="animate-spin" />
