@@ -33,14 +33,14 @@
 
 <header
   data-tauri-drag-region
-  class="h-10 shrink-0 bg-surface border-b border-border-dim flex items-center justify-between px-3 select-none z-50 relative"
+  class="h-11 shrink-0 bg-[#0b0d19]/80 backdrop-blur-xl border-b border-white/[0.08] flex items-center justify-between px-3.5 select-none z-50 relative"
 >
   <!-- Left: Toggle Sidebar, Tether Brand & Breadcrumbs -->
   <div class="flex items-center gap-2.5 min-w-0">
     <!-- Sidebar collapse/expand toggle button -->
     <button
       onclick={onToggleSidebar}
-      class="p-1 rounded-md text-tx-meta hover:text-tx-header hover:bg-surface-elevated transition-colors"
+      class="p-1.5 rounded-full text-tx-meta hover:text-tx-header hover:bg-white/[0.06] transition-colors"
       title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
       aria-label="Toggle sidebar"
     >
@@ -54,16 +54,18 @@
       class="flex items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity"
       title="Go to Overview"
     >
-      <img
-        src="/tether-icon.svg"
-        alt="Tether"
-        class="w-5 h-5 object-contain shrink-0"
-      />
+      <div class="w-7 h-7 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center shadow-[0_0_12px_rgba(139,92,246,0.25)]">
+        <img
+          src="/tether-icon.svg"
+          alt="Tether"
+          class="w-4 h-4 object-contain"
+        />
+      </div>
       <span class="text-xs font-semibold tracking-wide text-tx-header">Tether</span>
-      <span class="text-[9px] px-1.5 py-0.2 rounded bg-surface-elevated text-tx-meta font-mono border border-border-dim hidden sm:inline">v0.1</span>
+      <span class="text-[9px] px-2 py-0.5 rounded-full bg-white/[0.04] text-tx-meta font-mono border border-white/[0.08] hidden sm:inline">v0.1</span>
     </button>
 
-    <div class="h-4 w-[1px] bg-border-dim hidden sm:block"></div>
+    <div class="h-4 w-[1px] bg-white/[0.08] hidden sm:block"></div>
 
     <!-- Clean Breadcrumb Navigation -->
     <div class="hidden sm:flex items-center gap-1.5 text-xs text-tx-meta truncate">
@@ -73,7 +75,7 @@
       >
         {workspaceName}
       </button>
-      <span class="text-border-subtle">/</span>
+      <span class="text-white/20">/</span>
       <span class="text-tx-header font-semibold truncate">{currentView}</span>
     </div>
   </div>
@@ -83,18 +85,18 @@
 
   <!-- Right Actions: Standard Live Status & Refresh Sync -->
   <div class="flex items-center gap-2 shrink-0 relative">
-    <div class="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-surface-elevated text-[11px] border border-border-dim">
-      <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
+    <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] text-[11px] border border-white/[0.08] backdrop-blur-md">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]"></span>
       <span class="text-tx-header text-[11px] font-mono">Live</span>
     </div>
 
     {#if isAdmin}
       <button
         onclick={onSync}
-        class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-surface-elevated hover:bg-surface-hover text-tx-header border border-border-dim hover:border-border-subtle transition-all active:scale-[0.98]"
+        class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-white/[0.04] hover:bg-white/[0.08] text-tx-header border border-white/[0.08] hover:border-white/20 transition-all active:scale-[0.98] shadow-subtle"
         title="Sync status"
       >
-        <Icons name="refresh" size={12} class="text-coral {isSyncing ? 'animate-spin' : ''}" />
+        <Icons name="refresh" size={12} class="text-[#8b5cf6] {isSyncing ? 'animate-spin' : ''}" />
         <span>Sync</span>
       </button>
     {/if}
@@ -104,18 +106,18 @@
       <button
         onclick={() => (showProfileMenu = !showProfileMenu)}
         class="flex items-center gap-1.5 p-1 pl-1.5 pr-2.5 rounded-full border transition-all active:scale-[0.98] {currentView === 'Profile' || showProfileMenu
-          ? 'bg-coral-light border-coral/50 text-coral font-medium shadow-subtle'
-          : 'bg-surface-elevated hover:bg-surface-hover border-border-dim hover:border-border-subtle text-tx-header'}"
+          ? 'bg-[#8b5cf6]/20 border-[#8b5cf6]/60 text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]'
+          : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] hover:border-white/20 text-tx-header'}"
         title="Profile"
       >
         {#if profile?.picture}
           <img
             src={profile.picture}
             alt={profile.name}
-            class="w-5 h-5 rounded-full object-cover border {isAdmin ? 'border-coral' : 'border-border-dim'} shrink-0"
+            class="w-5 h-5 rounded-full object-cover border {isAdmin ? 'border-[#8b5cf6]' : 'border-white/10'} shrink-0"
           />
         {:else}
-          <div class="w-5 h-5 rounded-full bg-surface border {isAdmin ? 'border-coral text-coral' : 'border-border-dim text-tx-header'} flex items-center justify-center text-[10px] font-bold shrink-0">
+          <div class="w-5 h-5 rounded-full bg-white/[0.04] border {isAdmin ? 'border-[#8b5cf6] text-[#8b5cf6]' : 'border-white/10 text-tx-header'} flex items-center justify-center text-[10px] font-bold shrink-0">
             {profile?.name ? profile.name.charAt(0).toUpperCase() : 'S'}
           </div>
         {/if}
@@ -134,18 +136,18 @@
         ></button>
 
         <div
-          class="absolute right-0 top-11 w-64 bg-[#161326] border border-border-dim rounded-2xl shadow-modal p-3 z-50 text-xs animate-in fade-in zoom-in-95 duration-100 space-y-3"
+          class="absolute right-0 top-11 w-64 bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] p-3.5 z-50 text-xs animate-in fade-in zoom-in-95 duration-100 space-y-3"
         >
           <!-- User Info Header -->
-          <div class="flex items-center gap-2.5 pb-2.5 border-b border-border-dim/60">
+          <div class="flex items-center gap-2.5 pb-2.5 border-b border-white/[0.08]">
             {#if profile?.picture}
               <img
                 src={profile.picture}
                 alt={profile.name}
-                class="w-9 h-9 rounded-xl object-cover border border-coral/40 shrink-0"
+                class="w-9 h-9 rounded-full object-cover border border-[#8b5cf6]/40 shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.3)]"
               />
             {:else}
-              <div class="w-9 h-9 rounded-xl bg-surface-elevated border border-coral/40 flex items-center justify-center text-coral font-bold text-sm shrink-0">
+              <div class="w-9 h-9 rounded-full bg-white/[0.05] border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] font-bold text-sm shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.3)]">
                 {profile?.name ? profile.name.charAt(0).toUpperCase() : 'S'}
               </div>
             {/if}
@@ -156,12 +158,12 @@
               <p class="text-[11px] text-tx-meta font-mono truncate">{profile?.signed_in ? profile.email : 'Local only'}</p>
 
               {#if isAdmin}
-                <div class="mt-1 flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-coral/15 border border-coral/30 text-coral font-mono text-[9px] w-fit font-semibold">
+                <div class="mt-1 flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#8b5cf6]/20 border border-[#8b5cf6]/40 text-[#8b5cf6] font-mono text-[9px] w-fit font-semibold shadow-[0_0_8px_rgba(139,92,246,0.2)]">
                   <Icons name="crown" size={10} />
                   <span>Admin</span>
                 </div>
               {:else if profile?.signed_in}
-                <div class="mt-1 flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-elevated border border-border-dim text-tx-meta font-mono text-[9px] w-fit">
+                <div class="mt-1 flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-tx-meta font-mono text-[9px] w-fit">
                   <span>Member</span>
                 </div>
               {/if}
@@ -175,22 +177,22 @@
                 showProfileMenu = false;
                 onOpenProfile();
               }}
-              class="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-left hover:bg-surface-elevated text-tx-header transition-colors"
+              class="w-full flex items-center gap-2 px-3 py-2 rounded-full text-left hover:bg-white/[0.06] text-tx-header transition-colors"
             >
-              <Icons name="shield" size={13} class="text-coral" />
+              <Icons name="shield" size={13} class="text-[#00f2fe]" />
               <span>Profile</span>
             </button>
           </div>
 
           <!-- Sign Out / In Action -->
-          <div class="pt-2 border-t border-border-dim/60">
+          <div class="pt-2 border-t border-white/[0.08]">
             {#if profile?.signed_in}
               <button
                 onclick={() => {
                   showProfileMenu = false;
                   onSignOut();
                 }}
-                class="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-left text-red-400 hover:bg-red-950/30 transition-colors font-medium"
+                class="w-full flex items-center gap-2 px-3 py-2 rounded-full text-left text-rose-400 hover:bg-rose-950/30 transition-colors font-medium"
               >
                 <Icons name="logout" size={13} />
                 <span>Log Out</span>
@@ -201,7 +203,7 @@
                   showProfileMenu = false;
                   onOpenProfile();
                 }}
-                class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white transition-all font-medium shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+                class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white transition-all font-medium shadow-[0_0_20px_rgba(139,92,246,0.35)]"
               >
                 <Icons name="google" size={13} />
                 <span>Sign in with Google</span>

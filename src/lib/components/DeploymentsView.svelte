@@ -53,26 +53,26 @@
   }
 </script>
 
-<div class="flex-1 flex flex-col min-h-0 bg-canvas text-xs select-none">
+<div class="flex-1 flex flex-col min-h-0 bg-transparent text-xs select-none">
   <!-- Top Banner: Controls & Status -->
-  <div class="p-4 sm:p-6 border-b border-border-dim bg-surface/30">
+  <div class="p-4 sm:p-6 border-b border-white/[0.08] bg-white/[0.02] backdrop-blur-md">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
         <div class="flex items-center gap-2 flex-wrap">
-          <h1 class="text-base font-semibold text-tx-header tracking-tight">Deployments</h1>
+          <h1 class="text-base font-semibold text-white tracking-tight">Deployments</h1>
           {#if isDeploying}
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-coral/15 text-coral border border-coral/40 flex items-center gap-1.5 animate-pulse">
-              <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
+            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-[#ec4899]/15 text-[#ec4899] border border-[#ec4899]/40 flex items-center gap-1.5 shadow-[0_0_12px_rgba(236,72,153,0.3)] animate-pulse">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#ec4899]"></span>
               Deploying
             </span>
           {:else}
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-surface-elevated text-tx-header border border-border-dim flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
+            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-white/[0.05] text-[#94a3b8] border border-white/[0.08] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
               Ready
             </span>
           {/if}
         </div>
-        <p class="text-xs text-tx-meta mt-1">
+        <p class="text-xs text-[#94a3b8] mt-1">
           Trigger concurrent builds and edge container distributions.
         </p>
       </div>
@@ -81,7 +81,7 @@
       <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
         <button
           onclick={onAddTarget}
-          class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium text-xs shadow-sm transition-all border border-[#c084fc]/30 flex items-center gap-1.5 active:scale-[0.98] shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+          class="px-4 py-2 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-medium text-xs shadow-[0_0_20px_rgba(139,92,246,0.35)] flex items-center gap-2 active:scale-[0.98] transition-all"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>New Deployment</span>
@@ -89,18 +89,18 @@
 
         <button
           onclick={onOpenSecretSync}
-          class="px-3.5 py-1.5 rounded-xl bg-surface-elevated hover:bg-surface-hover border border-border-dim hover:border-border-subtle text-tx-header font-medium text-xs transition-all flex items-center gap-1.5 active:scale-[0.98]"
+          class="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/[0.15] text-white font-medium text-xs transition-all flex items-center gap-2 active:scale-[0.98]"
         >
-          <Icons name="key" size={13} class="text-coral" />
+          <Icons name="key" size={13} class="text-[#00f2fe]" />
           <span>Sync Secrets</span>
         </button>
 
         <button
           onclick={onDeployAll}
           disabled={isDeploying || deployableTargets.length === 0}
-          class="px-4 py-1.5 rounded-xl bg-surface-elevated hover:bg-surface-hover text-tx-header font-medium text-xs shadow-sm transition-all border border-border-dim hover:border-coral/50 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98]"
+          class="px-4 py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-white font-medium text-xs shadow-sm transition-all border border-white/[0.08] hover:border-[#8b5cf6]/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.2)] flex items-center gap-2 disabled:opacity-40 active:scale-[0.98]"
         >
-          <Icons name="rocket" size={13} class={isDeploying ? 'animate-bounce' : 'text-coral'} />
+          <Icons name="rocket" size={13} class={isDeploying ? 'animate-bounce text-[#ec4899]' : 'text-[#8b5cf6]'} />
           <span>{isDeploying ? 'Deploying...' : 'Deploy All'}</span>
         </button>
       </div>
@@ -108,41 +108,41 @@
   </div>
 
   <!-- Deployable Targets Cards List -->
-  <div class="flex-1 overflow-y-auto p-2 sm:p-3">
+  <div class="flex-1 overflow-y-auto p-2 sm:p-4">
     {#if deployableTargets.length > 0}
-      <div class="px-3 py-1.5 text-[10px] uppercase font-mono tracking-wider text-tx-meta flex items-center justify-between">
+      <div class="px-3 py-1.5 text-[10px] uppercase font-mono tracking-wider text-[#94a3b8] flex items-center justify-between">
         <span>Target Container & Edge Distributions ({deployableTargets.length})</span>
         <span>Build Pipeline • Live State • Actions</span>
       </div>
 
       {#each deployableTargets as s (s.id)}
         {@const job = getJob(s.id)}
-        <div class="group mx-1 my-2 p-3.5 rounded-2xl bg-surface/60 hover:bg-surface-elevated/70 border border-border-dim hover:border-border-subtle transition-all shadow-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="group mx-1 my-2.5 p-4 rounded-3xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
           <!-- Left: Service identity & provider badge -->
           <div class="flex items-center gap-3.5 min-w-0 sm:w-64 shrink-0">
             <!-- Status icon dot -->
             <div class="relative flex items-center justify-center shrink-0 w-4 h-4">
               {#if job.status === 'live'}
-                <span class="w-2.5 h-2.5 rounded-full bg-tx-header ring-2 ring-border-dim"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]"></span>
               {:else if job.status === 'deploying'}
-                <span class="w-2.5 h-2.5 rounded-full bg-coral animate-ping"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#ec4899] shadow-[0_0_8px_#ec4899] animate-ping"></span>
               {:else if job.status === 'building'}
-                <span class="w-2.5 h-2.5 rounded-full bg-coral/70 animate-pulse"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#ff5e62] shadow-[0_0_8px_#ff5e62] animate-pulse"></span>
               {:else}
-                <span class="w-2 rounded-full bg-tx-meta"></span>
+                <span class="w-2 rounded-full bg-white/20"></span>
               {/if}
             </div>
 
             <div class="flex flex-col min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-xs font-semibold text-tx-header truncate">{s.name}</span>
-                <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-surface-elevated text-tx-meta border border-border-dim uppercase">
+                <span class="text-xs font-semibold text-white truncate">{s.name}</span>
+                <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-white/[0.05] text-[#94a3b8] border border-white/[0.08] uppercase">
                   {s.provider}
                 </span>
               </div>
-              <div class="flex items-center gap-1.5 text-[11px] text-tx-meta">
+              <div class="flex items-center gap-1.5 text-[11px] text-[#94a3b8] mt-0.5">
                 <span class="font-mono text-[10px]">{s.region}</span>
-                <span class="text-border-subtle">•</span>
+                <span class="text-white/20">•</span>
                 <span>{s.environment}</span>
               </div>
             </div>
@@ -151,19 +151,19 @@
           <!-- Center: Live Pulse Progress and Message -->
           <div class="flex-1 px-1 sm:px-4 flex flex-col gap-1.5 min-w-0">
             <div class="flex items-center justify-between text-[11px] flex-wrap gap-1">
-              <span class="font-mono text-tx-body truncate max-w-md">{job.message}</span>
+              <span class="font-mono text-slate-200 truncate max-w-md">{job.message}</span>
               <div class="flex items-center gap-2">
                 {#if job.status !== 'idle'}
-                  <span class="font-mono text-[10px] text-tx-meta">{job.durationMs}ms</span>
+                  <span class="font-mono text-[10px] text-[#94a3b8]">{job.durationMs}ms</span>
                 {/if}
                 <span
-                  class="px-2 py-0.5 rounded-md text-[10px] font-mono uppercase {job.status === 'live'
-                    ? 'bg-surface-elevated text-tx-header border border-border-dim font-medium'
+                  class="px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase {job.status === 'live'
+                    ? 'bg-[#00f2fe]/10 text-[#00f2fe] border border-[#00f2fe]/30 font-medium'
                     : job.status === 'deploying'
-                    ? 'bg-coral/15 text-coral animate-pulse border border-coral/30'
+                    ? 'bg-[#ec4899]/15 text-[#ec4899] animate-pulse border border-[#ec4899]/30'
                     : job.status === 'building'
-                    ? 'bg-surface-elevated text-tx-body border border-border-dim'
-                    : 'bg-surface-elevated text-tx-meta border border-border-dim'}"
+                    ? 'bg-[#ff5e62]/15 text-[#ff5e62] border border-[#ff5e62]/30'
+                    : 'bg-white/[0.05] text-[#94a3b8] border border-white/[0.08]'}"
                 >
                   {job.status}
                 </span>
@@ -171,14 +171,14 @@
             </div>
 
             <!-- Progress bar -->
-            <div class="w-full h-1.5 bg-surface-elevated rounded-full overflow-hidden border border-border-dim">
+            <div class="w-full h-1.5 bg-white/[0.05] rounded-full overflow-hidden border border-white/[0.08]">
               <div
                 class="h-full transition-all duration-300 {job.status === 'live'
-                  ? 'bg-tx-header'
+                  ? 'bg-gradient-to-r from-[#00f2fe] to-[#8b5cf6]'
                   : job.status === 'deploying'
-                  ? 'bg-coral'
+                  ? 'bg-gradient-to-r from-[#8b5cf6] to-[#ec4899]'
                   : job.status === 'building'
-                  ? 'bg-tx-body'
+                  ? 'bg-[#ff5e62]'
                   : 'bg-transparent'}"
                 style="width: {job.status === 'idle' ? 0 : job.progress}%"
               ></div>
@@ -190,19 +190,19 @@
             {#if s.provider === 'render'}
               <button
                 onclick={() => onOpenRenderKey(s)}
-                class="px-2.5 py-1.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-tx-body hover:text-tx-header border border-border-dim font-medium text-xs flex items-center gap-1.5 transition-all"
+                class="px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-[#94a3b8] hover:text-white border border-white/[0.08] font-medium text-xs flex items-center gap-1.5 transition-all"
                 title="Configure Render Cloud API Key (rnd_...)"
               >
-                <Icons name="key" size={12} class="text-coral" />
+                <Icons name="key" size={12} class="text-[#00f2fe]" />
                 <span class="hidden sm:inline">Render Key</span>
               </button>
             {/if}
             <button
               onclick={() => onDeploySingle(s)}
               disabled={isDeploying || job.status === 'building' || job.status === 'deploying'}
-              class="px-3.5 py-1.5 rounded-lg bg-surface-elevated hover:bg-surface-hover text-tx-header border border-border-dim hover:border-coral/50 font-medium text-xs flex items-center gap-1.5 transition-all active:scale-[0.98] disabled:opacity-40"
+              class="px-4 py-1.5 rounded-full bg-white/[0.04] hover:bg-gradient-to-r hover:from-[#8b5cf6] hover:to-[#ec4899] text-white border border-white/[0.08] hover:border-transparent font-medium text-xs flex items-center gap-1.5 transition-all active:scale-[0.98] disabled:opacity-40 shadow-[0_0_12px_rgba(139,92,246,0.15)]"
             >
-              <Icons name="rocket" size={12} class="text-coral" />
+              <Icons name="rocket" size={12} class="text-[#8b5cf6]" />
               <span>Deploy</span>
             </button>
           </div>
@@ -211,16 +211,16 @@
     {:else}
       <!-- Empty State -->
       <div class="h-64 flex flex-col items-center justify-center p-8 text-center select-none animate-in fade-in duration-200">
-        <div class="w-14 h-14 rounded-2xl bg-surface-elevated border border-border-dim flex items-center justify-center mb-3 text-coral shadow-subtle">
+        <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-3 text-[#ec4899] shadow-[0_0_20px_rgba(236,72,153,0.25)]">
           <Icons name="rocket" size={24} />
         </div>
-        <h3 class="text-sm font-semibold text-tx-header mb-1 tracking-tight">No deployable targets</h3>
-        <p class="text-xs text-tx-meta max-w-sm mb-4 leading-relaxed">
+        <h3 class="text-sm font-semibold text-white mb-1 tracking-tight">No deployable targets</h3>
+        <p class="text-xs text-[#94a3b8] max-w-sm mb-4 leading-relaxed">
           Add an API, Frontend, or Worker target to configure automated parallel builds and edge deployments.
         </p>
         <button
           onclick={onAddTarget}
-          class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white text-xs font-medium shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.98] flex items-center gap-1.5 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+          class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white text-xs font-semibold shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent active:scale-[0.98] flex items-center gap-2"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>Create New Deployment</span>

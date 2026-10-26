@@ -722,7 +722,7 @@
   />
 
   <!-- Main Deck Dynamic Content Area -->
-  <main class="flex-1 flex flex-col min-w-0 bg-canvas overflow-hidden relative">
+  <main class="flex-1 flex flex-col min-w-0 bg-[#0b0d19] bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(139,92,246,0.18),rgba(0,0,0,0))] overflow-hidden relative">
     <!-- Top Filter Bar with interactive dropdown chips -->
     {#if activeNav === 'overview'}
       <FilterBar
@@ -739,7 +739,7 @@
     <!-- Dynamic View Deck -->
     <div class="flex-1 overflow-y-auto flex flex-col">
       {#if activeNav === 'overview'}
-        <div class="p-4 sm:p-6 border-b border-border-dim bg-surface/30">
+        <div class="p-4 sm:p-6 border-b border-white/[0.08] bg-white/[0.02] backdrop-blur-md">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
               <h1 class="text-base font-semibold text-tx-header tracking-tight">
@@ -752,15 +752,15 @@
             <div class="flex items-center gap-2">
               <button
                 onclick={() => (isLogDrawerOpen = !isLogDrawerOpen)}
-                class="px-3 py-1.5 rounded-xl bg-surface-elevated hover:bg-surface-hover text-tx-header border border-border-dim text-xs font-medium transition-all flex items-center gap-1.5 shadow-subtle active:scale-[0.98]"
+                class="px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-tx-header border border-white/[0.08] hover:border-white/20 text-xs font-medium transition-all flex items-center gap-1.5 shadow-subtle active:scale-[0.98]"
               >
-                <Icons name="terminal" size={12} class="text-coral" />
+                <Icons name="terminal" size={12} class="text-[#00f2fe]" />
                 <span>Logs</span>
               </button>
 
               <button
                 onclick={() => (isAddModalOpen = true)}
-                class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white text-xs font-medium transition-all shadow-sm flex items-center gap-1.5 border border-[#c084fc]/30 active:scale-[0.98] shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+                class="px-4 py-1.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white text-xs font-medium transition-all shadow-[0_0_20px_rgba(139,92,246,0.35)] flex items-center gap-1.5 border border-white/20 active:scale-[0.98]"
               >
                 <Icons name="plus" size={13} strokeWidth={2.5} />
                 <span>Add Target</span>
@@ -768,72 +768,72 @@
             </div>
           </div>
 
-          <!-- Quick Metric Highlights Cards -->
+          <!-- Quick Metric Highlights Cards (Futuristic Cyberpunk Glassmorphic Panels) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-            <div class="p-3.5 rounded-2xl bg-surface hover:bg-surface-elevated/80 border border-border-dim hover:border-border-subtle shadow-subtle flex flex-col justify-between transition-all duration-150">
+            <div class="p-4 rounded-3xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-[#8b5cf6]/40 shadow-subtle hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] flex flex-col justify-between transition-all duration-200 backdrop-blur-xl">
               <div class="flex items-center justify-between text-tx-meta text-xs">
                 <span class="font-medium text-tx-body">Active Tunnels</span>
-                <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center text-coral">
+                <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#00f2fe] shadow-[0_0_10px_rgba(0,242,254,0.15)]">
                   <Icons name="radio" size={13} />
                 </div>
               </div>
               <div class="mt-3 flex items-baseline justify-between">
-                <span class="text-2xl font-bold text-tx-header font-mono">{activeTunnels.length}</span>
+                <span class="text-2xl font-bold text-white font-mono">{activeTunnels.length}</span>
                 <span class="text-[11px] text-tx-meta font-mono">Quick preview</span>
               </div>
             </div>
 
-            <div class="p-3.5 rounded-2xl bg-surface hover:bg-surface-elevated/80 border border-border-dim hover:border-border-subtle shadow-subtle flex flex-col justify-between transition-all duration-150">
+            <div class="p-4 rounded-3xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-[#8b5cf6]/40 shadow-subtle hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] flex flex-col justify-between transition-all duration-200 backdrop-blur-xl">
               <div class="flex items-center justify-between text-tx-meta text-xs">
                 <span class="font-medium text-tx-body">Bound Services</span>
-                <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center text-coral">
+                <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#8b5cf6] shadow-[0_0_10px_rgba(139,92,246,0.2)]">
                   <Icons name="server" size={13} />
                 </div>
               </div>
               <div class="mt-3 flex items-baseline justify-between">
-                <span class="text-2xl font-bold text-tx-header font-mono">{services.length}</span>
+                <span class="text-2xl font-bold text-white font-mono">{services.length}</span>
                 <span class="text-[11px] text-tx-meta font-mono">Active targets</span>
               </div>
             </div>
 
-            <div class="p-3.5 rounded-2xl bg-surface hover:bg-surface-elevated/80 border border-border-dim hover:border-border-subtle shadow-subtle flex flex-col justify-between transition-all duration-150">
+            <div class="p-3.5 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] flex flex-col justify-between transition-all duration-200">
               <div class="flex items-center justify-between text-tx-meta text-xs">
-                <span class="font-medium text-tx-body">Watchdog Quota</span>
-                <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center text-coral">
+                <span class="font-medium text-slate-200">Watchdog Quota</span>
+                <div class="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#ff5e62]">
                   <Icons name="shield" size={13} />
                 </div>
               </div>
               <div class="mt-3 flex items-baseline justify-between">
                 {#if watchdogRemainingHours !== null}
-                  <span class="text-2xl font-bold text-tx-header font-mono">{watchdogRemainingHours}h</span>
-                  <span class="text-[11px] text-tx-meta font-mono">Lowest left</span>
+                  <span class="text-2xl font-bold text-white font-mono">{watchdogRemainingHours}h</span>
+                  <span class="text-[11px] text-[#94a3b8] font-mono">Lowest left</span>
                 {:else}
-                  <span class="text-2xl font-bold text-tx-header font-mono">0h</span>
-                  <span class="text-[11px] text-tx-meta font-mono">No targets</span>
+                  <span class="text-2xl font-bold text-white font-mono">0h</span>
+                  <span class="text-[11px] text-[#94a3b8] font-mono">No targets</span>
                 {/if}
               </div>
             </div>
 
-            <div class="p-3.5 rounded-2xl bg-surface hover:bg-surface-elevated/80 border border-border-dim hover:border-border-subtle shadow-subtle flex flex-col justify-between transition-all duration-150">
+            <div class="p-3.5 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] flex flex-col justify-between transition-all duration-200">
               <div class="flex items-center justify-between text-tx-meta text-xs">
-                <span class="font-medium text-tx-body">Keep-Alive Guard</span>
-                <div class="w-6 h-6 rounded-lg bg-surface-elevated border border-border-dim flex items-center justify-center {watchdogCount > 0 ? 'text-coral' : 'text-tx-meta'}">
+                <span class="font-medium text-slate-200">Keep-Alive Guard</span>
+                <div class="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center {watchdogCount > 0 ? 'text-[#00f2fe]' : 'text-[#94a3b8]'}">
                   <Icons name="check" size={13} />
                 </div>
               </div>
               <div class="mt-3 flex items-baseline justify-between">
                 {#if watchdogCount > 0}
-                  <span class="text-base font-bold text-tx-header font-mono flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-coral"></span>
+                  <span class="text-base font-bold text-white font-mono flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]"></span>
                     Active
                   </span>
-                  <span class="text-[11px] text-tx-meta font-mono">{watchdogCount} guarded</span>
+                  <span class="text-[11px] text-[#94a3b8] font-mono">{watchdogCount} guarded</span>
                 {:else}
-                  <span class="text-base font-bold text-tx-meta font-mono flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-border-subtle"></span>
+                  <span class="text-base font-bold text-[#94a3b8] font-mono flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-white/20"></span>
                     Idle
                   </span>
-                  <span class="text-[11px] text-tx-meta font-mono">0 targets</span>
+                  <span class="text-[11px] text-[#94a3b8] font-mono">0 targets</span>
                 {/if}
               </div>
             </div>
@@ -858,7 +858,7 @@
                 onViewLogs={handleViewLogs}
                 onCopyUrl={handleCopyUrl}
                 onDelete={handleDeleteService}
-                onOpenRenderKey={(s) => promptRenderKey('settings', s)}
+                onOpenRenderKey={(s: ServiceTarget) => promptRenderKey('settings', s)}
               />
             {/each}
           {:else}
@@ -985,9 +985,9 @@
 <!-- Toast Notification Popup -->
 {#if toastMessage}
   <div
-    class="fixed bottom-4 right-4 bg-surface-elevated text-tx-header px-4 py-2.5 rounded-lg border border-border-subtle shadow-modal text-xs flex items-center gap-2.5 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150"
+    class="fixed bottom-5 right-5 bg-[#121629]/90 backdrop-blur-xl text-white px-5 py-3 rounded-full border border-white/[0.12] shadow-[0_0_25px_rgba(139,92,246,0.3)] text-xs font-medium flex items-center gap-3 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150"
   >
-    <div class="w-2 h-2 rounded-full bg-coral animate-pulse"></div>
+    <div class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_8px_#00f2fe] animate-pulse"></div>
     <span>{toastMessage}</span>
   </div>
 {/if}

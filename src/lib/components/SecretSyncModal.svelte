@@ -44,27 +44,27 @@ DEBUG=false
 
 {#if isOpen}
   <div
-    class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-150"
+    class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-150"
     role="dialog"
     aria-modal="true"
   >
     <div
-      class="w-full max-w-lg bg-[#161326] border border-border-dim rounded-2xl shadow-modal overflow-hidden text-xs select-none"
+      class="w-full max-w-lg bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] overflow-hidden text-xs select-none"
     >
       <!-- Modal Header -->
-      <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-6 h-6 rounded-md bg-coral/15 border border-coral/30 flex items-center justify-center">
-            <Icons name="key" size={13} class="text-coral" />
+      <div class="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#8b5cf6] shadow-[0_0_12px_rgba(139,92,246,0.3)]">
+            <Icons name="key" size={14} />
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-tx-header">Synchronize Environment Secrets</h3>
-            <p class="text-[10px] text-tx-meta">Pushes local .env to all linked cloud providers in 1 parallel operation</p>
+            <h3 class="text-sm font-semibold text-white">Synchronize Environment Secrets</h3>
+            <p class="text-[10px] text-[#94a3b8]">Pushes local .env to all linked cloud providers in 1 parallel operation</p>
           </div>
         </div>
         <button
           onclick={onClose}
-          class="p-1 rounded text-tx-meta hover:text-tx-header hover:bg-surface-elevated transition-colors"
+          class="w-7 h-7 rounded-full flex items-center justify-center text-[#94a3b8] hover:text-white hover:bg-white/[0.08] transition-colors"
           aria-label="Close dialog"
         >
           <Icons name="x" size={14} />
@@ -72,13 +72,13 @@ DEBUG=false
       </div>
 
       <!-- Content Area -->
-      <div class="p-5 space-y-4">
+      <div class="p-6 space-y-4">
         <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="text-tx-meta text-[11px] uppercase font-mono tracking-wider" for="env-editor">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-[#94a3b8] text-[11px] uppercase font-mono tracking-wider" for="env-editor">
               Local .env Variables
             </label>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-elevated text-tx-header border border-border-dim">
+            <span class="text-[10px] font-mono px-3 py-1 rounded-full bg-white/[0.05] text-[#94a3b8] border border-white/[0.08]">
               {parsedKeys.length} secrets detected
             </span>
           </div>
@@ -87,48 +87,48 @@ DEBUG=false
             id="env-editor"
             bind:value={envText}
             rows={7}
-            class="w-full bg-[#141126] text-tx-header font-mono text-[11px] p-3 rounded-xl border border-border-dim focus:border-coral focus:outline-none resize-none leading-relaxed select-text"
+            class="w-full bg-white/[0.04] text-white font-mono text-[11px] p-4 rounded-2xl border border-white/[0.08] focus:border-[#00f2fe]/60 focus:outline-none resize-none leading-relaxed select-text transition-colors"
             placeholder="KEY=VALUE"
           ></textarea>
         </div>
 
         <!-- Target Cloud Checkmarks -->
         <div>
-          <span class="block text-tx-meta text-[11px] uppercase font-mono tracking-wider mb-2">
+          <span class="block text-[#94a3b8] text-[11px] uppercase font-mono tracking-wider mb-2">
             Target Destinations (Concurrent Broadcast)
           </span>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-elevated border border-border-dim">
-              <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
-              <span class="text-tx-header font-medium">Fly.io Secrets</span>
-              <span class="text-[10px] text-tx-meta font-mono ml-auto">API</span>
+            <div class="flex items-center gap-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+              <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="text-white font-medium">Fly.io Secrets</span>
+              <span class="text-[10px] text-[#94a3b8] font-mono ml-auto">API</span>
             </div>
-            <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-elevated border border-border-dim">
-              <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
-              <span class="text-tx-header font-medium">Cloudflare Workers</span>
-              <span class="text-[10px] text-tx-meta font-mono ml-auto">Edge</span>
+            <div class="flex items-center gap-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+              <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="text-white font-medium">Cloudflare Workers</span>
+              <span class="text-[10px] text-[#94a3b8] font-mono ml-auto">Edge</span>
             </div>
-            <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-elevated border border-border-dim">
-              <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
-              <span class="text-tx-header font-medium">Render Web Services</span>
-              <span class="text-[10px] text-tx-meta font-mono ml-auto">Container</span>
+            <div class="flex items-center gap-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+              <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="text-white font-medium">Render Web Services</span>
+              <span class="text-[10px] text-[#94a3b8] font-mono ml-auto">Container</span>
             </div>
-            <div class="flex items-center gap-2 p-2 rounded-xl bg-surface-elevated border border-border-dim">
-              <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
-              <span class="text-tx-header font-medium">Supabase / Neon Env</span>
-              <span class="text-[10px] text-tx-meta font-mono ml-auto">DB Pool</span>
+            <div class="flex items-center gap-2.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+              <span class="w-2 h-2 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
+              <span class="text-white font-medium">Supabase / Neon Env</span>
+              <span class="text-[10px] text-[#94a3b8] font-mono ml-auto">DB Pool</span>
             </div>
           </div>
         </div>
 
         <!-- Footer Actions -->
-        <div class="pt-3 border-t border-border-dim flex items-center justify-between">
-          <span class="text-[10px] text-tx-meta font-mono">Zero-telemetry • Encrypted memory transfer</span>
+        <div class="pt-3 border-t border-white/[0.08] flex items-center justify-between">
+          <span class="text-[10px] text-[#94a3b8] font-mono">Zero-telemetry • Encrypted memory transfer</span>
           <div class="flex items-center gap-2">
             <button
               type="button"
               onclick={onClose}
-              class="px-3.5 py-1.5 rounded-xl text-tx-body hover:text-tx-header hover:bg-surface-elevated transition-colors text-xs font-medium"
+              class="px-4 py-2 rounded-full text-[#94a3b8] hover:text-white hover:bg-white/[0.06] transition-colors text-xs font-medium"
             >
               Cancel
             </button>
@@ -136,7 +136,7 @@ DEBUG=false
               type="button"
               onclick={handleConfirm}
               disabled={isSyncing || parsedKeys.length === 0}
-              class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.98] disabled:opacity-40 flex items-center gap-1.5 text-xs shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+              class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent active:scale-[0.98] disabled:opacity-40 flex items-center gap-2 text-xs"
             >
               {#if isSyncing}
                 <Icons name="refresh" size={12} class="animate-spin" />

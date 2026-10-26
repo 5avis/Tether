@@ -4,15 +4,19 @@
 
 :root {
   color-scheme: dark;
-  --bg-canvas: #0c0a17;
-  --bg-surface: #141126;
-  --border-dim: #282244;
-  --border-subtle: #38305c;
-  --coral-primary: #a855f7;
-  --coral-hover: #9333ea;
+  --bg-canvas: #0b0d19;
+  --bg-surface: rgba(22, 27, 46, 0.7);
+  --border-dim: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.14);
+  --coral-primary: #8b5cf6;
+  --coral-hover: #a855f7;
+  --neon-cyan: #00f2fe;
+  --neon-purple: #8b5cf6;
+  --neon-pink: #ec4899;
+  --neon-orange: #ff5e62;
   --text-header: #ffffff;
-  --text-body: #ede9fe;
-  --text-meta: #948fa8;
+  --text-body: #f1f5f9;
+  --text-meta: #94a3b8;
 }
 
 html, body {
@@ -23,13 +27,38 @@ html, body {
   min-width: 100vw;
   min-height: 100vh;
   overflow: hidden;
-  background-color: #0c0a17;
-  color: #ede9fe;
+  background: radial-gradient(circle at 50% 0%, #151a33 0%, #0e1224 55%, #0b0d19 100%);
+  background-color: #0b0d19;
+  color: #f1f5f9;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   user-select: none;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(22, 27, 46, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-pill {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.25);
+}
+
+.neon-glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
 }
 
 /* Ensure arbitrary pixel font classes scale proportionally with root rem */

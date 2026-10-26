@@ -46,27 +46,27 @@
 
 {#if isOpen}
   <div
-    class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-150"
+    class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-150"
     role="dialog"
     aria-modal="true"
   >
     <div
-      class="w-full max-w-md bg-[#161326] border border-border-dim rounded-2xl shadow-modal overflow-hidden text-xs select-none"
+      class="w-full max-w-md bg-[#121629]/95 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_0_35px_rgba(139,92,246,0.25)] overflow-hidden text-xs select-none"
     >
       <!-- Header -->
-      <div class="px-5 py-4 border-b border-border-dim flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-6 h-6 rounded-md bg-coral/15 border border-coral/30 flex items-center justify-center text-coral">
-            <Icons name="google" size={13} />
+      <div class="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#8b5cf6] shadow-[0_0_12px_rgba(139,92,246,0.3)]">
+            <Icons name="google" size={14} />
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-tx-header">Profile</h3>
-            <p class="text-[10px] text-tx-meta">Google OAuth</p>
+            <h3 class="text-sm font-semibold text-white">Profile</h3>
+            <p class="text-[10px] text-[#94a3b8]">Google OAuth</p>
           </div>
         </div>
         <button
           onclick={onClose}
-          class="p-1 rounded-lg text-tx-meta hover:text-tx-header hover:bg-surface-elevated transition-colors"
+          class="w-7 h-7 rounded-full flex items-center justify-center text-[#94a3b8] hover:text-white hover:bg-white/[0.08] transition-colors"
           aria-label="Close dialog"
         >
           <Icons name="x" size={14} />
@@ -74,19 +74,19 @@
       </div>
 
       <!-- Body -->
-      <div class="p-5 space-y-4">
+      <div class="p-6 space-y-4">
         {#if profile && profile.signed_in}
           <!-- User Connected State -->
-          <div class="p-4 rounded-xl bg-surface border border-border-dim shadow-subtle flex items-center gap-3.5">
+          <div class="p-4 rounded-3xl bg-white/[0.03] border border-white/[0.08] shadow-subtle flex items-center gap-3.5">
             {#if profile.picture}
               <img
                 src={profile.picture}
                 alt={profile.name}
-                class="w-12 h-12 rounded-xl object-cover border border-border-dim"
+                class="w-12 h-12 rounded-full object-cover border border-white/[0.1]"
               />
             {:else}
               <div
-                class="w-12 h-12 rounded-xl bg-coral/15 border border-coral/40 flex items-center justify-center text-coral font-bold text-base"
+                class="w-12 h-12 rounded-full bg-white/[0.05] border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] font-bold text-base shadow-[0_0_10px_rgba(139,92,246,0.2)]"
               >
                 {profile.name.charAt(0).toUpperCase()}
               </div>
@@ -94,41 +94,41 @@
 
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-sm font-semibold text-tx-header truncate">{profile.name}</span>
+                <span class="text-sm font-semibold text-white truncate">{profile.name}</span>
                 {#if isAdmin}
-                  <span class="px-2 py-0.2 rounded-full text-[10px] font-mono bg-coral/20 text-coral border border-coral/40 flex items-center gap-1 font-bold">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-[#8b5cf6]/20 text-[#8b5cf6] border border-[#8b5cf6]/40 flex items-center gap-1 font-bold">
                     <Icons name="crown" size={10} />
                     Admin
                   </span>
                 {:else}
-                  <span class="px-2 py-0.2 rounded-full text-[10px] font-mono bg-surface-elevated text-tx-body border border-border-dim">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-white/[0.05] text-[#94a3b8] border border-white/[0.08]">
                     Member
                   </span>
                 {/if}
               </div>
-              <p class="text-xs text-tx-meta truncate mt-0.5">{profile.email}</p>
+              <p class="text-xs text-[#94a3b8] truncate mt-0.5">{profile.email}</p>
             </div>
           </div>
 
           <!-- OAuth Details Box -->
-          <div class="p-3.5 rounded-xl bg-surface/50 border border-border-dim/70 space-y-2 text-[11px]">
-            <div class="flex items-center justify-between text-tx-meta">
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-2 text-[11px]">
+            <div class="flex items-center justify-between text-[#94a3b8]">
               <span>Auth Provider</span>
-              <span class="text-tx-header font-medium">Google Identity (OAuth 2.0)</span>
+              <span class="text-white font-medium">Google Identity (OAuth 2.0)</span>
             </div>
-            <div class="flex items-center justify-between text-tx-meta">
+            <div class="flex items-center justify-between text-[#94a3b8]">
               <span>Storage</span>
-              <span class="text-tx-header font-mono text-[10px]">~/.config/tether</span>
+              <span class="text-white font-mono text-[10px]">~/.config/tether</span>
             </div>
             {#if isAdmin}
-              <div class="flex items-center justify-between text-tx-meta">
+              <div class="flex items-center justify-between text-[#94a3b8]">
                 <span>OAuth Credentials</span>
-                <span class="font-mono text-[10px] text-coral font-semibold">oauth.json</span>
+                <span class="font-mono text-[10px] text-[#8b5cf6] font-semibold">oauth.json</span>
               </div>
             {/if}
-            <div class="flex items-center justify-between text-tx-meta">
+            <div class="flex items-center justify-between text-[#94a3b8]">
               <span>Target Project</span>
-              <span class="font-mono text-[10px] text-tx-body">Tether Cloud</span>
+              <span class="font-mono text-[10px] text-slate-200">Tether Cloud</span>
             </div>
           </div>
 
@@ -137,14 +137,14 @@
             <button
               type="button"
               onclick={onClose}
-              class="px-4 py-2 rounded-xl text-tx-body hover:text-tx-header hover:bg-surface-elevated transition-colors"
+              class="px-4 py-2 rounded-full text-[#94a3b8] hover:text-white hover:bg-white/[0.06] transition-colors"
             >
               Done
             </button>
             <button
               type="button"
               onclick={handleSignOut}
-              class="px-4 py-2 rounded-xl bg-red-950/20 hover:bg-red-950/50 text-red-400 border border-red-900/40 hover:border-red-600/50 font-medium transition-all active:scale-[0.98] flex items-center gap-1.5"
+              class="px-4 py-2 rounded-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-medium transition-all active:scale-[0.98] flex items-center gap-1.5"
             >
               <Icons name="logout" size={13} />
               <span>Log Out</span>
@@ -153,11 +153,11 @@
         {:else}
           <!-- Sign In State -->
           <div class="text-center py-2">
-            <div class="w-12 h-12 rounded-2xl bg-surface-elevated border border-border-dim mx-auto flex items-center justify-center text-coral shadow-subtle mb-3">
+            <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] mx-auto flex items-center justify-center text-[#8b5cf6] shadow-[0_0_20px_rgba(139,92,246,0.25)] mb-3">
               <Icons name="google" size={22} />
             </div>
-            <h4 class="text-sm font-semibold text-tx-header">Sign in to Tether with Google</h4>
-            <p class="text-xs text-tx-meta max-w-xs mx-auto mt-1 leading-relaxed">
+            <h4 class="text-sm font-semibold text-white">Sign in to Tether with Google</h4>
+            <p class="text-xs text-[#94a3b8] max-w-xs mx-auto mt-1 leading-relaxed">
               Authenticate via your Google Cloud account to connect your developer profile. Redirects to your browser and listens on loopback.
             </p>
           </div>
@@ -168,7 +168,7 @@
               type="button"
               onclick={handleGoogleSignIn}
               disabled={isAuthenticating}
-              class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium text-xs shadow-sm transition-all border border-[#c084fc]/30 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+              class="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold text-xs shadow-[0_0_20px_rgba(139,92,246,0.35)] flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 transition-all"
             >
               {#if isAuthenticating}
                 <Icons name="refresh" size={13} class="animate-spin" />
@@ -183,7 +183,7 @@
               type="button"
               onclick={onClose}
               disabled={isAuthenticating}
-              class="w-full py-1.5 text-center text-tx-meta hover:text-tx-header text-xs transition-colors"
+              class="w-full py-1.5 text-center text-[#94a3b8] hover:text-white text-xs transition-colors"
             >
               Cancel
             </button>

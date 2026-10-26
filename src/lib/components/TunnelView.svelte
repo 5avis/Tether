@@ -73,47 +73,47 @@
   }
 </script>
 
-<div class="flex-1 flex flex-col min-h-0 bg-canvas text-xs select-none">
+<div class="flex-1 flex flex-col min-h-0 bg-transparent text-xs select-none">
   <!-- Top Control Banner with Finished Hero Box -->
-  <div class="p-4 sm:p-6 border-b border-border-dim bg-surface/30">
+  <div class="p-4 sm:p-6 border-b border-white/[0.08] bg-white/[0.02] backdrop-blur-md">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
         <div class="flex items-center gap-2 flex-wrap">
-          <h1 class="text-base font-semibold text-tx-header tracking-tight">Tunnels</h1>
+          <h1 class="text-base font-semibold text-white tracking-tight">Tunnels</h1>
           {#if cloudflared.installed}
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-surface-elevated text-tx-header border border-border-dim flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
+            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-white/[0.05] text-[#94a3b8] border border-white/[0.08] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#00f2fe] shadow-[0_0_6px_#00f2fe]"></span>
               cloudflared
             </span>
           {:else}
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-surface-elevated text-coral border border-border-dim">
+            <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-[#ff5e62]/15 text-[#ff5e62] border border-[#ff5e62]/30">
               cloudflared missing
             </span>
           {/if}
         </div>
-        <p class="text-xs text-tx-meta mt-1">
-          Instant public preview URLs via <code class="text-coral font-mono">trycloudflare.com</code>.
+        <p class="text-xs text-[#94a3b8] mt-1">
+          Instant public preview URLs via <code class="text-[#00f2fe] font-mono">trycloudflare.com</code>.
         </p>
       </div>
 
       <!-- Quick Launch Box -->
-      <div class="flex items-center gap-2 p-1.5 rounded-xl bg-surface border border-border-dim shadow-subtle flex-wrap sm:flex-nowrap">
-        <div class="flex items-center bg-surface-elevated rounded-lg border border-border-dim/80 focus-within:border-coral px-3 py-1.5">
-          <span class="text-tx-meta font-mono text-xs">localhost:</span>
+      <div class="flex items-center gap-2 p-1.5 rounded-full bg-white/[0.03] backdrop-blur-md border border-white/[0.08] shadow-subtle flex-wrap sm:flex-nowrap">
+        <div class="flex items-center bg-white/[0.04] rounded-full border border-white/[0.08] focus-within:border-[#00f2fe]/60 px-3.5 py-1.5 transition-colors">
+          <span class="text-[#94a3b8] font-mono text-xs">localhost:</span>
           <input
             type="number"
             bind:value={newPort}
             min="1024"
             max="65535"
             placeholder="3000"
-            class="w-16 bg-transparent text-tx-header font-mono px-1.5 focus:outline-none text-xs"
+            class="w-16 bg-transparent text-white font-mono px-1.5 focus:outline-none text-xs"
           />
         </div>
 
         <button
           onclick={handleStart}
           disabled={isLaunching}
-          class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white font-medium text-xs shadow-sm transition-all border border-[#c084fc]/30 flex items-center gap-1.5 disabled:opacity-50 active:scale-[0.98] shrink-0 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+          class="px-5 py-2 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white font-semibold text-xs shadow-[0_0_20px_rgba(139,92,246,0.35)] flex items-center gap-2 disabled:opacity-50 active:scale-[0.98] shrink-0 transition-all"
         >
           {#if isLaunching}
             <Icons name="refresh" size={13} class="animate-spin" />
@@ -128,57 +128,57 @@
   </div>
 
   <!-- Tunnel Row Items as Finished Cards -->
-  <div class="flex-1 overflow-y-auto p-2 sm:p-3">
+  <div class="flex-1 overflow-y-auto p-2 sm:p-4">
     {#if tunnels.length > 0}
-      <div class="px-3 py-1.5 text-[10px] uppercase font-mono tracking-wider text-tx-meta flex items-center justify-between">
+      <div class="px-3 py-1.5 text-[10px] uppercase font-mono tracking-wider text-[#94a3b8] flex items-center justify-between">
         <span>Active Process Handles ({tunnels.length})</span>
         <span>Local Port • Public Endpoint • Edge Status</span>
       </div>
 
       {#each tunnels as tun (tun.id)}
         <div
-          class="group mx-1 my-2 p-3.5 rounded-2xl bg-surface/60 hover:bg-surface-elevated/70 border border-border-dim hover:border-border-subtle transition-all shadow-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+          class="group mx-1 my-2.5 p-4 rounded-3xl bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-xl border border-white/[0.08] hover:border-[#8b5cf6]/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.18)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3.5"
         >
           <!-- Left: Circular status indicator & Port info -->
           <div class="flex items-center gap-3.5 min-w-0">
             <!-- Circular Indicator Dot -->
             <div class="relative flex items-center justify-center shrink-0 w-4 h-4">
               <span
-                class="w-2 rounded-full {tun.status === 'running'
-                  ? 'bg-tx-header ring-2 ring-border-dim'
-                  : 'bg-coral'} transition-transform group-hover:scale-110"
+                class="w-2.5 h-2.5 rounded-full {tun.status === 'running'
+                  ? 'bg-[#00f2fe] shadow-[0_0_8px_#00f2fe]'
+                  : 'bg-[#ff5e62]'} transition-transform group-hover:scale-110"
               ></span>
               {#if tun.status === 'running'}
-                <span class="absolute w-4 h-4 rounded-full bg-coral/20 animate-ping"></span>
+                <span class="absolute w-4 h-4 rounded-full bg-[#00f2fe]/30 animate-ping"></span>
               {/if}
             </div>
 
             <!-- Identity and Port info -->
             <div class="flex flex-col gap-0.5 min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="font-mono text-xs text-tx-header font-semibold">
+                <span class="font-mono text-xs text-white font-semibold">
                   http://localhost:{tun.port}
                 </span>
 
                 {#if tun.pid}
-                  <span class="text-[10px] px-1.5 py-0.2 rounded font-mono bg-surface-elevated text-tx-meta border border-border-dim">
+                  <span class="text-[10px] px-2.5 py-0.5 rounded-full font-mono bg-white/[0.05] text-[#94a3b8] border border-white/[0.08]">
                     PID {tun.pid}
                   </span>
                 {/if}
 
                 <span
-                  class="text-[10px] uppercase font-mono tracking-wider px-1.5 py-0.2 rounded bg-surface-elevated text-tx-meta border border-border-dim"
+                  class="text-[10px] uppercase font-mono tracking-wider px-2.5 py-0.5 rounded-full bg-white/[0.05] text-[#94a3b8] border border-white/[0.08]"
                 >
                   {tun.status}
                 </span>
               </div>
 
               <!-- Sub-metadata -->
-              <div class="flex items-center gap-2 text-[11px] text-tx-meta">
+              <div class="flex items-center gap-2 text-[11px] text-[#94a3b8] mt-0.5">
                 <span>Anycast Edge</span>
-                <span class="text-border-subtle">•</span>
+                <span class="text-white/20">•</span>
                 <span>Subprocess Managed</span>
-                <span class="text-border-subtle">•</span>
+                <span class="text-white/20">•</span>
                 <span>{tun.started_at}</span>
               </div>
             </div>
@@ -187,31 +187,31 @@
           <!-- Center/Right: Active URL Pill with Copy, Open & Stop -->
           <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap justify-between sm:justify-end">
             {#if tun.url}
-              <div class="flex items-center bg-surface-elevated border border-border-dim hover:border-coral/50 rounded-lg px-2.5 py-1 text-tx-header font-mono text-xs max-w-sm truncate transition-colors">
-                <Icons name="globe" size={12} class="shrink-0 mr-1.5 text-coral" />
+              <div class="flex items-center bg-white/[0.04] border border-white/[0.08] hover:border-[#00f2fe]/40 rounded-full px-3.5 py-1.5 text-white font-mono text-xs max-w-sm truncate transition-colors">
+                <Icons name="globe" size={12} class="shrink-0 mr-1.5 text-[#00f2fe]" />
                 <span class="truncate">{tun.url}</span>
               </div>
 
               <!-- Action button: Copy URL -->
               <button
                 onclick={() => handleCopy(tun.id, tun.url!)}
-                class="p-1.5 rounded-lg hover:bg-surface-elevated text-tx-body hover:text-tx-header border border-transparent hover:border-border-dim transition-colors"
+                class="w-7 h-7 rounded-full hover:bg-white/[0.08] flex items-center justify-center text-[#94a3b8] hover:text-white transition-colors"
                 title="Copy public URL"
               >
-                <Icons name={copiedId === tun.id ? 'check' : 'copy'} size={13} class={copiedId === tun.id ? 'text-coral' : ''} />
+                <Icons name={copiedId === tun.id ? 'check' : 'copy'} size={13} class={copiedId === tun.id ? 'text-[#00f2fe]' : ''} />
               </button>
 
               <!-- Action button: Open URL in Browser -->
               <button
                 onclick={() => handleOpenUrl(tun.url!)}
-                class="p-1.5 rounded-lg hover:bg-surface-elevated text-tx-body hover:text-tx-header border border-transparent hover:border-border-dim transition-colors"
+                class="w-7 h-7 rounded-full hover:bg-white/[0.08] flex items-center justify-center text-[#94a3b8] hover:text-white transition-colors"
                 title="Open preview in browser"
               >
                 <Icons name="external-link" size={13} />
               </button>
             {:else}
-              <div class="flex items-center gap-2 text-coral font-mono text-xs">
-                <Icons name="refresh" size={12} class="animate-spin text-coral" />
+              <div class="flex items-center gap-2 text-[#00f2fe] font-mono text-xs">
+                <Icons name="refresh" size={12} class="animate-spin text-[#00f2fe]" />
                 <span>Negotiating trycloudflare.com tunnel route...</span>
               </div>
             {/if}
@@ -219,7 +219,7 @@
             <!-- Stop Process Button -->
             <button
               onclick={() => handleStop(tun.id)}
-              class="ml-1 px-2.5 py-1 rounded-lg bg-surface-elevated hover:bg-rose-950/40 text-tx-body hover:text-rose-400 border border-border-dim hover:border-rose-500/40 transition-all font-mono text-[11px] flex items-center gap-1 active:scale-[0.98]"
+              class="ml-1 px-3.5 py-1.5 rounded-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition-all font-mono text-[11px] flex items-center gap-1.5 active:scale-[0.98]"
               title="Stop process"
             >
               <Icons name="power" size={11} class="text-rose-400" />
@@ -231,19 +231,19 @@
     {:else}
       <!-- Empty State -->
       <div class="h-64 flex flex-col items-center justify-center p-8 text-center select-none animate-in fade-in duration-200">
-        <div class="w-14 h-14 rounded-2xl bg-surface-elevated border border-border-dim flex items-center justify-center mb-3 text-coral shadow-subtle">
+        <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-3 text-[#00f2fe] shadow-[0_0_20px_rgba(0,242,254,0.25)]">
           <Icons name="radio" size={24} />
         </div>
-        <h3 class="text-sm font-semibold text-tx-header mb-1 tracking-tight">No active preview tunnels</h3>
-        <p class="text-xs text-tx-meta max-w-sm mb-4 leading-relaxed">
-          Create an instant public <code class="text-coral">trycloudflare.com</code> URL for local servers.
+        <h3 class="text-sm font-semibold text-white mb-1 tracking-tight">No active preview tunnels</h3>
+        <p class="text-xs text-[#94a3b8] max-w-sm mb-4 leading-relaxed">
+          Create an instant public <code class="text-[#00f2fe]">trycloudflare.com</code> URL for local servers.
         </p>
         <button
           onclick={() => {
             newPort = 3000;
             handleStart();
           }}
-          class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#9333ea] to-[#7c3aed] hover:from-[#a855f7] hover:to-[#9333ea] text-white text-xs font-medium shadow-sm transition-all border border-[#c084fc]/30 active:scale-[0.98] flex items-center gap-1.5 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+          class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] hover:opacity-95 text-white text-xs font-semibold shadow-[0_0_20px_rgba(139,92,246,0.35)] transition-all border border-transparent active:scale-[0.98] flex items-center gap-2"
         >
           <Icons name="plus" size={13} strokeWidth={2.5} />
           <span>Launch Tunnel on :3000</span>
